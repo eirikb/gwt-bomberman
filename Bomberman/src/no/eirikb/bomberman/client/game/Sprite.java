@@ -16,32 +16,32 @@ import com.google.gwt.user.client.ui.Image;
  */
 public class Sprite {
 
-    private int x;
-    private int y;
+    private int spriteX;
+    private int spriteY;
     private Image image;
     protected Animation animation;
 
-    public Sprite(Image image, int x, int y) {
+    public Sprite(Image image, int spriteX, int spriteY) {
         this.image = image;
-        this.x = x;
-        this.y = y;
+        this.spriteX = spriteX;
+        this.spriteY = spriteY;
     }
 
-    public Sprite(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Sprite(int spriteX, int spriteY) {
+        this.spriteX = spriteX;
+        this.spriteY = spriteY;
     }
 
     public Sprite(Image image) {
         this.image = image;
     }
 
-    public int getX() {
-        return x;
+    public int getSpriteX() {
+        return spriteX;
     }
 
-    public int getY() {
-        return y;
+    public int getSpriteY() {
+        return spriteY;
     }
 
     public Image getImage() {
@@ -56,11 +56,11 @@ public class Sprite {
         return animation.animate();
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setSpriteX(int x) {
+        this.spriteX = x;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setSpriteY(int y) {
+        this.spriteY = y;
     }
 }

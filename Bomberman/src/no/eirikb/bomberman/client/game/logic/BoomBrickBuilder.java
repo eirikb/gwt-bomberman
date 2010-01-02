@@ -22,7 +22,7 @@ public class BoomBrickBuilder {
     private static final String BOOMBRICKURL = "img/boombrick1.png";
 
     public static BoomBrick createBoomBrick(Sprite brick) {
-        BoomBrick boomBrick = new BoomBrick(new Image(BOOMBRICKURL), brick.getX(), brick.getY());
+        BoomBrick boomBrick = new BoomBrick(new Image(BOOMBRICKURL), brick.getSpriteX(), brick.getSpriteY());
         boomBrick.setAnimation(new Animation(2, 10));
         return boomBrick;
     }

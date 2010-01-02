@@ -37,6 +37,6 @@ public class GamePanel extends AbsolutePanel {
     }
 
     public void drawPlayer(Player player) {
-        add(player.getImage(), player.getX() * imgSize, player.getY() * imgSize);
+        add(player.getImage(), player.getSpriteX() * imgSize, player.getSpriteY() * imgSize);
     }
 }

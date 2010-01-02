@@ -27,21 +27,21 @@ public class BombBuilder {
         if (player.getBombAbount() > 0) {
             Way way = player.getWay() != Way.NONE ? player.getWay() : player.getLastWay();
             if (way != null) {
-                int x = player.getX();
-                int y = player.getY();
+                int spriteX = player.getSpriteX();
+                int spriteY = player.getSpriteY();
                 switch (way) {
                     case LEFT:
-                        x += 1;
+                        spriteX += 1;
                         break;
                     case UP:
-                        y += 1;
+                        spriteY += 1;
                         break;
                 }
 
-                Bomb bomb = new Bomb(new Image(BOMBURL), x, y, player, settings.getBombTimer(), player.getBombPower());
-                if (bomb != null && bomb.getX() >= 0 && bomb.getY() >= 0
-                        && bomb.getX() < sprites.length && bomb.getY() < sprites[0].length
-                        && sprites[bomb.getX()][bomb.getY()] == null) {
+                Bomb bomb = new Bomb(new Image(BOMBURL), spriteX, spriteY, player, settings.getBombTimer(), player.getBombPower());
+                if (bomb != null && bomb.getSpriteX() >= 0 && bomb.getSpriteY() >= 0
+                        && bomb.getSpriteX() < sprites.length && bomb.getSpriteY() < sprites[0].length
+                        && sprites[bomb.getSpriteX()][bomb.getSpriteY()] == null) {
                     player.setBombAbount(player.getBombAbount() - 1);
                     return bomb;
                 }

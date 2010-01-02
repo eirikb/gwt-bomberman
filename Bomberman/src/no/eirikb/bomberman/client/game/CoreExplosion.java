@@ -21,8 +21,8 @@ public class CoreExplosion extends Explosion {
     private List<Explosion> explosions;
     private List<int[]> hits; // {x, y}
 
-    public CoreExplosion(Image image, int x, int y, ExplosionType explosionType) {
-        super(image, x, y, explosionType);
+    public CoreExplosion(Image image, int spriteX, int spriteY, ExplosionType explosionType) {
+        super(image, spriteX, spriteY, explosionType);
         explosions = new ArrayList<Explosion>();
         hits = new ArrayList<int[]>();
         setAnimation(new Animation(4, 4));

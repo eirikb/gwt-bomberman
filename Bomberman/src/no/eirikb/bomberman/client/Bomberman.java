@@ -10,8 +10,6 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.DockPanel;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
@@ -103,6 +101,7 @@ public class Bomberman implements EntryPoint {
                     if (bomb != null) {
                         game.addBomb(bomb);
                     }
+                    keyHack.setAnotherKeyPresses(true);
                 }
             }
         });
@@ -115,7 +114,7 @@ public class Bomberman implements EntryPoint {
                     if (keyHack != null) {
                         keyHack.arrowKeyUp(event);
                     } else {
-                        arrowKeyUp(event);
+                        arrowKeyUp();
                     }
                 }
             }
@@ -176,7 +175,7 @@ public class Bomberman implements EntryPoint {
         }
     }
 
-    public void arrowKeyUp(KeyUpEvent event) {
+    public void arrowKeyUp() {
         player.setWay(Way.NONE);
     }
 
@@ -200,8 +199,8 @@ public class Bomberman implements EntryPoint {
                 Button resurectButton = new Button("Resurect!", new ClickHandler() {
 
                     public void onClick(ClickEvent event) {
-                        player.setX(0);
-                        player.setY(0);
+                        player.setSpriteX(0);
+                        player.setSpriteY(0);
                         gamePanel.add(player.getImage(), 0, 0);
                         game.addPlayer(player);
                         dialogBox.setVisible(false);

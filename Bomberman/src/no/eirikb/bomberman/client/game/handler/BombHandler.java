@@ -8,7 +8,6 @@
  */
 package no.eirikb.bomberman.client.game.handler;
 
-import com.google.gwt.core.client.GWT;
 import java.util.ArrayList;
 import java.util.List;
 import no.eirikb.bomberman.client.GamePanel;
@@ -59,7 +58,7 @@ public class BombHandler extends Handler {
     }
 
     public void addBomb(Bomb bomb) {
-        gamePanel.add(bomb.getImage(), bomb.getX() * game.getImgSize(), bomb.getY() * game.getImgSize());
+        gamePanel.add(bomb.getImage(), bomb.getSpriteX() * game.getImgSize(), bomb.getSpriteY() * game.getImgSize());
     }
 
     public void handle() {
@@ -89,10 +88,10 @@ public class BombHandler extends Handler {
         }
     }
 
-    private void createBoomBrick(int x, int y) {
+    private void createBoomBrick(int spriteX, int spriteY) {
         Sprite[][] sprites = game.getSprites();
-        if (x >= 0 && x < sprites.length && y >= 0 && y < sprites[0].length) {
-            Sprite sprite = sprites[x][y];
+        if (spriteX >= 0 && spriteX < sprites.length && spriteY >= 0 && spriteY < sprites[0].length) {
+            Sprite sprite = sprites[spriteX][spriteY];
             if (sprite instanceof Brick) {
                 gamePanel.remove(sprite.getImage());
                 BoomBrick boomBrick = BoomBrickBuilder.createBoomBrick(sprite);

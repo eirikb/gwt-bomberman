@@ -20,8 +20,8 @@ public class Explosion extends Sprite {
     private ExplosionType explosionType;
     private int timer;
 
-    public Explosion(Image image, int x, int y, ExplosionType explosionType) {
-        super(image, x, y);
+    public Explosion(Image image, int spriteX, int spriteY, ExplosionType explosionType) {
+        super(image, spriteX, spriteY);
         this.explosionType = explosionType;
     }
 

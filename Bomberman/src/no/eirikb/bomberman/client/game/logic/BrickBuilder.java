@@ -24,12 +24,12 @@ public class BrickBuilder {
     public static Sprite[][] createBricks(Sprite[][] sprites) {
         int total = ((sprites.length * sprites[0].length) / 100) * PERCENTAGE;
         for (int i = 0; i < total; i++) {
-            final int x = (int) (Math.random() * sprites.length);
-            final int y = (int) (Math.random() * sprites[0].length);
-            if (sprites[x][y] == null) {
+            final int spriteX = (int) (Math.random() * sprites.length);
+            final int spriteY = (int) (Math.random() * sprites[0].length);
+            if (sprites[spriteX][spriteY] == null) {
 
-                final Brick brick = new Brick(new Image(BRICKURL), x, y);
-                sprites[x][y] = brick;
+                final Brick brick = new Brick(new Image(BRICKURL), spriteX, spriteY);
+                sprites[spriteX][spriteY] = brick;
             }
         }
 

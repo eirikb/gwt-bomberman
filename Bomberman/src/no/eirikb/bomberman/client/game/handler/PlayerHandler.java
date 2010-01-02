@@ -46,8 +46,8 @@ public class PlayerHandler extends Handler {
                 Image man = player.getImage();
                 int left = gamePanel.getWidgetLeft(man) - LEFTDIFF;
                 int top = gamePanel.getWidgetTop(man) - TOPDIFF;
-                int x = (left / imgSize);
-                int y = (top / imgSize);
+                int spriteX = (left / imgSize);
+                int spriteY = (top / imgSize);
                 int modX = left % imgSize;
                 int modY = top % imgSize;
 
@@ -57,7 +57,7 @@ public class PlayerHandler extends Handler {
                     case LEFT:
                     case RIGHT:
                         animate(player, player.getWay() == Way.LEFT ? 'l' : 'r');
-                        if (y % 2 == 0) {
+                        if (spriteY % 2 == 0) {
                             if (modY == 0) {
                                 newLeft += player.getWay() == Way.LEFT ? -player.getSpeed() : player.getSpeed();
                             } else if (modY - player.getSpeed() < 0) {
@@ -76,7 +76,7 @@ public class PlayerHandler extends Handler {
                     case UP:
                     case DOWN:
                         animate(player, player.getWay() == Way.UP ? 'u' : 'd');
-                        if (x % 2 == 0) {
+                        if (spriteX % 2 == 0) {
                             if (modX == 0) {
                                 newTop += player.getWay() == Way.UP ? -player.getSpeed() : player.getSpeed();
                             } else if (modX - player.getSpeed() < 0) {
@@ -93,18 +93,38 @@ public class PlayerHandler extends Handler {
                         }
                         break;
                 }
-                boolean canWalk = false;
+                boolean canWalk = true;
                 if (newLeft > left) {
-                    canWalk = game.canWalk(newLeft + imgSize - 1, newTop);
+                    if (!game.canWalk(newLeft + imgSize - 1, newTop)) {
+                        if (canWalk = game.canWalk(left + imgSize, newTop)) {
+                            newLeft = left + 1;
+                        }
+                    }
                 } else if (newTop > top) {
-                    canWalk = game.canWalk(newLeft, newTop + imgSize - 1);
-                } else if (newLeft < left || newTop < top) {
-                    canWalk = game.canWalk(newLeft, newTop);
+                    if (!game.canWalk(newLeft, newTop + imgSize - 1)) {
+                        if (canWalk = game.canWalk(left, top + imgSize)) {
+                            newTop = top + 1;
+                        }
+                    }
+                } else if (newLeft < left) {
+                    if (!game.canWalk(newLeft, newTop)) {
+                        if (canWalk = game.canWalk(left - 1, newTop)) {
+                            newLeft = left - 1;
+                        }
+                    }
+                } else if (newTop < top) {
+                    if (!game.canWalk(newLeft, newTop)) {
+                        if (canWalk = game.canWalk(left, top - 1)) {
+                            newTop = top - 1;
+                        }
+                    }
                 }
                 if (newLeft >= 0 && newTop >= 0 && newLeft < game.getWidth()
                         && newTop < game.getHeight() && canWalk) {
-                    player.setX(x);
-                    player.setY(y);
+                    spriteX = (newLeft / imgSize);
+                    spriteY = (newTop / imgSize);
+                    player.setSpriteX(spriteX);
+                    player.setSpriteY(spriteY);
                     gamePanel.setWidgetPosition(man, newLeft + LEFTDIFF, newTop + TOPDIFF);
                 }
             }

@@ -20,10 +20,15 @@ public class KeyHack implements KeyHackCallback {
     private Bomberman bomberman;
     private Long lastKeyPress;
     private Integer nativeKeyCode;
-    private KeyUpEvent lastUpEvent;
+    private boolean anotherKeyPresses;
 
     public KeyHack(Bomberman bomberman) {
         this.bomberman = bomberman;
+    }
+
+    public void setAnotherKeyPresses(boolean anotherKeyPresses) {
+        this.anotherKeyPresses = anotherKeyPresses;
+        lastKeyPress = null;
     }
 
     public void arrowKeyDown(KeyDownEvent event) {
@@ -37,14 +42,20 @@ public class KeyHack implements KeyHackCallback {
     }
 
     public void arrowKeyUp(KeyUpEvent event) {
-        lastKeyPress = System.currentTimeMillis();
-        lastUpEvent = event;
+        if (event.getNativeKeyCode() == nativeKeyCode) {
+            if (anotherKeyPresses) {
+                anotherKeyPresses = false;
+                bomberman.arrowKeyUp();
+            } else {
+                lastKeyPress = System.currentTimeMillis();
+            }
+        }
     }
 
     public void callback() {
         if (lastKeyPress != null && System.currentTimeMillis() - lastKeyPress > 100) {
             lastKeyPress = null;
-            bomberman.arrowKeyUp(lastUpEvent);
+            bomberman.arrowKeyUp();
         }
     }
 }

@@ -52,7 +52,7 @@ public class ExplosionHandler extends Handler {
 
     private void addExplosion(Explosion explosion) {
         explosion.getImage().setUrl(Explosion.getImageURLPart(explosion) + "1.png");
-        gamePanel.add(explosion.getImage(), explosion.getX() * game.getImgSize(), explosion.getY() * game.getImgSize());
+        gamePanel.add(explosion.getImage(), explosion.getSpriteX() * game.getImgSize(), explosion.getSpriteY() * game.getImgSize());
     }
 
     public void handle() {

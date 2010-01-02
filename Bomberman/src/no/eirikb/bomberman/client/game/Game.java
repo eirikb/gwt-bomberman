@@ -61,7 +61,7 @@ public class Game {
 
     public void addBomb(Bomb bomb) {
         bombs.add(bomb);
-        sprites[bomb.getX()][bomb.getY()] = bomb;
+        sprites[bomb.getSpriteX()][bomb.getSpriteY()] = bomb;
         for (GameListener gameListener : gameListeners) {
             gameListener.addBomb(bomb);
         }
@@ -69,7 +69,7 @@ public class Game {
 
     public void removeBomb(Bomb bomb) {
         bombs.remove(bomb);
-        sprites[bomb.getX()][bomb.getY()] = null;
+        sprites[bomb.getSpriteX()][bomb.getSpriteY()] = null;
         for (GameListener gameListener : gameListeners) {
             gameListener.removeBomb(bomb);
         }
@@ -77,7 +77,7 @@ public class Game {
 
     public void addExplosion(Explosion explosion) {
         explosions.add(explosion);
-        sprites[explosion.getX()][explosion.getY()] = explosion;
+        sprites[explosion.getSpriteX()][explosion.getSpriteY()] = explosion;
         for (GameListener gameListener : gameListeners) {
             gameListener.addExplosion(explosion);
         }
@@ -85,12 +85,12 @@ public class Game {
 
     public void removeExplosion(Explosion explosion) {
         explosions.remove(explosion);
-        sprites[explosion.getX()][explosion.getY()] = null;
+        sprites[explosion.getSpriteX()][explosion.getSpriteY()] = null;
     }
 
     public void addBoomBrick(BoomBrick boomBrick) {
         boomBricks.add(boomBrick);
-        sprites[boomBrick.getX()][boomBrick.getY()] = boomBrick;
+        sprites[boomBrick.getSpriteX()][boomBrick.getSpriteY()] = boomBrick;
         for (GameListener gameListener : gameListeners) {
             gameListener.addBoomBrick(boomBrick);
         }
@@ -98,7 +98,7 @@ public class Game {
 
     public void removeBoomBrick(BoomBrick boomBrick) {
         boomBricks.remove(boomBrick);
-        sprites[boomBrick.getX()][boomBrick.getY()] = null;
+        sprites[boomBrick.getSpriteX()][boomBrick.getSpriteY()] = null;
     }
 
     public Iterable<Player> getPlayers() {

@@ -18,8 +18,8 @@ public class BoomBrick extends Brick {
 
     private int timer;
 
-    public BoomBrick(Image image, int x, int y) {
-        super(image, x, y);
+    public BoomBrick(Image image, int spriteX, int spriteY) {
+        super(image, spriteX, spriteY);
     }
 
     @Override

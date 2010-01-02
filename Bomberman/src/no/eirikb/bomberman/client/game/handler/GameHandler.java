@@ -11,7 +11,6 @@ package no.eirikb.bomberman.client.game.handler;
 import com.google.gwt.user.client.Timer;
 import java.util.ArrayList;
 import java.util.List;
-import no.eirikb.bomberman.client.Bomberman;
 import no.eirikb.bomberman.client.GamePanel;
 import no.eirikb.bomberman.client.KeyHackCallback;
 import no.eirikb.bomberman.client.game.Game;

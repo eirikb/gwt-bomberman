@@ -21,11 +21,11 @@ public class BoxBuilder {
     private static final String BOXURL = "img/box.png";
 
     public static Sprite[][] createBoxes(Sprite[][] sprites) {
-        for (int x = 0; x < sprites.length; x++) {
-            for (int y = 0; y < sprites[0].length; y++) {
-                if (x % 2 != 0 && y % 2 != 0) {
-                    Box box = new Box(new Image(BOXURL), x, y);
-                    sprites[box.getX()][box.getY()] = box;
+        for (int spriteX = 0; spriteX < sprites.length; spriteX++) {
+            for (int spriteY = 0; spriteY < sprites[0].length; spriteY++) {
+                if (spriteX % 2 != 0 && spriteY % 2 != 0) {
+                    Box box = new Box(new Image(BOXURL), spriteX, spriteY);
+                    sprites[box.getSpriteX()][box.getSpriteY()] = box;
                 }
             }
         }

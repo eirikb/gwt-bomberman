@@ -53,7 +53,7 @@ public class BoomBrickHandler extends Handler {
     }
 
     public void addBoomBrick(BoomBrick boomBrick) {
-        gamePanel.add(boomBrick.getImage(), boomBrick.getX() * game.getImgSize(), boomBrick.getY() * game.getImgSize());
+        gamePanel.add(boomBrick.getImage(), boomBrick.getSpriteX() * game.getImgSize(), boomBrick.getSpriteY() * game.getImgSize());
     }
 
     @Override

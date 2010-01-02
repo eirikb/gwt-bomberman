@@ -22,16 +22,16 @@ public class Bomb extends Sprite {
     private int power;
     private Player owner;
 
-    public Bomb(Image image, int x, int y, Player owner, int explodeTime, int power) {
-        super(image, x, y);
+    public Bomb(Image image, int spriteX, int spriteY, Player owner, int explodeTime, int power) {
+        super(image, spriteX, spriteY);
         this.owner = owner;
         this.explodeTime = explodeTime;
         this.power = power;
         setAnimation(new Animation(3, 10));
     }
 
-    public Bomb(Image image, int x, int y, Player owner, int power) {
-        super(image, x, y);
+    public Bomb(Image image, int spriteX, int spriteY, Player owner, int power) {
+        super(image, spriteX, spriteY);
         this.owner = owner;
         this.power = power;
         this.explodeTime = EXPLODETIME;
