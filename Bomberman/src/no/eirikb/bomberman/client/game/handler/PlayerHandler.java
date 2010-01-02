@@ -123,6 +123,8 @@ public class PlayerHandler extends Handler {
                         && newTop < game.getHeight() && canWalk) {
                     spriteX = (newLeft / imgSize);
                     spriteY = (newTop / imgSize);
+                    player.setX(newLeft);
+                    player.setY(newTop);
                     player.setSpriteX(spriteX);
                     player.setSpriteY(spriteY);
                     gamePanel.setWidgetPosition(man, newLeft + LEFTDIFF, newTop + TOPDIFF);

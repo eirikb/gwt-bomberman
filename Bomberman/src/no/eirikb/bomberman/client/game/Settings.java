@@ -20,6 +20,16 @@ public class Settings {
     private int playerBombStartAmount = 3;
     private int bombTimer = 50;
     private int bombPower = 3;
+    private int brickAmountPercantage = 25;
+    private int explosionHitPercentage = 50;
+    private static final Settings INSTANCE = new Settings();
+
+    private Settings() {
+    }
+
+    public static Settings getInstance() {
+        return INSTANCE;
+    }
 
     public int getBombTimer() {
         return bombTimer;
@@ -67,5 +77,21 @@ public class Settings {
 
     public void setBombPower(int bombPower) {
         this.bombPower = bombPower;
+    }
+
+    public int getBrickAmountPercantage() {
+        return brickAmountPercantage;
+    }
+
+    public void setBrickAmountPercantage(int brickAmountPercantage) {
+        this.brickAmountPercantage = brickAmountPercantage;
+    }
+
+    public int getExplosionHitPercentage() {
+        return explosionHitPercentage;
+    }
+
+    public void setExplosionHitPercentage(int explosionHitPercentage) {
+        this.explosionHitPercentage = explosionHitPercentage;
     }
 }

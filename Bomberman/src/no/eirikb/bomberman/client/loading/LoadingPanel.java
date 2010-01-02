@@ -38,8 +38,8 @@ public class LoadingPanel extends VerticalPanel {
     private Settings settings;
     private int imgSize;
 
-    public LoadingPanel(Settings settings, LoadListener loadListener) {
-        this.settings = settings;
+    public LoadingPanel(LoadListener loadListener) {
+        this.settings = Settings.getInstance();
         this.loadListener = loadListener;
         loadingLabel = new Label("Info: Loading images...");
         add(loadingLabel);

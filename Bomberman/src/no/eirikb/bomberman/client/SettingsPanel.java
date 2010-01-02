@@ -28,45 +28,39 @@ public class SettingsPanel extends VerticalPanel {
     private TextBox playerBombStartAmount;
     private TextBox bombTimer;
     private TextBox bombPower;
+    private TextBox brickAmountPercentage;
+    private TextBox explosionHitPercentage;
 
-    public SettingsPanel(Settings settings, ClickHandler clickHandler) {
-        HorizontalPanel h = new HorizontalPanel();
-        h.add(new Label("Map width: "));
-        h.add(mapWidth = new TextBox());
-        add(h);
-        h = new HorizontalPanel();
-        h.add(new Label("Map height: "));
-        h.add(mapHeight = new TextBox());
-        add(h);
-        h = new HorizontalPanel();
-        h.add(new Label("Player speed: "));
-        h.add(playerSpeed = new TextBox());
-        add(h);
-        h = new HorizontalPanel();
-        h.add(new Label("Player bomb start amount: "));
-        h.add(playerBombStartAmount = new TextBox());
-        add(h);
-        h = new HorizontalPanel();
-        h.add(new Label("BombTimer: "));
-        h.add(bombTimer = new TextBox());
-        add(h);
-        h = new HorizontalPanel();
-        h.add(new Label("Bomb power: "));
-        h.add(bombPower = new TextBox());
-        add(h);
+    public SettingsPanel(ClickHandler clickHandler) {
+        add("Map width: ", mapWidth = new TextBox());
+        add("Map height: ", mapHeight = new TextBox());
+        add("Player speed: ", playerSpeed = new TextBox());
+        add("Player bomb start amount: ", playerBombStartAmount = new TextBox());
+        add("BombTimer: ", bombTimer = new TextBox());
+        add("Bomb power: ", bombPower = new TextBox());
+        add("Brick amount percentage: ", brickAmountPercentage = new TextBox());
+        add("Explosion hit percentage: ", explosionHitPercentage = new TextBox());
         add(new Button("Restart", clickHandler));
-        update(settings);
+        update();
     }
 
-    public Settings getSettings(Settings settings) {
+    private void add(String text, TextBox textBox) {
+        HorizontalPanel h = new HorizontalPanel();
+        h.add(new Label(text));
+        h.add(textBox);
+        add(h);
+    }
+
+    public void upateSettings() {
+        Settings settings = Settings.getInstance();
         settings.setMapWidth(getInteger(mapWidth, settings.getMapWidth()));
         settings.setMapHeight(getInteger(mapHeight, settings.getMapHeight()));
         settings.setPlayerSpeed(getInteger(playerSpeed, settings.getPlayerSpeed()));
         settings.setPlayerBombStartAmount(getInteger(playerBombStartAmount, settings.getPlayerBombStartAmount()));
         settings.setBombTimer(getInteger(bombTimer, settings.getBombTimer()));
         settings.setBombPower(getInteger(bombPower, settings.getBombPower()));
-        update(settings);
-        return settings;
+        settings.setBrickAmountPercantage(getInteger(brickAmountPercentage, settings.getBrickAmountPercantage()));
+        settings.setExplosionHitPercentage(getInteger(explosionHitPercentage, settings.getExplosionHitPercentage()));
     }
 
     private Integer getInteger(TextBox textBox, int original) {
@@ -77,12 +71,15 @@ public class SettingsPanel extends VerticalPanel {
         return original;
     }
 
-    private void update(Settings settings) {
+    private void update() {
+        Settings settings = Settings.getInstance();
         mapWidth.setText("" + settings.getMapWidth());
         mapHeight.setText("" + settings.getMapHeight());
         playerSpeed.setText("" + settings.getPlayerSpeed());
         playerBombStartAmount.setText("" + settings.getPlayerBombStartAmount());
         bombTimer.setText("" + settings.getBombTimer());
         bombPower.setText("" + settings.getBombPower());
+        brickAmountPercentage.setText("" + settings.getBrickAmountPercantage());
+        explosionHitPercentage.setText("" + settings.getExplosionHitPercentage());
     }
 }

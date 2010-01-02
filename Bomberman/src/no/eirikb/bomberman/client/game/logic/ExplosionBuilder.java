@@ -14,6 +14,7 @@ import no.eirikb.bomberman.client.game.Explosion;
 import no.eirikb.bomberman.client.game.ExplosionType;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.Player;
+import no.eirikb.bomberman.client.game.Settings;
 import no.eirikb.bomberman.client.game.Sprite;
 
 /**
@@ -29,18 +30,27 @@ public class ExplosionBuilder {
         branch(coreExplosion, game.getSprites(), bomb, 1, false);
         branch(coreExplosion, game.getSprites(), bomb, -1, false);
         for (Player player : game.getPlayers()) {
-            int px = player.getSpriteX();
-            int py = player.getSpriteY();
-            int cx = coreExplosion.getSpriteX();
-            int cy = coreExplosion.getSpriteY();
-            if (px == cx && py == cy) {
+            int pSpriteX = player.getSpriteX();
+            int pSpriteY = player.getSpriteY();
+            int cSpriteX = coreExplosion.getSpriteX();
+            int cSpriteY = coreExplosion.getSpriteY();
+            if (pSpriteX == cSpriteX && pSpriteY == cSpriteY) {
                 game.removePlayer(player);
             } else {
-                if (Math.max(px, cx) - Math.min(px, cx) <= bomb.getPower()
-                        && Math.max(py, cy) - Math.min(py, cy) <= bomb.getPower()) {
+                if (Math.max(pSpriteX, cSpriteX) - Math.min(pSpriteX, cSpriteX) <= bomb.getPower()
+                        && Math.max(pSpriteY, cSpriteY) - Math.min(pSpriteY, cSpriteY) <= bomb.getPower()) {
                     for (Explosion explosion : coreExplosion.getExplosions()) {
-                        if (explosion.getSpriteX() == player.getSpriteX() && explosion.getSpriteY() == player.getSpriteY()) {
-                            game.removePlayer(player);
+                        int ex = explosion.getSpriteX() * game.getImgSize();
+                        int ey = explosion.getSpriteY() * game.getImgSize();
+                        int px = player.getX();
+                        int py = player.getY();
+                        double w = Math.min(ex, px) + game.getImgSize() - Math.max(ex, px);
+                        double h = Math.min(ey, py) + game.getImgSize() - Math.max(ey, py);
+                        if (w >= 0 && h >= 0) {
+                            double percentage = ((w * h) / (game.getImgSize() * game.getImgSize())) * 100;
+                            if (percentage >= Settings.getInstance().getExplosionHitPercentage()) {
+                                game.removePlayer(player);
+                            }
                         }
                     }
                 }

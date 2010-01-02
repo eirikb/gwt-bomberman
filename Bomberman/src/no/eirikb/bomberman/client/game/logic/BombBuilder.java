@@ -23,7 +23,8 @@ public class BombBuilder {
 
     private static final String BOMBURL = "img/bomb1.png";
 
-    public static Bomb createBomb(Sprite[][] sprites, Settings settings, Player player) {
+    public static Bomb createBomb(Sprite[][] sprites, Player player) {
+        Settings settings = Settings.getInstance();
         if (player.getBombAbount() > 0) {
             Way way = player.getWay() != Way.NONE ? player.getWay() : player.getLastWay();
             if (way != null) {

@@ -22,6 +22,8 @@ public class Player extends Sprite {
     private int speed;
     private int bombPower;
     private int bombAbount;
+    private int x;
+    private int y;
 
     public Player(Image image, String nick, int speed, int bombPower, int bombAbount) {
         super(image);
@@ -38,6 +40,22 @@ public class Player extends Sprite {
         way = Way.NONE;
         speed = 2;
         bombPower = 3;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 
     public int getBombPower() {

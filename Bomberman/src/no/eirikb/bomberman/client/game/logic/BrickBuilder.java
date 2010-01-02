@@ -10,6 +10,7 @@ package no.eirikb.bomberman.client.game.logic;
 
 import com.google.gwt.user.client.ui.Image;
 import no.eirikb.bomberman.client.game.Brick;
+import no.eirikb.bomberman.client.game.Settings;
 import no.eirikb.bomberman.client.game.Sprite;
 
 /**
@@ -19,10 +20,9 @@ import no.eirikb.bomberman.client.game.Sprite;
 public class BrickBuilder {
 
     private static final String BRICKURL = "img/brick.png";
-    private static final int PERCENTAGE = 25;
 
     public static Sprite[][] createBricks(Sprite[][] sprites) {
-        int total = ((sprites.length * sprites[0].length) / 100) * PERCENTAGE;
+        int total = ((sprites.length * sprites[0].length) / 100) * Settings.getInstance().getBrickAmountPercantage();
         for (int i = 0; i < total; i++) {
             final int spriteX = (int) (Math.random() * sprites.length);
             final int spriteY = (int) (Math.random() * sprites[0].length);

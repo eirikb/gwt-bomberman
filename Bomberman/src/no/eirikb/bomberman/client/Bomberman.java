@@ -42,7 +42,6 @@ public class Bomberman implements EntryPoint {
     private Player player;
     private KeyHack keyHack;
     private SettingsPanel settingsPanel;
-    private Settings settings;
     private GamePanel gamePanel;
     private Game game;
     private VerticalPanel panel;
@@ -50,8 +49,7 @@ public class Bomberman implements EntryPoint {
     private TextBox textBox;
 
     public void onModuleLoad() {
-        settings = new Settings();
-        RootPanel.get().add(loadingPanel = new LoadingPanel(settings, new LoadListener() {
+        RootPanel.get().add(loadingPanel = new LoadingPanel(new LoadListener() {
 
             public void complete(Sprite[][] sprites, int imgSize) {
                 init(sprites, imgSize);
@@ -73,10 +71,10 @@ public class Bomberman implements EntryPoint {
             }
         }));
 
-        settingsPanel = new SettingsPanel(settings, new ClickHandler() {
+        settingsPanel = new SettingsPanel(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
-                settings = settingsPanel.getSettings(settings);
+                settingsPanel.upateSettings();
                 RootPanel.get().remove(panel);
                 RootPanel.get().add(loadingPanel);
                 loadingPanel.afterLoad();
@@ -97,7 +95,7 @@ public class Bomberman implements EntryPoint {
                         arrowKeyDown(event);
                     }
                 } else if (event.getNativeKeyCode() == 32) {
-                    Bomb bomb = BombBuilder.createBomb(game.getSprites(), settings, player);
+                    Bomb bomb = BombBuilder.createBomb(game.getSprites(), player);
                     if (bomb != null) {
                         game.addBomb(bomb);
                     }
@@ -127,6 +125,7 @@ public class Bomberman implements EntryPoint {
     }
 
     private void startGame(Sprite[][] sprites, int imgSize) {
+        Settings settings = Settings.getInstance();
         game = new Game(sprites, settings.getMapWidth(), settings.getMapHeight(), imgSize);
         player = PlayerBuilder.createPlayer(settings, "eirikb");
         game.addPlayer(player);
@@ -177,10 +176,6 @@ public class Bomberman implements EntryPoint {
 
     public void arrowKeyUp() {
         player.setWay(Way.NONE);
-    }
-
-    public Settings getSettings() {
-        return settings;
     }
 
     private void killCheck() {
