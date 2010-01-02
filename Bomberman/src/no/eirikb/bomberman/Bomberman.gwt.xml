@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='bomberman'>
+    <inherits name='com.google.gwt.user.User'/>
+    <inherits name="com.reveregroup.gwt.imagepreloader.ImagePreloader" />
+    <entry-point class='no.eirikb.bomberman.client.Bomberman'/>
+    <source path='client'/>
+</module>

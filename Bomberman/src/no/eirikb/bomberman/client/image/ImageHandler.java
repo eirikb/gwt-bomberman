@@ -1,0 +1,37 @@
+/*
+ * ============================================================================
+ * "THE BEER-WARE LICENSE" (Revision 42):
+ * <eirikb@google.com> wrote this file. As long as you retain this notice you
+ * can do whatever you want with this stuff. If we meet some day, and you think
+ * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
+ * ============================================================================
+ */
+package no.eirikb.bomberman.client.image;
+
+import com.reveregroup.gwt.imagepreloader.ImageLoadEvent;
+import com.reveregroup.gwt.imagepreloader.ImageLoadHandler;
+import com.reveregroup.gwt.imagepreloader.ImagePreloader;
+
+/**
+ *
+ * @author Eirik Brandtzæg eirikdb@gmail.com
+ */
+public class ImageHandler {
+
+    public void loadImages(final ImageHandlerListener imageHandlerListener, final String[] urls) {
+        loadNext(imageHandlerListener, urls, 0);
+    }
+
+    private void loadNext(final ImageHandlerListener imageHandlerListener, final String[] urls, final int pos) {
+        imageHandlerListener.onStart(urls[pos], pos);
+        ImagePreloader.load(urls[pos], new ImageLoadHandler() {
+
+            public void imageLoaded(ImageLoadEvent event) {
+                imageHandlerListener.onDone(event.takeImage(), urls[pos], pos);
+                if (pos + 1 < urls.length) {
+                    loadNext(imageHandlerListener, urls, pos + 1);
+                }
+            }
+        });
+    }
+}

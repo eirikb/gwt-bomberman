@@ -1,0 +1,82 @@
+.progressbar-text {
+    font-weight: bold;
+}
+
+.progressbar-remaining {
+    font-size: 12px;
+    font-style: italic;
+}
+
+.progressbar-outer {
+    border: 1px solid black;
+}
+
+.progressbar-inner {
+    border: 1px solid black;
+    margin: 1px;
+}
+
+.progressbar-bar {
+    width: 5px;
+    height: 15px;
+    margin: 1px;
+}
+
+.progressbar-fullbar {
+    background: blue;
+}
+
+.progressbar-blankbar {
+    background: #eee;
+}
+
+h1 {
+    font-size: 2em;
+    font-weight: bold;
+    color: #777777;
+    margin: 40px 0px 70px;
+    text-align: center;
+}
+
+.html-face {
+    color: #4040cd;
+    text-decoration: underline;
+}
+
+.gwt-Label {
+    font-family: Geneva,Arial,Helvetica,sans-serif;
+    color: #363131;
+}
+
+.gwt-uid-1 {
+    font-family: Geneva,Arial,Helvetica,sans-serif;
+}
+
+.gwt-DialogBox {
+    border: 2px outset;
+    background-color: white;
+}
+
+.dialogTopCenter {
+    border-right-style: solid;
+    border-left-style: solid;
+    border-bottom-style: solid;
+    border-top-style: solid;
+    border-right-color: #7b6b6b;
+    border-left-color: #7b6b6b;
+    border-bottom-color: #7b6b6b;
+    border-top-color: #7b6b6b;
+    background-color: #594848;
+    font-family: Geneva,Arial,Helvetica,sans-serif;
+    color: #f5e7e7;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;
+    border-top-width: 1px;
+}
+
+.dialogMiddleCenter {
+    font-family: Geneva,Arial,Helvetica,sans-serif;
+    color: #363131;
+    background-color: #eeefe6;
+}
