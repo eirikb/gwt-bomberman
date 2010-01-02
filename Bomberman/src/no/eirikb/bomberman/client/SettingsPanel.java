@@ -8,10 +8,15 @@
  */
 package no.eirikb.bomberman.client;
 
+import com.google.gwt.dom.client.Style.FontWeight;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import no.eirikb.bomberman.client.game.Settings;
@@ -32,20 +37,51 @@ public class SettingsPanel extends VerticalPanel {
     private TextBox explosionHitPercentage;
 
     public SettingsPanel(ClickHandler clickHandler) {
-        add("Map width: ", mapWidth = new TextBox());
-        add("Map height: ", mapHeight = new TextBox());
-        add("Player speed: ", playerSpeed = new TextBox());
-        add("Player bomb start amount: ", playerBombStartAmount = new TextBox());
-        add("BombTimer: ", bombTimer = new TextBox());
-        add("Bomb power: ", bombPower = new TextBox());
-        add("Brick amount percentage: ", brickAmountPercentage = new TextBox());
-        add("Explosion hit percentage: ", explosionHitPercentage = new TextBox());
+        add("Map width: ", mapWidth = new TextBox(),
+                "Width of the visible map in pixels");
+        add("Map height: ", mapHeight = new TextBox(),
+                "Height of the visible map in pixels");
+        add("Player speed: ", playerSpeed = new TextBox(),
+                "Speed of the player (man). Amount of pixels for each 'TICK' (each 50ms)");
+        add("Player bomb start amount: ", playerBombStartAmount = new TextBox(),
+                "Amount of bombs the player can have on the map at one time");
+        add("BombTimer: ", bombTimer = new TextBox(),
+                "Amount of 'TICKs' before the bomb explodes (one TICK ~ 50 ms)");
+        add("Bomb power: ", bombPower = new TextBox(),
+                "Amount of sprites the bomb should exand out");
+        add("Brick amount percentage: ", brickAmountPercentage = new TextBox(),
+                "How much percentage of the map should be filled with bricks (entire map size in sprites)");
+        add("Explosion hit percentage: ", explosionHitPercentage = new TextBox(),
+                "How much percentage of the players body must be inside the flame before he/she is killed");
         add(new Button("Restart", clickHandler));
         update();
     }
 
-    private void add(String text, TextBox textBox) {
+    private void add(final String text, TextBox textBox, final String toolToolTipText) {
         HorizontalPanel h = new HorizontalPanel();
+        final Image infoImage = new Image("img/infoicon.png");
+        infoImage.addClickHandler(new ClickHandler() {
+
+            public void onClick(ClickEvent ce) {
+                final PopupPanel popupPanel = new PopupPanel(true);
+                VerticalPanel v = new VerticalPanel();
+                v.add(new PushButton("close", new ClickHandler() {
+
+                    public void onClick(ClickEvent ce) {
+                        popupPanel.hide();
+                    }
+                }));
+                Label l = new Label(text);
+                l.getElement().getStyle().setFontWeight(FontWeight.BOLD);
+                v.add(l);
+                v.add(new Label(toolToolTipText));
+                popupPanel.setWidget(v);
+                popupPanel.setPopupPosition(infoImage.getAbsoluteLeft() + infoImage.getWidth() + 10,
+                        infoImage.getAbsoluteTop());
+                popupPanel.show();
+            }
+        });
+        h.add(infoImage);
         h.add(new Label(text));
         h.add(textBox);
         add(h);

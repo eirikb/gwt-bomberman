@@ -80,3 +80,11 @@ h1 {
     color: #363131;
     background-color: #eeefe6;
 }
+
+.popupContent {
+    background:#FFFFFF none repeat scroll 0 0;
+    border:1px solid #666666;
+    height:100%;
+    padding:0.5em;
+    width:14em;
+}
