@@ -52,7 +52,7 @@ public class SettingsPanel extends VerticalPanel {
         add("Brick amount percentage: ", brickAmountPercentage = new TextBox(),
                 "How much percentage of the map should be filled with bricks (entire map size in sprites)");
         add("Explosion hit percentage: ", explosionHitPercentage = new TextBox(),
-                "How much percentage of the players body must be inside the flame before he/she is killed");
+                "How much percentage of the players body must be inside the flame before he/she is killed. Set this to 101 and you ARE GOD");
         add(new Button("Restart", clickHandler));
         update();
     }

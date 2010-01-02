@@ -99,7 +99,9 @@ public class Bomberman implements EntryPoint {
                     if (bomb != null) {
                         game.addBomb(bomb);
                     }
-                    keyHack.setAnotherKeyPresses(true);
+                    if (keyHack != null) {
+                        keyHack.setAnotherKeyPresses(true);
+                    }
                 }
             }
         });
