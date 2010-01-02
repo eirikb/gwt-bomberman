@@ -10,6 +10,7 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
@@ -64,13 +65,6 @@ public class Bomberman implements EntryPoint {
         panel = new VerticalPanel();
         RootPanel.get().add(panel);
 
-        panel.add(new PushButton("Show/Hide settings", new ClickHandler() {
-
-            public void onClick(ClickEvent event) {
-                settingsPanel.setVisible(!settingsPanel.isVisible());
-            }
-        }));
-
         settingsPanel = new SettingsPanel(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
@@ -80,8 +74,11 @@ public class Bomberman implements EntryPoint {
                 loadingPanel.afterLoad();
             }
         });
-        settingsPanel.setVisible(false);
-        panel.add(settingsPanel);
+
+        DisclosurePanel disclosurePanel = new DisclosurePanel("Show/Hide settings");
+        disclosurePanel.setAnimationEnabled(true);
+        disclosurePanel.add(settingsPanel);
+        panel.add(disclosurePanel);
 
         textBox = new TextBox();
 

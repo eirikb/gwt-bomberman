@@ -38,11 +38,6 @@ h1 {
     text-align: center;
 }
 
-.html-face {
-    color: #4040cd;
-    text-decoration: underline;
-}
-
 .gwt-Label {
     font-family: Geneva,Arial,Helvetica,sans-serif;
     color: #363131;
@@ -87,4 +82,11 @@ h1 {
     height:100%;
     padding:0.5em;
     width:14em;
+}
+
+.gwt-DisclosurePanel .header, .gwt-DisclosurePanel .header a, .gwt-DisclosurePanel .header td {
+    color:black;
+    cursor:pointer;
+    text-decoration:none;
+    font-family: Geneva,Arial,Helvetica,sans-serif;
 }
