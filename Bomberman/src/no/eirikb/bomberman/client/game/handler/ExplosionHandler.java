@@ -8,7 +8,6 @@
  */
 package no.eirikb.bomberman.client.game.handler;
 
-import com.google.gwt.core.client.GWT;
 import java.util.ArrayList;
 import java.util.List;
 import no.eirikb.bomberman.client.GamePanel;
@@ -56,39 +55,37 @@ public class ExplosionHandler extends Handler {
 
     public void addSprite(Sprite sprite) {
         if (sprite instanceof Explosion) {
-            GWT.log("ExplosionHandler: instance of Explosion", null);
             addExplosion((Explosion) sprite);
-        } else if (sprite instanceof CoreExplosion) {
-            GWT.log("ExplosionHandler: instane of CoreExplosion", null);
-            CoreExplosion coreExplosion = (CoreExplosion) sprite;
-            for (Player player : game.getPlayers()) {
-                int pSpriteX = player.getSpriteX();
-                int pSpriteY = player.getSpriteY();
-                int cSpriteX = coreExplosion.getSpriteX();
-                int cSpriteY = coreExplosion.getSpriteY();
-                if (pSpriteX == cSpriteX && pSpriteY == cSpriteY) {
-                    game.removePlayer(player);
-                } else {
-                    if (Math.max(pSpriteX, cSpriteX) - Math.min(pSpriteX, cSpriteX) <= coreExplosion.getSize()
-                            && Math.max(pSpriteY, cSpriteY) - Math.min(pSpriteY, cSpriteY) <= coreExplosion.getSize()) {
-                        for (Explosion explosion : coreExplosion.getExplosions()) {
-                            int ex = explosion.getSpriteX() * game.getImgSize();
-                            int ey = explosion.getSpriteY() * game.getImgSize();
-                            int px = player.getX();
-                            int py = player.getY();
-                            double w = Math.min(ex, px) + game.getImgSize() - Math.max(ex, px);
-                            double h = Math.min(ey, py) + game.getImgSize() - Math.max(ey, py);
-                            if (w >= 0 && h >= 0) {
-                                double percentage = ((w * h) / (game.getImgSize() * game.getImgSize())) * 100;
-                                if (percentage >= Settings.getInstance().getExplosionHitPercentage()) {
-                                    game.removePlayer(player);
+            if (sprite instanceof CoreExplosion) {
+                CoreExplosion coreExplosion = (CoreExplosion) sprite;
+                for (Player player : game.getPlayers()) {
+                    int pSpriteX = player.getSpriteX();
+                    int pSpriteY = player.getSpriteY();
+                    int cSpriteX = coreExplosion.getSpriteX();
+                    int cSpriteY = coreExplosion.getSpriteY();
+                    if (pSpriteX == cSpriteX && pSpriteY == cSpriteY) {
+                        game.removePlayer(player);
+                    } else {
+                        if (Math.max(pSpriteX, cSpriteX) - Math.min(pSpriteX, cSpriteX) <= coreExplosion.getSize()
+                                && Math.max(pSpriteY, cSpriteY) - Math.min(pSpriteY, cSpriteY) <= coreExplosion.getSize()) {
+                            for (Explosion explosion : coreExplosion.getExplosions()) {
+                                int ex = explosion.getSpriteX() * game.getImgSize();
+                                int ey = explosion.getSpriteY() * game.getImgSize();
+                                int px = player.getX();
+                                int py = player.getY();
+                                double w = Math.min(ex, px) + game.getImgSize() - Math.max(ex, px);
+                                double h = Math.min(ey, py) + game.getImgSize() - Math.max(ey, py);
+                                if (w >= 0 && h >= 0) {
+                                    double percentage = ((w * h) / (game.getImgSize() * game.getImgSize())) * 100;
+                                    if (percentage >= Settings.getInstance().getExplosionHitPercentage()) {
+                                        game.removePlayer(player);
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-
         }
     }
 
