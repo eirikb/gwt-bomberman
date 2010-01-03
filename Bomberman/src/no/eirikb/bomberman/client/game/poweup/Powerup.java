@@ -6,29 +6,21 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client.game;
+package no.eirikb.bomberman.client.game.poweup;
 
-import no.eirikb.bomberman.client.game.poweup.Powerup;
+import com.google.gwt.user.client.ui.Image;
+import no.eirikb.bomberman.client.game.Player;
+import no.eirikb.bomberman.client.game.Sprite;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public interface GameListener {
+public abstract class Powerup extends Sprite {
 
-    public void addPlayer(Player player);
+    public Powerup(Image image, int spriteX, int spriteY) {
+        super(image, spriteX, spriteY);
+    }
 
-    public void removePlayer(Player player);
-
-    public void addBomb(Bomb bomb);
-
-    public void removeBomb(Bomb bomb);
-
-    public void addExplosion(Explosion explosion);
-
-    public void addBoomBrick(BoomBrick boomBrick);
-
-    public void addPowerup(Powerup powerup);
-
-    public void removePowerup(Powerup powerup);
+    public abstract void powerUp(Player player);
 }

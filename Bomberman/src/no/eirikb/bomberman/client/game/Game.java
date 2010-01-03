@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import no.eirikb.bomberman.client.game.poweup.Powerup;
 
 /**
  *
@@ -19,11 +20,12 @@ import java.util.Map;
  */
 public class Game {
 
+    private Sprite[][] sprites;
     private Map<String, Player> players;
     private List<Bomb> bombs;
     private List<Explosion> explosions;
     private List<BoomBrick> boomBricks;
-    private Sprite[][] sprites;
+    private List<Powerup> powerups;
     private int width;
     private int height;
     private int imgSize;
@@ -38,6 +40,7 @@ public class Game {
         bombs = new ArrayList<Bomb>();
         explosions = new ArrayList<Explosion>();
         boomBricks = new ArrayList<BoomBrick>();
+        powerups = new ArrayList<Powerup>();
         gameListeners = new ArrayList<GameListener>();
     }
 
@@ -86,6 +89,14 @@ public class Game {
     public void removeExplosion(Explosion explosion) {
         explosions.remove(explosion);
         sprites[explosion.getSpriteX()][explosion.getSpriteY()] = null;
+    }
+
+    public void addPowerup(Powerup powerup) {
+        powerups.add(powerup);
+        sprites[powerup.getSpriteX()][powerup.getSpriteY()] = powerup;
+        for (GameListener gameListener : gameListeners) {
+            gameListener.addPowerup(powerup);
+        }
     }
 
     public void addBoomBrick(BoomBrick boomBrick) {

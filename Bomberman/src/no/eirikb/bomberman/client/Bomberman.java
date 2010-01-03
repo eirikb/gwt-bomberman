@@ -27,6 +27,7 @@ import no.eirikb.bomberman.client.game.Settings;
 import no.eirikb.bomberman.client.game.Sprite;
 import no.eirikb.bomberman.client.game.Way;
 import no.eirikb.bomberman.client.game.logic.BombBuilder;
+import no.eirikb.bomberman.client.game.poweup.Powerup;
 import no.eirikb.bomberman.client.loading.LoadingPanel;
 import no.eirikb.bomberman.client.game.logic.PlayerBuilder;
 import no.eirikb.bomberman.client.loading.LoadListener;
@@ -221,6 +222,12 @@ public class Bomberman implements EntryPoint {
             }
 
             public void addBoomBrick(BoomBrick boomBrick) {
+            }
+
+            public void addPowerup(Powerup powerup) {
+            }
+
+            public void removePowerup(Powerup powerup) {
             }
         });
     }

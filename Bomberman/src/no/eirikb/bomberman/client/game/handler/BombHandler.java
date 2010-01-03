@@ -22,6 +22,7 @@ import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.game.Sprite;
 import no.eirikb.bomberman.client.game.logic.BoomBrickBuilder;
 import no.eirikb.bomberman.client.game.logic.ExplosionBuilder;
+import no.eirikb.bomberman.client.game.poweup.Powerup;
 
 /**
  *
@@ -53,6 +54,12 @@ public class BombHandler extends Handler {
             }
 
             public void removeBomb(Bomb bomb) {
+            }
+
+            public void addPowerup(Powerup powerup) {
+            }
+
+            public void removePowerup(Powerup powerup) {
             }
         });
     }

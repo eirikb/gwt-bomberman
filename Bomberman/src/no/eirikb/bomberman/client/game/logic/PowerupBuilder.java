@@ -6,29 +6,24 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client.game;
+package no.eirikb.bomberman.client.game.logic;
 
+import no.eirikb.bomberman.client.game.poweup.BombAmountPowerup;
 import no.eirikb.bomberman.client.game.poweup.Powerup;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public interface GameListener {
+public class PowerupBuilder {
 
-    public void addPlayer(Player player);
+    private static final int POWERUPAMOUNT = 1;
 
-    public void removePlayer(Player player);
-
-    public void addBomb(Bomb bomb);
-
-    public void removeBomb(Bomb bomb);
-
-    public void addExplosion(Explosion explosion);
-
-    public void addBoomBrick(BoomBrick boomBrick);
-
-    public void addPowerup(Powerup powerup);
-
-    public void removePowerup(Powerup powerup);
+    public static Powerup createPowerup(int spriteX, int spriteY) {
+        switch ((int) (Math.random() * POWERUPAMOUNT)) {
+            case 0:
+                return new BombAmountPowerup(spriteX, spriteY);
+        }
+        return null;
+    }
 }

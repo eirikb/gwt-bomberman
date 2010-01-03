@@ -16,6 +16,7 @@ import no.eirikb.bomberman.client.game.BoomBrick;
 import no.eirikb.bomberman.client.game.Explosion;
 import no.eirikb.bomberman.client.game.GameListener;
 import no.eirikb.bomberman.client.game.Player;
+import no.eirikb.bomberman.client.game.poweup.Powerup;
 
 /**
  *
@@ -56,5 +57,11 @@ public class BombAmountPanel extends HorizontalPanel implements GameListener {
     }
 
     public void addBoomBrick(BoomBrick boomBrick) {
+    }
+
+    public void addPowerup(Powerup powerup) {
+    }
+
+    public void removePowerup(Powerup powerup) {
     }
 }

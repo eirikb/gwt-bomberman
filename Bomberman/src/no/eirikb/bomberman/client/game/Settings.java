@@ -22,6 +22,7 @@ public class Settings {
     private int bombPower = 3;
     private int brickAmountPercantage = 25;
     private int explosionHitPercentage = 50;
+    private int sleepTime = 50;
     private static final Settings INSTANCE = new Settings();
 
     private Settings() {
@@ -94,4 +95,13 @@ public class Settings {
     public void setExplosionHitPercentage(int explosionHitPercentage) {
         this.explosionHitPercentage = explosionHitPercentage;
     }
+
+    public int getSleepTime() {
+        return sleepTime;
+    }
+
+    public void setSleepTime(int sleepTime) {
+        this.sleepTime = sleepTime;
+    }
 }
+
