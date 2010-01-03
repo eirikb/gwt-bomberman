@@ -36,6 +36,7 @@ public class SettingsPanel extends VerticalPanel {
     private TextBox brickAmountPercentage;
     private TextBox explosionHitPercentage;
     private TextBox sleepTime;
+    private TextBox percentagePowerup;
 
     public SettingsPanel(ClickHandler clickHandler) {
         add("Map width (px): ", mapWidth = new TextBox(),
@@ -56,6 +57,8 @@ public class SettingsPanel extends VerticalPanel {
                 "How much percentage of the players body must be inside the flame before he/she is killed. Set this to 101 and you ARE GOD");
         add("Sleep time: ", sleepTime = new TextBox(),
                 "How long each 'TICK' lasts. The interval between each calculation in milliseconds");
+        add("Percentage powerup: ", percentagePowerup = new TextBox(),
+                "Amount of chance that when the brick perishes there will be a powerup");
         add(new Button("Restart", clickHandler));
         update();
     }
@@ -101,6 +104,7 @@ public class SettingsPanel extends VerticalPanel {
         settings.setBrickAmountPercantage(getInteger(brickAmountPercentage, settings.getBrickAmountPercantage()));
         settings.setExplosionHitPercentage(getInteger(explosionHitPercentage, settings.getExplosionHitPercentage()));
         settings.setSleepTime(getInteger(sleepTime, settings.getSleepTime()));
+        settings.setPercentagePowerup(getInteger(percentagePowerup, settings.getPercentagePowerup()));
     }
 
     private Integer getInteger(TextBox textBox, int original) {
@@ -122,5 +126,6 @@ public class SettingsPanel extends VerticalPanel {
         brickAmountPercentage.setText("" + settings.getBrickAmountPercantage());
         explosionHitPercentage.setText("" + settings.getExplosionHitPercentage());
         sleepTime.setText("" + settings.getSleepTime());
+        percentagePowerup.setText("" + settings.getPercentagePowerup());
     }
 }

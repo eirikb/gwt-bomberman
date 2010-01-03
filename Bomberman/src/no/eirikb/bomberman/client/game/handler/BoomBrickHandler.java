@@ -14,7 +14,10 @@ import no.eirikb.bomberman.client.GamePanel;
 import no.eirikb.bomberman.client.game.BoomBrick;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.GameListener;
+import no.eirikb.bomberman.client.game.Settings;
 import no.eirikb.bomberman.client.game.Sprite;
+import no.eirikb.bomberman.client.game.logic.PowerupBuilder;
+import no.eirikb.bomberman.client.game.poweup.Powerup;
 
 /**
  *
@@ -49,6 +52,12 @@ public class BoomBrickHandler extends Handler implements GameListener {
         }
         for (BoomBrick boomBrick : toRemove) {
             game.removeBoomBrick(boomBrick);
+            if (Math.random() * 100 <= Settings.getInstance().getPercentagePowerup()) {
+                Powerup powerup = PowerupBuilder.createPowerup(boomBrick.getSpriteX(), boomBrick.getSpriteY());
+                if (powerup != null) {
+                    game.addPowerup(powerup);
+                }
+            }
         }
     }
 

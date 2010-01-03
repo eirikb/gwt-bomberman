@@ -23,9 +23,6 @@ import no.eirikb.bomberman.client.game.Settings;
 public class GameHandler extends Handler {
 
     private List<Handler> handlers;
-    private final int SLEEPTIME = 50;
-    private int sleepTime;
-    private long lastTime;
     private Timer timer;
     private KeyHackCallback keyHackCallback;
 
@@ -37,11 +34,13 @@ public class GameHandler extends Handler {
         handlers.add(new ExplosionHandler(game, gamePanel));
         handlers.add(new BoomBrickHandler(game, gamePanel));
         handlers.add(new PlayerHandler(game, gamePanel));
-
-        sleepTime = SLEEPTIME;
-        lastTime = System.currentTimeMillis();
+        handlers.add(new PowerupHandler(game, gamePanel));
 
         createTimer();
+    }
+
+    public void stop() {
+        timer.cancel();
     }
 
     private void createTimer() {
@@ -52,18 +51,9 @@ public class GameHandler extends Handler {
                 if (keyHackCallback != null) {
                     keyHackCallback.callback();
                 }
-//                TODO: Find out if this is needed
-//                long timeDiff = System.currentTimeMillis() - lastTime;
-//                if (timeDiff > SLEEPTIME) {
-//                    sleepTime--;
-//                } else if (timeDiff < SLEEPTIME) {
-//                    sleepTime++;
-//                }
-//                lastTime = System.currentTimeMillis();
                 for (Handler handler : handlers) {
                     handler.handle();
                 }
-//                  start();
             }
         };
     }

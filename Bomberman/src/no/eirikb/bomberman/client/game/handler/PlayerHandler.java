@@ -12,7 +12,9 @@ import com.google.gwt.user.client.ui.Image;
 import no.eirikb.bomberman.client.GamePanel;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.Player;
+import no.eirikb.bomberman.client.game.Sprite;
 import no.eirikb.bomberman.client.game.Way;
+import no.eirikb.bomberman.client.game.poweup.Powerup;
 
 /**
  *
@@ -93,34 +95,34 @@ public class PlayerHandler extends Handler {
                         }
                         break;
                 }
-                boolean canWalk = true;
+                Sprite canWalk = null;
                 if (newLeft > left) {
-                    if (!game.canWalk(newLeft + imgSize - 1, newTop)) {
-                        if (canWalk = game.canWalk(left + imgSize, newTop)) {
+                    if (game.canWalk(newLeft + imgSize - 1, newTop) != null) {
+                        if ((canWalk = game.canWalk(left + imgSize, newTop)) == null) {
                             newLeft = left + 1;
                         }
                     }
                 } else if (newTop > top) {
-                    if (!game.canWalk(newLeft, newTop + imgSize - 1)) {
-                        if (canWalk = game.canWalk(left, top + imgSize)) {
+                    if (game.canWalk(newLeft, newTop + imgSize - 1) != null) {
+                        if ((canWalk = game.canWalk(left, top + imgSize)) == null) {
                             newTop = top + 1;
                         }
                     }
                 } else if (newLeft < left) {
-                    if (!game.canWalk(newLeft, newTop)) {
-                        if (canWalk = game.canWalk(left - 1, newTop)) {
+                    if (game.canWalk(newLeft, newTop) != null) {
+                        if ((canWalk = game.canWalk(left - 1, newTop)) == null) {
                             newLeft = left - 1;
                         }
                     }
                 } else if (newTop < top) {
-                    if (!game.canWalk(newLeft, newTop)) {
-                        if (canWalk = game.canWalk(left, top - 1)) {
+                    if (game.canWalk(newLeft, newTop) != null) {
+                        if ((canWalk = game.canWalk(left, top - 1)) == null) {
                             newTop = top - 1;
                         }
                     }
                 }
                 if (newLeft >= 0 && newTop >= 0 && newLeft < game.getWidth()
-                        && newTop < game.getHeight() && canWalk) {
+                        && newTop < game.getHeight() && canWalk == null) {
                     spriteX = (newLeft / imgSize);
                     spriteY = (newTop / imgSize);
                     player.setX(newLeft);
@@ -128,7 +130,14 @@ public class PlayerHandler extends Handler {
                     player.setSpriteX(spriteX);
                     player.setSpriteY(spriteY);
                     gamePanel.setWidgetPosition(man, newLeft + LEFTDIFF, newTop + TOPDIFF);
+                } else if (canWalk != null) {
+                    if (canWalk instanceof Powerup) {
+                        Powerup powerup = (Powerup) canWalk;
+                        powerup.powerUp(player);
+                        game.removePowerup(powerup);
+                    }
                 }
+
             }
         }
     }

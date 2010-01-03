@@ -48,6 +48,12 @@ public class Game {
         return sprites;
     }
 
+    public void removeAllGameListeners() {
+        for (int i = 0; i < gameListeners.size(); i++) {
+            gameListeners.remove(0);
+        }
+    }
+
     private void addSpriteInvisible(Sprite sprite) {
         for (GameListener gameListener : gameListeners) {
             gameListener.addSprite(sprite);
@@ -148,13 +154,13 @@ public class Game {
         return width;
     }
 
-    public boolean canWalk(int newLeft, int newTop) {
+    public Sprite canWalk(int newLeft, int newTop) {
         int x = newLeft / imgSize;
         int y = newTop / imgSize;
         if (x >= 0 && x < sprites.length && y >= 0 && y < sprites[0].length) {
-            return sprites[newLeft / imgSize][newTop / imgSize] == null;
+            return sprites[newLeft / imgSize][newTop / imgSize];
         }
-        return false;
+        return new Sprite(null);
     }
 
     public void addGameListener(GameListener gameListener) {

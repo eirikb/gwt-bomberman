@@ -15,6 +15,8 @@ import no.eirikb.bomberman.client.game.Bomb;
 import no.eirikb.bomberman.client.game.GameListener;
 import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.game.Sprite;
+import no.eirikb.bomberman.client.game.poweup.BombAmountPowerup;
+import no.eirikb.bomberman.client.game.poweup.Powerup;
 
 /**
  *
@@ -54,6 +56,10 @@ public class BombAmountPanel extends HorizontalPanel implements GameListener {
     public void removeSprite(Sprite sprite) {
         if (sprite instanceof Bomb) {
             removeBomb((Bomb) sprite);
+        } else if (sprite instanceof BombAmountPowerup) {
+            if (((Powerup) sprite).getPlayer() == player) {
+                add(new Image(BOMBURL));
+            }
         }
     }
 }

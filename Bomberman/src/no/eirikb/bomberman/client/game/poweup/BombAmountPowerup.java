@@ -25,6 +25,7 @@ public class BombAmountPowerup extends Powerup {
 
     @Override
     public void powerUp(Player player) {
-        player.setBombAbount(player.getBombAbount());
+        super.powerUp(player);
+        player.setBombAbount(player.getBombAbount() + 1);
     }
 }

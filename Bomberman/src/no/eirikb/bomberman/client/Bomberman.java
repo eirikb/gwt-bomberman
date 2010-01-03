@@ -17,8 +17,6 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import no.eirikb.bomberman.client.game.Bomb;
-import no.eirikb.bomberman.client.game.BoomBrick;
-import no.eirikb.bomberman.client.game.Explosion;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.GameListener;
 import no.eirikb.bomberman.client.game.handler.GameHandler;
@@ -27,7 +25,6 @@ import no.eirikb.bomberman.client.game.Settings;
 import no.eirikb.bomberman.client.game.Sprite;
 import no.eirikb.bomberman.client.game.Way;
 import no.eirikb.bomberman.client.game.logic.BombBuilder;
-import no.eirikb.bomberman.client.game.poweup.Powerup;
 import no.eirikb.bomberman.client.loading.LoadingPanel;
 import no.eirikb.bomberman.client.game.logic.PlayerBuilder;
 import no.eirikb.bomberman.client.loading.LoadListener;
@@ -48,6 +45,7 @@ public class Bomberman implements EntryPoint {
     private VerticalPanel panel;
     private CheckBox useKeyHack;
     private TextBox textBox;
+    private GameHandler gameHandler;
 
     public void onModuleLoad() {
         RootPanel.get().add(loadingPanel = new LoadingPanel(new LoadListener() {
@@ -68,6 +66,8 @@ public class Bomberman implements EntryPoint {
         settingsPanel = new SettingsPanel(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
+                gameHandler.stop();
+                game.removeAllGameListeners();
                 settingsPanel.upateSettings();
                 RootPanel.get().remove(panel);
                 RootPanel.get().add(loadingPanel);
@@ -130,7 +130,7 @@ public class Bomberman implements EntryPoint {
         game.addPlayer(player);
         gamePanel = new GamePanel(imgSize, settings.getMapWidth(), settings.getMapHeight());
         gamePanel.getElement().getStyle().setBackgroundColor("#abcdef");
-        final GameHandler gameHandler = new GameHandler(game, gamePanel);
+        gameHandler = new GameHandler(game, gamePanel);
 
         final Bomberman bomberman = this;
         useKeyHack = new CheckBox("Use KeyHack");

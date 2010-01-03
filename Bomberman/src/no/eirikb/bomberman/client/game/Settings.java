@@ -17,12 +17,13 @@ public class Settings {
     private int mapWidth = 656;
     private int mapHeight = 496;
     private int playerSpeed = 3;
-    private int playerBombStartAmount = 3;
+    private int playerBombStartAmount = 1;
     private int bombTimer = 50;
-    private int bombPower = 3;
+    private int bombPower = 1;
     private int brickAmountPercantage = 25;
     private int explosionHitPercentage = 50;
     private int sleepTime = 50;
+    private int percentagePowerup = 40;
     private static final Settings INSTANCE = new Settings();
 
     private Settings() {
@@ -102,6 +103,14 @@ public class Settings {
 
     public void setSleepTime(int sleepTime) {
         this.sleepTime = sleepTime;
+    }
+
+    public int getPercentagePowerup() {
+        return percentagePowerup;
+    }
+
+    public void setPercentagePowerup(int percentagePowerup) {
+        this.percentagePowerup = percentagePowerup;
     }
 }
 

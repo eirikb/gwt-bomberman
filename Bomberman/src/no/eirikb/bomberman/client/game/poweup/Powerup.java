@@ -18,9 +18,17 @@ import no.eirikb.bomberman.client.game.Sprite;
  */
 public abstract class Powerup extends Sprite {
 
+    private Player player;
+
     public Powerup(Image image, int spriteX, int spriteY) {
         super(image, spriteX, spriteY);
     }
 
-    public abstract void powerUp(Player player);
+    public void powerUp(Player player) {
+        this.player = player;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
 }
