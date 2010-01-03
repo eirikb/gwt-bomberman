@@ -13,7 +13,6 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -205,7 +204,10 @@ public class Bomberman implements EntryPoint {
                 v.add(resurectButton);
                 dialogBox.setWidget(v);
                 dialogBox.setAnimationEnabled(true);
-                dialogBox.showRelativeTo(gamePanel);
+                dialogBox.setPopupPosition(gamePanel.getAbsoluteLeft()
+                        + (Settings.getInstance().getMapWidth() / 4),
+                        gamePanel.getAbsoluteTop() + (Settings.getInstance().getMapHeight() / 4));
+                dialogBox.show();
                 resurectButton.setFocus(true);
             }
 

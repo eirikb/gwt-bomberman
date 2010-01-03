@@ -14,6 +14,7 @@ import java.util.List;
 import no.eirikb.bomberman.client.GamePanel;
 import no.eirikb.bomberman.client.KeyHackCallback;
 import no.eirikb.bomberman.client.game.Game;
+import no.eirikb.bomberman.client.game.Settings;
 
 /**
  *
@@ -68,7 +69,7 @@ public class GameHandler extends Handler {
     }
 
     public void start() {
-        timer.scheduleRepeating(50);
+        timer.scheduleRepeating(Settings.getInstance().getSleepTime());
     }
 
     @Override

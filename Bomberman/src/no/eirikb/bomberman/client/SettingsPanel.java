@@ -35,11 +35,12 @@ public class SettingsPanel extends VerticalPanel {
     private TextBox bombPower;
     private TextBox brickAmountPercentage;
     private TextBox explosionHitPercentage;
+    private TextBox sleepTime;
 
     public SettingsPanel(ClickHandler clickHandler) {
-        add("Map width: ", mapWidth = new TextBox(),
+        add("Map width (px): ", mapWidth = new TextBox(),
                 "Width of the visible map in pixels");
-        add("Map height: ", mapHeight = new TextBox(),
+        add("Map height (px): ", mapHeight = new TextBox(),
                 "Height of the visible map in pixels");
         add("Player speed: ", playerSpeed = new TextBox(),
                 "Speed of the player (man). Amount of pixels for each 'TICK' (each 50ms)");
@@ -53,6 +54,8 @@ public class SettingsPanel extends VerticalPanel {
                 "How much percentage of the map should be filled with bricks (entire map size in sprites)");
         add("Explosion hit percentage: ", explosionHitPercentage = new TextBox(),
                 "How much percentage of the players body must be inside the flame before he/she is killed. Set this to 101 and you ARE GOD");
+        add("Sleep time: ", sleepTime = new TextBox(),
+                "How long each 'TICK' lasts. The interval between each calculation in milliseconds");
         add(new Button("Restart", clickHandler));
         update();
     }
@@ -97,6 +100,7 @@ public class SettingsPanel extends VerticalPanel {
         settings.setBombPower(getInteger(bombPower, settings.getBombPower()));
         settings.setBrickAmountPercantage(getInteger(brickAmountPercentage, settings.getBrickAmountPercantage()));
         settings.setExplosionHitPercentage(getInteger(explosionHitPercentage, settings.getExplosionHitPercentage()));
+        settings.setSleepTime(getInteger(sleepTime, settings.getSleepTime()));
     }
 
     private Integer getInteger(TextBox textBox, int original) {
@@ -117,5 +121,6 @@ public class SettingsPanel extends VerticalPanel {
         bombPower.setText("" + settings.getBombPower());
         brickAmountPercentage.setText("" + settings.getBrickAmountPercantage());
         explosionHitPercentage.setText("" + settings.getExplosionHitPercentage());
+        sleepTime.setText("" + settings.getSleepTime());
     }
 }

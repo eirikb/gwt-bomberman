@@ -52,22 +52,12 @@ h1 {
     background-color: white;
 }
 
-.dialogTopCenter {
-    border-right-style: solid;
-    border-left-style: solid;
-    border-bottom-style: solid;
-    border-top-style: solid;
-    border-right-color: #7b6b6b;
-    border-left-color: #7b6b6b;
-    border-bottom-color: #7b6b6b;
-    border-top-color: #7b6b6b;
-    background-color: #594848;
+.gwt-DialogBox .Caption {
+    background: #E3E8F3 url(img/hborder.png) repeat-x scroll 0 -2003px;
+    border-bottom:1px solid #BBBBBB;
+    cursor:default;
+    padding:4px 4px 4px 8px;
     font-family: Geneva,Arial,Helvetica,sans-serif;
-    color: #f5e7e7;
-    border-right-width: 1px;
-    border-left-width: 1px;
-    border-bottom-width: 1px;
-    border-top-width: 1px;
 }
 
 .dialogMiddleCenter {
@@ -89,4 +79,10 @@ h1 {
     cursor:pointer;
     text-decoration:none;
     font-family: Geneva,Arial,Helvetica,sans-serif;
+}
+
+.gwt-PushButton{
+    font-family: Geneva,Arial,Helvetica,sans-serif;
+    color: #2e79f4;
+    text-decoration: underline;
 }
