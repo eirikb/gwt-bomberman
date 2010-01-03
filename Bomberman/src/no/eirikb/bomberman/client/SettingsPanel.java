@@ -44,7 +44,7 @@ public class SettingsPanel extends VerticalPanel {
         add("Map height (px): ", mapHeight = new TextBox(),
                 "Height of the visible map in pixels");
         add("Player speed: ", playerSpeed = new TextBox(),
-                "Speed of the player (man). Amount of pixels for each 'TICK' (each 50ms)");
+                "Speed of the player (man). Amount of pixels for each 'TICK' (one TICK ~ 50 ms). Can be decimal number, such as 0.5");
         add("Player bomb start amount: ", playerBombStartAmount = new TextBox(),
                 "Amount of bombs the player can have on the map at one time");
         add("BombTimer: ", bombTimer = new TextBox(),
