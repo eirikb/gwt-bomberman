@@ -9,6 +9,7 @@
 package no.eirikb.bomberman.client.game.builder;
 
 import no.eirikb.bomberman.client.game.poweup.BombAmountPowerup;
+import no.eirikb.bomberman.client.game.poweup.BombPowerPowerup;
 import no.eirikb.bomberman.client.game.poweup.Powerup;
 
 /**
@@ -17,12 +18,14 @@ import no.eirikb.bomberman.client.game.poweup.Powerup;
  */
 public class PowerupBuilder {
 
-    private static final int POWERUPAMOUNT = 1;
+    private static final int POWERUPAMOUNT = 2;
 
     public static Powerup createPowerup(int spriteX, int spriteY) {
         switch ((int) (Math.random() * POWERUPAMOUNT)) {
             case 0:
                 return new BombAmountPowerup(spriteX, spriteY);
+            case 1:
+                return new BombPowerPowerup(spriteX, spriteY);
         }
         return null;
     }
