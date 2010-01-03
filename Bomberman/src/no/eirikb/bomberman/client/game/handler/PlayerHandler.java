@@ -47,15 +47,15 @@ public class PlayerHandler extends Handler {
         for (Player player : game.getPlayers()) {
             if (player.getWay() != Way.NONE) {
                 Image man = player.getImage();
-                int left = gamePanel.getWidgetLeft(man) - LEFTDIFF;
-                int top = gamePanel.getWidgetTop(man) - TOPDIFF;
-                int spriteX = (left / imgSize);
-                int spriteY = (top / imgSize);
-                int modX = left % imgSize;
-                int modY = top % imgSize;
+                double left = player.getX() - LEFTDIFF;
+                double top = player.getY() - TOPDIFF;
+                int spriteX = (int) (left / imgSize);
+                int spriteY = (int) (top / imgSize);
+                int modX = (int) left % imgSize;
+                int modY = (int) top % imgSize;
 
-                int newLeft = left;
-                int newTop = top;
+                double newLeft = left;
+                double newTop = top;
                 switch (player.getWay()) {
                     case LEFT:
                     case RIGHT:
@@ -98,39 +98,39 @@ public class PlayerHandler extends Handler {
                 }
                 Sprite canWalk = null;
                 if (newLeft > left) {
-                    if (game.canWalk(newLeft + imgSize - 1, newTop) != null) {
-                        if ((canWalk = game.canWalk(left + imgSize, newTop)) == null) {
+                    if (game.canWalk((int) newLeft + imgSize - 1, (int) newTop) != null) {
+                        if ((canWalk = game.canWalk((int) left + imgSize, (int) newTop)) == null) {
                             newLeft = left + 1;
                         }
                     }
                 } else if (newTop > top) {
-                    if (game.canWalk(newLeft, newTop + imgSize - 1) != null) {
-                        if ((canWalk = game.canWalk(left, top + imgSize)) == null) {
+                    if (game.canWalk((int) newLeft, (int) newTop + imgSize - 1) != null) {
+                        if ((canWalk = game.canWalk((int) left, (int) top + imgSize)) == null) {
                             newTop = top + 1;
                         }
                     }
                 } else if (newLeft < left) {
-                    if (game.canWalk(newLeft, newTop) != null) {
-                        if ((canWalk = game.canWalk(left - 1, newTop)) == null) {
+                    if (game.canWalk((int) newLeft, (int) newTop) != null) {
+                        if ((canWalk = game.canWalk((int) left - 1, (int) newTop)) == null) {
                             newLeft = left - 1;
                         }
                     }
                 } else if (newTop < top) {
-                    if (game.canWalk(newLeft, newTop) != null) {
-                        if ((canWalk = game.canWalk(left, top - 1)) == null) {
+                    if (game.canWalk((int) newLeft, (int) newTop) != null) {
+                        if ((canWalk = game.canWalk((int) left, (int) top - 1)) == null) {
                             newTop = top - 1;
                         }
                     }
                 }
                 if (newLeft >= 0 && newTop >= 0 && newLeft < game.getWidth()
                         && newTop < game.getHeight() && canWalk == null) {
-                    spriteX = (newLeft / imgSize);
-                    spriteY = (newTop / imgSize);
-                    player.setX(newLeft);
-                    player.setY(newTop);
+                    spriteX = (int) (newLeft / imgSize);
+                    spriteY = (int) (newTop / imgSize);
+                    player.setX(newLeft + LEFTDIFF);
+                    player.setY(newTop + TOPDIFF);
                     player.setSpriteX(spriteX);
                     player.setSpriteY(spriteY);
-                    gamePanel.setWidgetPosition(man, newLeft + LEFTDIFF, newTop + TOPDIFF);
+                    gamePanel.setWidgetPosition(man, (int) newLeft + LEFTDIFF, (int) newTop + TOPDIFF);
                 } else if (canWalk != null) {
                     if (canWalk instanceof Powerup) {
                         Powerup powerup = (Powerup) canWalk;
@@ -138,14 +138,13 @@ public class PlayerHandler extends Handler {
                         game.removePowerup(powerup);
                     }
                 }
-
             }
         }
     }
 
     private void animate(Player player, char c) {
         int animation = player.animate();
-        if (animation >= 0) {
+        if (animation > 0) {
             player.getImage().setUrl("img/m" + c + animation + ".png");
         }
     }

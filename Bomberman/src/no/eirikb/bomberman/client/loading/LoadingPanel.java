@@ -71,15 +71,17 @@ public class LoadingPanel extends VerticalPanel {
     }
 
     private void loadImages() {
-        final String[] imageUrls = {"brick", "pu1", "boomcore4", "boomenddown3",
-            "boomsidevertical4", "ml2", "md1", "boomendleft1", "boomcore3", "mu2",
-            "boomsidevertical2", "boomsidehorizontal1", "boomenddown1", "boomsidehorizontal3",
-            "boomcore2", "mu1", "boombrick2", "boomsidehorizontal2", "bomb3", "boombrick1",
-            "md2", "bg", "boomendleft3", "boomendleft4", "mr2", "boomendright4", "boomendup2",
-            "boomenddown2", "bomb1", "boomendup3", "boomendleft2", "boomenddown4", "ml3",
-            "boomendright1", "boomendup4", "boomcore1", "box", "boomsidevertical3", "mr1",
-            "boomsidevertical1", "boomendright2", "boomsidehorizontal4", "ml1", "bomb2",
-            "md3", "mu3", "boomendright3", "boomendup1"};
+        final String[] imageUrls = {
+            "bg", "bomb1", "bomb2", "bomb3", "boombrick1", "boombrick2", "boomcore1",
+            "boomcore2", "boomcore3", "boomcore4", "boomenddown1", "boomenddown2",
+            "boomenddown3", "boomenddown4", "boomendleft1", "boomendleft2", "boomendleft3",
+            "boomendleft4", "boomendright1", "boomendright2", "boomendright3", "boomendright4",
+            "boomendup1", "boomendup2", "boomendup3", "boomendup4", "boomsidehorizontal1",
+            "boomsidehorizontal2", "boomsidehorizontal3", "boomsidehorizontal4", "boomsidevertical1",
+            "boomsidevertical2", "boomsidevertical3", "boomsidevertical4", "box", "brick",
+            "md1", "md2", "md3", "md4", "ml1", "ml2", "ml3", "ml4", "mr1", "mr2", "mr3", "mr4",
+            "mu1", "mu2", "mu3", "mu4", "pu1", "pu2", "pu3", "pu4"
+        };
 
         for (int i = 0; i < imageUrls.length; i++) {
             imageUrls[i] = "img/" + imageUrls[i] + ".png";

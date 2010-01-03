@@ -95,21 +95,21 @@ public class SettingsPanel extends VerticalPanel {
 
     public void upateSettings() {
         Settings settings = Settings.getInstance();
-        settings.setMapWidth(getInteger(mapWidth, settings.getMapWidth()));
-        settings.setMapHeight(getInteger(mapHeight, settings.getMapHeight()));
-        settings.setPlayerSpeed(getInteger(playerSpeed, settings.getPlayerSpeed()));
-        settings.setPlayerBombStartAmount(getInteger(playerBombStartAmount, settings.getPlayerBombStartAmount()));
-        settings.setBombTimer(getInteger(bombTimer, settings.getBombTimer()));
-        settings.setBombPower(getInteger(bombPower, settings.getBombPower()));
-        settings.setBrickAmountPercantage(getInteger(brickAmountPercentage, settings.getBrickAmountPercantage()));
-        settings.setExplosionHitPercentage(getInteger(explosionHitPercentage, settings.getExplosionHitPercentage()));
-        settings.setSleepTime(getInteger(sleepTime, settings.getSleepTime()));
-        settings.setPercentagePowerup(getInteger(percentagePowerup, settings.getPercentagePowerup()));
+        settings.setMapWidth(getDouble(mapWidth, settings.getMapWidth()).intValue());
+        settings.setMapHeight(getDouble(mapHeight, settings.getMapHeight()).intValue());
+        settings.setPlayerSpeed(getDouble(playerSpeed, settings.getPlayerSpeed()));
+        settings.setPlayerBombStartAmount(getDouble(playerBombStartAmount, settings.getPlayerBombStartAmount()).intValue());
+        settings.setBombTimer(getDouble(bombTimer, settings.getBombTimer()).intValue());
+        settings.setBombPower(getDouble(bombPower, settings.getBombPower()).intValue());
+        settings.setBrickAmountPercantage(getDouble(brickAmountPercentage, settings.getBrickAmountPercantage()).intValue());
+        settings.setExplosionHitPercentage(getDouble(explosionHitPercentage, settings.getExplosionHitPercentage()).intValue());
+        settings.setSleepTime(getDouble(sleepTime, settings.getSleepTime()).intValue());
+        settings.setPercentagePowerup(getDouble(percentagePowerup, settings.getPercentagePowerup()).intValue());
     }
 
-    private Integer getInteger(TextBox textBox, int original) {
+    private Double getDouble(TextBox textBox, double original) {
         try {
-            return Integer.parseInt(textBox.getText());
+            return Double.parseDouble(textBox.getText());
         } catch (NumberFormatException e) {
         }
         return original;

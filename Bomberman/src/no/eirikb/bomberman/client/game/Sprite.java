@@ -53,7 +53,7 @@ public class Sprite {
     }
 
     public int animate() {
-        return animation.animate();
+        return animation != null ? animation.animate() : 1;
     }
 
     public void setSpriteX(int x) {

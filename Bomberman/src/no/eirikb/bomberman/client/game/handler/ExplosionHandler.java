@@ -71,8 +71,8 @@ public class ExplosionHandler extends Handler {
                             for (Explosion explosion : coreExplosion.getExplosions()) {
                                 int ex = explosion.getSpriteX() * game.getImgSize();
                                 int ey = explosion.getSpriteY() * game.getImgSize();
-                                int px = player.getX();
-                                int py = player.getY();
+                                double px = player.getX();
+                                double py = player.getY();
                                 double w = Math.min(ex, px) + game.getImgSize() - Math.max(ex, px);
                                 double h = Math.min(ey, py) + game.getImgSize() - Math.max(ey, py);
                                 if (w >= 0 && h >= 0) {

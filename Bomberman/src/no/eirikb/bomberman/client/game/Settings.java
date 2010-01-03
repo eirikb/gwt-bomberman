@@ -16,7 +16,7 @@ public class Settings {
 
     private int mapWidth = 656;
     private int mapHeight = 496;
-    private int playerSpeed = 3;
+    private double playerSpeed = 3;
     private int playerBombStartAmount = 1;
     private int bombTimer = 50;
     private int bombPower = 1;
@@ -65,11 +65,11 @@ public class Settings {
         this.playerBombStartAmount = playerBombStartAmount;
     }
 
-    public int getPlayerSpeed() {
+    public double getPlayerSpeed() {
         return playerSpeed;
     }
 
-    public void setPlayerSpeed(int playerSpeed) {
+    public void setPlayerSpeed(double playerSpeed) {
         this.playerSpeed = playerSpeed;
     }
 
