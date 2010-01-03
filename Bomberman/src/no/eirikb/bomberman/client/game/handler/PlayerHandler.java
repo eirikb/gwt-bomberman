@@ -10,6 +10,7 @@ package no.eirikb.bomberman.client.game.handler;
 
 import com.google.gwt.user.client.ui.Image;
 import no.eirikb.bomberman.client.GamePanel;
+import no.eirikb.bomberman.client.game.Bomb;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.game.Sprite;
@@ -146,6 +147,21 @@ public class PlayerHandler extends Handler {
         int animation = player.animate();
         if (animation >= 0) {
             player.getImage().setUrl("img/m" + c + animation + ".png");
+        }
+    }
+
+    public void addSprite(Sprite sprite) {
+        if (sprite instanceof Bomb) {
+            Bomb bomb = (Bomb) sprite;
+            Player player = bomb.getOwner();
+            player.setBombAbount(player.getBombAbount() - 1);
+        }
+    }
+
+    public void removeSprite(Sprite sprite) {
+        if (sprite instanceof Bomb) {
+            Bomb bomb = (Bomb) sprite;
+            bomb.getOwner().setBombAbount(bomb.getOwner().getBombAbount() + 1);
         }
     }
 }

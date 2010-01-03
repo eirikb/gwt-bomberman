@@ -20,14 +20,13 @@ import no.eirikb.bomberman.client.game.Settings;
  *
  * @author Eirik Brandtæg <eirikdb@gmail.com>
  */
-public class GameHandler extends Handler {
+public class GameHandler {
 
     private List<Handler> handlers;
     private Timer timer;
     private KeyHackCallback keyHackCallback;
 
     public GameHandler(Game game, GamePanel gamePanel) {
-        super(game, gamePanel);
         gamePanel.drawSprites(game.getSprites());
         handlers = new ArrayList<Handler>();
         handlers.add(new BombHandler(game, gamePanel));
@@ -35,6 +34,10 @@ public class GameHandler extends Handler {
         handlers.add(new BoomBrickHandler(game, gamePanel));
         handlers.add(new PlayerHandler(game, gamePanel));
         handlers.add(new PowerupHandler(game, gamePanel));
+
+        for (Handler handler : handlers) {
+            game.addGameListener(handler);
+        }
 
         createTimer();
     }
@@ -60,11 +63,6 @@ public class GameHandler extends Handler {
 
     public void start() {
         timer.scheduleRepeating(Settings.getInstance().getSleepTime());
-    }
-
-    @Override
-    protected void handle() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void setKeyHackCallback(KeyHackCallback keyHackCallback) {

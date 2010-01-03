@@ -19,10 +19,12 @@ import java.util.List;
 public class CoreExplosion extends Explosion {
 
     private List<Explosion> explosions;
+    private int size;
     private List<int[]> hits; // {x, y}
 
-    public CoreExplosion(Image image, int spriteX, int spriteY, ExplosionType explosionType) {
+    public CoreExplosion(Image image, int spriteX, int spriteY, ExplosionType explosionType, int size) {
         super(image, spriteX, spriteY, explosionType);
+        this.size = size;
         explosions = new ArrayList<Explosion>();
         hits = new ArrayList<int[]>();
         setAnimation(new Animation(4, 4));
@@ -43,5 +45,9 @@ public class CoreExplosion extends Explosion {
 
     public List<int[]> getHits() {
         return hits;
+    }
+
+    public int getSize() {
+        return size;
     }
 }

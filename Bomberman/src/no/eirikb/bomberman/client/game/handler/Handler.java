@@ -10,12 +10,13 @@ package no.eirikb.bomberman.client.game.handler;
 
 import no.eirikb.bomberman.client.GamePanel;
 import no.eirikb.bomberman.client.game.Game;
+import no.eirikb.bomberman.client.game.GameListener;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public abstract class Handler {
+public abstract class Handler implements GameListener {
 
     protected Game game;
     protected GamePanel gamePanel;

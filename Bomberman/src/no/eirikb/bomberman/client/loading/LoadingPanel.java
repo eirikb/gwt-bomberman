@@ -21,8 +21,8 @@ import no.eirikb.bomberman.client.game.Settings;
 import no.eirikb.bomberman.client.game.Sprite;
 import no.eirikb.bomberman.client.image.ImageHandler;
 import no.eirikb.bomberman.client.image.ImageHandlerListener;
-import no.eirikb.bomberman.client.game.logic.BoxBuilder;
-import no.eirikb.bomberman.client.game.logic.BrickBuilder;
+import no.eirikb.bomberman.client.game.builder.BoxBuilder;
+import no.eirikb.bomberman.client.game.builder.BrickBuilder;
 
 /**
  *

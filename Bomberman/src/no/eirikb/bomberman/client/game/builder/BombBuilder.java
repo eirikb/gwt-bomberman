@@ -6,7 +6,7 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client.game.logic;
+package no.eirikb.bomberman.client.game.builder;
 
 import com.google.gwt.user.client.ui.Image;
 import no.eirikb.bomberman.client.game.Bomb;
@@ -43,7 +43,6 @@ public class BombBuilder {
                 if (bomb != null && bomb.getSpriteX() >= 0 && bomb.getSpriteY() >= 0
                         && bomb.getSpriteX() < sprites.length && bomb.getSpriteY() < sprites[0].length
                         && sprites[bomb.getSpriteX()][bomb.getSpriteY()] == null) {
-                    player.setBombAbount(player.getBombAbount() - 1);
                     return bomb;
                 }
             }

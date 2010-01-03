@@ -6,24 +6,21 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client.game.logic;
+package no.eirikb.bomberman.client.game.builder;
 
 import com.google.gwt.user.client.ui.Image;
-import no.eirikb.bomberman.client.game.Animation;
-import no.eirikb.bomberman.client.game.BoomBrick;
-import no.eirikb.bomberman.client.game.Sprite;
+import no.eirikb.bomberman.client.game.Player;
+import no.eirikb.bomberman.client.game.Settings;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public class BoomBrickBuilder {
+public class PlayerBuilder {
 
-    private static final String BOOMBRICKURL = "img/boombrick1.png";
+    private final static String PLAYERURL = "img/md1.png";
 
-    public static BoomBrick createBoomBrick(Sprite brick) {
-        BoomBrick boomBrick = new BoomBrick(new Image(BOOMBRICKURL), brick.getSpriteX(), brick.getSpriteY());
-        boomBrick.setAnimation(new Animation(2, 10));
-        return boomBrick;
+    public static Player createPlayer(Settings settings, String nick) {
+        return new Player(new Image(PLAYERURL), nick, settings.getPlayerSpeed(), settings.getBombPower(), settings.getPlayerBombStartAmount());
     }
 }

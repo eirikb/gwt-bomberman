@@ -24,9 +24,9 @@ import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.game.Settings;
 import no.eirikb.bomberman.client.game.Sprite;
 import no.eirikb.bomberman.client.game.Way;
-import no.eirikb.bomberman.client.game.logic.BombBuilder;
+import no.eirikb.bomberman.client.game.builder.BombBuilder;
 import no.eirikb.bomberman.client.loading.LoadingPanel;
-import no.eirikb.bomberman.client.game.logic.PlayerBuilder;
+import no.eirikb.bomberman.client.game.builder.PlayerBuilder;
 import no.eirikb.bomberman.client.loading.LoadListener;
 
 /**
@@ -92,10 +92,7 @@ public class Bomberman implements EntryPoint {
                         arrowKeyDown(event);
                     }
                 } else if (event.getNativeKeyCode() == 32) {
-                    Bomb bomb = BombBuilder.createBomb(game.getSprites(), player);
-                    if (bomb != null) {
-                        game.addBomb(bomb);
-                    }
+                    BombBuilder.createBomb(game.getSprites(), player);
                     if (keyHack != null) {
                         keyHack.setAnotherKeyPresses(true);
                     }
@@ -112,6 +109,11 @@ public class Bomberman implements EntryPoint {
                         keyHack.arrowKeyUp(event);
                     } else {
                         arrowKeyUp();
+                    }
+                } else {
+                    Bomb bomb = BombBuilder.createBomb(game.getSprites(), player);
+                    if (bomb != null) {
+                        game.addBomb(bomb);
                     }
                 }
             }

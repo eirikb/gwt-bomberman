@@ -6,15 +6,12 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client.game.logic;
+package no.eirikb.bomberman.client.game.builder;
 
 import no.eirikb.bomberman.client.game.Bomb;
 import no.eirikb.bomberman.client.game.CoreExplosion;
 import no.eirikb.bomberman.client.game.Explosion;
 import no.eirikb.bomberman.client.game.ExplosionType;
-import no.eirikb.bomberman.client.game.Game;
-import no.eirikb.bomberman.client.game.Player;
-import no.eirikb.bomberman.client.game.Settings;
 import no.eirikb.bomberman.client.game.Sprite;
 
 /**
@@ -23,39 +20,12 @@ import no.eirikb.bomberman.client.game.Sprite;
  */
 public class ExplosionBuilder {
 
-    public static CoreExplosion createExplosions(Game game, Bomb bomb) {
-        CoreExplosion coreExplosion = new CoreExplosion(Explosion.getImageURL(ExplosionType.CORE), bomb.getSpriteX(), bomb.getSpriteY(), ExplosionType.CORE);
-        branch(coreExplosion, game.getSprites(), bomb, 1, true);
-        branch(coreExplosion, game.getSprites(), bomb, -1, true);
-        branch(coreExplosion, game.getSprites(), bomb, 1, false);
-        branch(coreExplosion, game.getSprites(), bomb, -1, false);
-        for (Player player : game.getPlayers()) {
-            int pSpriteX = player.getSpriteX();
-            int pSpriteY = player.getSpriteY();
-            int cSpriteX = coreExplosion.getSpriteX();
-            int cSpriteY = coreExplosion.getSpriteY();
-            if (pSpriteX == cSpriteX && pSpriteY == cSpriteY) {
-                game.removePlayer(player);
-            } else {
-                if (Math.max(pSpriteX, cSpriteX) - Math.min(pSpriteX, cSpriteX) <= bomb.getPower()
-                        && Math.max(pSpriteY, cSpriteY) - Math.min(pSpriteY, cSpriteY) <= bomb.getPower()) {
-                    for (Explosion explosion : coreExplosion.getExplosions()) {
-                        int ex = explosion.getSpriteX() * game.getImgSize();
-                        int ey = explosion.getSpriteY() * game.getImgSize();
-                        int px = player.getX();
-                        int py = player.getY();
-                        double w = Math.min(ex, px) + game.getImgSize() - Math.max(ex, px);
-                        double h = Math.min(ey, py) + game.getImgSize() - Math.max(ey, py);
-                        if (w >= 0 && h >= 0) {
-                            double percentage = ((w * h) / (game.getImgSize() * game.getImgSize())) * 100;
-                            if (percentage >= Settings.getInstance().getExplosionHitPercentage()) {
-                                game.removePlayer(player);
-                            }
-                        }
-                    }
-                }
-            }
-        }
+    public static CoreExplosion createExplosions(Sprite[][] sprites, Bomb bomb) {
+        CoreExplosion coreExplosion = new CoreExplosion(Explosion.getImageURL(ExplosionType.CORE), bomb.getSpriteX(), bomb.getSpriteY(), ExplosionType.CORE, bomb.getPower());
+        branch(coreExplosion, sprites, bomb, 1, true);
+        branch(coreExplosion, sprites, bomb, -1, true);
+        branch(coreExplosion, sprites, bomb, 1, false);
+        branch(coreExplosion, sprites, bomb, -1, false);
         return coreExplosion;
     }
 

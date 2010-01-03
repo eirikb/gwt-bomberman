@@ -6,7 +6,7 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * =============================================================================
  */
-package no.eirikb.bomberman.client.game.logic;
+package no.eirikb.bomberman.client.game.builder;
 
 import com.google.gwt.user.client.ui.Image;
 import no.eirikb.bomberman.client.game.Box;
