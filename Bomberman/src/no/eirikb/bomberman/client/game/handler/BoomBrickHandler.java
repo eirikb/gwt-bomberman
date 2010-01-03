@@ -11,52 +11,22 @@ package no.eirikb.bomberman.client.game.handler;
 import java.util.ArrayList;
 import java.util.List;
 import no.eirikb.bomberman.client.GamePanel;
-import no.eirikb.bomberman.client.game.Bomb;
 import no.eirikb.bomberman.client.game.BoomBrick;
-import no.eirikb.bomberman.client.game.Explosion;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.GameListener;
-import no.eirikb.bomberman.client.game.Player;
-import no.eirikb.bomberman.client.game.poweup.Powerup;
+import no.eirikb.bomberman.client.game.Sprite;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public class BoomBrickHandler extends Handler {
+public class BoomBrickHandler extends Handler implements GameListener {
 
     private final String BOOMBRICKURL = "img/boombrick";
 
     public BoomBrickHandler(Game game, GamePanel gamePanel) {
         super(game, gamePanel);
-        final BoomBrickHandler boomBrickHandler = this;
-        game.addGameListener(new GameListener() {
-
-            public void addPlayer(Player player) {
-            }
-
-            public void addBomb(Bomb bomb) {
-            }
-
-            public void addExplosion(Explosion explosion) {
-            }
-
-            public void addBoomBrick(BoomBrick boomBrick) {
-                boomBrickHandler.addBoomBrick(boomBrick);
-            }
-
-            public void removePlayer(Player player) {
-            }
-
-            public void removeBomb(Bomb bomb) {
-            }
-
-            public void addPowerup(Powerup powerup) {
-            }
-
-            public void removePowerup(Powerup powerup) {
-            }
-        });
+        game.addGameListener(this);
     }
 
     public void addBoomBrick(BoomBrick boomBrick) {
@@ -80,5 +50,14 @@ public class BoomBrickHandler extends Handler {
         for (BoomBrick boomBrick : toRemove) {
             game.removeBoomBrick(boomBrick);
         }
+    }
+
+    public void addSprite(Sprite sprite) {
+        if (sprite instanceof BoomBrick) {
+            addBoomBrick((BoomBrick) sprite);
+        }
+    }
+
+    public void removeSprite(Sprite sprite) {
     }
 }

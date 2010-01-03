@@ -48,68 +48,76 @@ public class Game {
         return sprites;
     }
 
+    private void addSpriteInvisible(Sprite sprite) {
+        for (GameListener gameListener : gameListeners) {
+            gameListener.addSprite(sprite);
+        }
+    }
+
+    private void addSprite(Sprite sprite) {
+        sprites[sprite.getSpriteX()][sprite.getSpriteY()] = sprite;
+        addSpriteInvisible(sprite);
+    }
+
+    private void removeSpriteInvisible(Sprite sprite) {
+        for (GameListener gameListener : gameListeners) {
+            gameListener.removeSprite(sprite);
+        }
+    }
+
+    private void removeSprite(Sprite sprite) {
+        sprites[sprite.getSpriteX()][sprite.getSpriteY()] = null;
+        removeSpriteInvisible(sprite);
+    }
+
     public void addPlayer(Player player) {
         players.put(player.getNick(), player);
-        for (GameListener gameListener : gameListeners) {
-            gameListener.addPlayer(player);
-        }
+        addSpriteInvisible(player);
     }
 
     public void removePlayer(Player player) {
         players.remove(player.getNick());
-        for (GameListener gameListener : gameListeners) {
-            gameListener.removePlayer(player);
-        }
+        removeSpriteInvisible(player);
     }
 
     public void addBomb(Bomb bomb) {
         bombs.add(bomb);
-        sprites[bomb.getSpriteX()][bomb.getSpriteY()] = bomb;
-        for (GameListener gameListener : gameListeners) {
-            gameListener.addBomb(bomb);
-        }
+        addSprite(bomb);
     }
 
     public void removeBomb(Bomb bomb) {
         bombs.remove(bomb);
-        sprites[bomb.getSpriteX()][bomb.getSpriteY()] = null;
-        for (GameListener gameListener : gameListeners) {
-            gameListener.removeBomb(bomb);
-        }
+        removeSprite(bomb);
     }
 
     public void addExplosion(Explosion explosion) {
         explosions.add(explosion);
-        sprites[explosion.getSpriteX()][explosion.getSpriteY()] = explosion;
-        for (GameListener gameListener : gameListeners) {
-            gameListener.addExplosion(explosion);
-        }
+        addSprite(explosion);
     }
 
     public void removeExplosion(Explosion explosion) {
         explosions.remove(explosion);
-        sprites[explosion.getSpriteX()][explosion.getSpriteY()] = null;
-    }
-
-    public void addPowerup(Powerup powerup) {
-        powerups.add(powerup);
-        sprites[powerup.getSpriteX()][powerup.getSpriteY()] = powerup;
-        for (GameListener gameListener : gameListeners) {
-            gameListener.addPowerup(powerup);
-        }
+        removeSprite(explosion);
     }
 
     public void addBoomBrick(BoomBrick boomBrick) {
         boomBricks.add(boomBrick);
-        sprites[boomBrick.getSpriteX()][boomBrick.getSpriteY()] = boomBrick;
-        for (GameListener gameListener : gameListeners) {
-            gameListener.addBoomBrick(boomBrick);
-        }
+        addSprite(boomBrick);
     }
 
     public void removeBoomBrick(BoomBrick boomBrick) {
         boomBricks.remove(boomBrick);
-        sprites[boomBrick.getSpriteX()][boomBrick.getSpriteY()] = null;
+        removeSprite(boomBrick);
+    }
+
+    public void addPowerup(Powerup powerup) {
+        powerups.add(powerup);
+        addSprite(powerup);
+    }
+
+    public void removePowerup(Powerup powerup) {
+        powerups.remove(powerup);
+        removeSprite(powerup);
     }
 
     public Iterable<Player> getPlayers() {

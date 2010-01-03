@@ -11,50 +11,20 @@ package no.eirikb.bomberman.client.game.handler;
 import java.util.ArrayList;
 import java.util.List;
 import no.eirikb.bomberman.client.GamePanel;
-import no.eirikb.bomberman.client.game.Bomb;
-import no.eirikb.bomberman.client.game.BoomBrick;
 import no.eirikb.bomberman.client.game.Explosion;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.GameListener;
-import no.eirikb.bomberman.client.game.Player;
-import no.eirikb.bomberman.client.game.poweup.Powerup;
+import no.eirikb.bomberman.client.game.Sprite;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public class ExplosionHandler extends Handler {
+public class ExplosionHandler extends Handler implements GameListener {
 
     public ExplosionHandler(Game game, GamePanel gamePanel) {
         super(game, gamePanel);
-        final ExplosionHandler explosionHandler = this;
-        game.addGameListener(new GameListener() {
-
-            public void addPlayer(Player player) {
-            }
-
-            public void addBomb(Bomb bomb) {
-            }
-
-            public void addExplosion(Explosion explosion) {
-                explosionHandler.addExplosion(explosion);
-            }
-
-            public void addBoomBrick(BoomBrick boomBrick) {
-            }
-
-            public void removePlayer(Player player) {
-            }
-
-            public void removeBomb(Bomb bomb) {
-            }
-
-            public void addPowerup(Powerup powerup) {
-            }
-
-            public void removePowerup(Powerup powerup) {
-            }
-        });
+        game.addGameListener(this);
     }
 
     private void addExplosion(Explosion explosion) {
@@ -78,5 +48,14 @@ public class ExplosionHandler extends Handler {
         for (Explosion explosion : toRemove) {
             game.removeExplosion(explosion);
         }
+    }
+
+    public void addSprite(Sprite sprite) {
+        if (sprite instanceof Explosion) {
+            addExplosion((Explosion) sprite);
+        }
+    }
+
+    public void removeSprite(Sprite sprite) {
     }
 }

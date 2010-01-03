@@ -180,54 +180,40 @@ public class Bomberman implements EntryPoint {
     private void killCheck() {
         game.addGameListener(new GameListener() {
 
-            public void addPlayer(Player player) {
+            public void addSprite(Sprite sprite) {
             }
 
-            public void removePlayer(final Player player) {
-                gamePanel.remove(player.getImage());
-                final DialogBox dialogBox = new DialogBox();
-                dialogBox.setText("Oh noes!");
-                VerticalPanel v = new VerticalPanel();
-                v.add(new Image("img/ohnoes.jpg"));
-                v.add(new Label("Congratulations! You just died"));
-                Button resurectButton = new Button("Resurect!", new ClickHandler() {
+            public void removeSprite(Sprite sprite) {
+                if (sprite instanceof Player) {
+                    if ((Player) sprite == player) {
+                        gamePanel.remove(player.getImage());
+                        final DialogBox dialogBox = new DialogBox();
+                        dialogBox.setText("Oh noes!");
+                        VerticalPanel v = new VerticalPanel();
+                        v.add(new Image("img/ohnoes.jpg"));
+                        v.add(new Label("Congratulations! You just died"));
+                        Button resurectButton = new Button("Resurect!", new ClickHandler() {
 
-                    public void onClick(ClickEvent event) {
-                        player.setSpriteX(0);
-                        player.setSpriteY(0);
-                        gamePanel.add(player.getImage(), 0, 0);
-                        game.addPlayer(player);
-                        dialogBox.setVisible(false);
-                        dialogBox.hide();
-                        textBox.setFocus(true);
+                            public void onClick(ClickEvent event) {
+                                player.setSpriteX(0);
+                                player.setSpriteY(0);
+                                gamePanel.add(player.getImage(), 0, 0);
+                                game.addPlayer(player);
+                                dialogBox.setVisible(false);
+                                dialogBox.hide();
+                                textBox.setFocus(true);
+                            }
+                        });
+                        v.add(resurectButton);
+                        dialogBox.setWidget(v);
+                        dialogBox.setAnimationEnabled(true);
+                        dialogBox.setPopupPosition(gamePanel.getAbsoluteLeft()
+                                + (Settings.getInstance().getMapWidth() / 4),
+                                gamePanel.getAbsoluteTop() + (Settings.getInstance().getMapHeight() / 4));
+                        dialogBox.show();
+                        resurectButton.setFocus(true);
                     }
-                });
-                v.add(resurectButton);
-                dialogBox.setWidget(v);
-                dialogBox.setAnimationEnabled(true);
-                dialogBox.setPopupPosition(gamePanel.getAbsoluteLeft()
-                        + (Settings.getInstance().getMapWidth() / 4),
-                        gamePanel.getAbsoluteTop() + (Settings.getInstance().getMapHeight() / 4));
-                dialogBox.show();
-                resurectButton.setFocus(true);
-            }
-
-            public void addBomb(Bomb bomb) {
-            }
-
-            public void removeBomb(Bomb bomb) {
-            }
-
-            public void addExplosion(Explosion explosion) {
-            }
-
-            public void addBoomBrick(BoomBrick boomBrick) {
-            }
-
-            public void addPowerup(Powerup powerup) {
-            }
-
-            public void removePowerup(Powerup powerup) {
+                }
             }
         });
     }

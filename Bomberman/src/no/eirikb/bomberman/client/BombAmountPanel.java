@@ -12,11 +12,9 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import no.eirikb.bomberman.client.game.Bomb;
-import no.eirikb.bomberman.client.game.BoomBrick;
-import no.eirikb.bomberman.client.game.Explosion;
 import no.eirikb.bomberman.client.game.GameListener;
 import no.eirikb.bomberman.client.game.Player;
-import no.eirikb.bomberman.client.game.poweup.Powerup;
+import no.eirikb.bomberman.client.game.Sprite;
 
 /**
  *
@@ -35,12 +33,6 @@ public class BombAmountPanel extends HorizontalPanel implements GameListener {
         }
     }
 
-    public void addPlayer(Player player) {
-    }
-
-    public void removePlayer(Player player) {
-    }
-
     public void addBomb(Bomb bomb) {
         if (bomb.getOwner() == player) {
             remove(1);
@@ -53,15 +45,15 @@ public class BombAmountPanel extends HorizontalPanel implements GameListener {
         }
     }
 
-    public void addExplosion(Explosion explosion) {
+    public void addSprite(Sprite sprite) {
+        if (sprite instanceof Bomb) {
+            addBomb((Bomb) sprite);
+        }
     }
 
-    public void addBoomBrick(BoomBrick boomBrick) {
-    }
-
-    public void addPowerup(Powerup powerup) {
-    }
-
-    public void removePowerup(Powerup powerup) {
+    public void removeSprite(Sprite sprite) {
+        if (sprite instanceof Bomb) {
+            removeBomb((Bomb) sprite);
+        }
     }
 }

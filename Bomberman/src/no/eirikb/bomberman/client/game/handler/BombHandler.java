@@ -18,50 +18,21 @@ import no.eirikb.bomberman.client.game.CoreExplosion;
 import no.eirikb.bomberman.client.game.Explosion;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.GameListener;
-import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.game.Sprite;
 import no.eirikb.bomberman.client.game.logic.BoomBrickBuilder;
 import no.eirikb.bomberman.client.game.logic.ExplosionBuilder;
-import no.eirikb.bomberman.client.game.poweup.Powerup;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public class BombHandler extends Handler {
+public class BombHandler extends Handler implements GameListener {
 
     private final String BOMBURLPART = "img/bomb";
 
     public BombHandler(Game game, GamePanel gamePanel) {
         super(game, gamePanel);
-        final BombHandler bombHandler = this;
-        game.addGameListener(new GameListener() {
-
-            public void addPlayer(Player player) {
-            }
-
-            public void addBomb(Bomb bomb) {
-                bombHandler.addBomb(bomb);
-            }
-
-            public void addExplosion(Explosion explosion) {
-            }
-
-            public void addBoomBrick(BoomBrick boomBrick) {
-            }
-
-            public void removePlayer(Player player) {
-            }
-
-            public void removeBomb(Bomb bomb) {
-            }
-
-            public void addPowerup(Powerup powerup) {
-            }
-
-            public void removePowerup(Powerup powerup) {
-            }
-        });
+        game.addGameListener(this);
     }
 
     public void addBomb(Bomb bomb) {
@@ -108,5 +79,14 @@ public class BombHandler extends Handler {
                 bomb.forceExplode();
             }
         }
+    }
+
+    public void addSprite(Sprite sprite) {
+        if (sprite instanceof Bomb) {
+            addBomb((Bomb) sprite);
+        }
+    }
+
+    public void removeSprite(Sprite sprite) {
     }
 }

@@ -8,27 +8,13 @@
  */
 package no.eirikb.bomberman.client.game;
 
-import no.eirikb.bomberman.client.game.poweup.Powerup;
-
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
 public interface GameListener {
 
-    public void addPlayer(Player player);
+    public void addSprite(Sprite sprite);
 
-    public void removePlayer(Player player);
-
-    public void addBomb(Bomb bomb);
-
-    public void removeBomb(Bomb bomb);
-
-    public void addExplosion(Explosion explosion);
-
-    public void addBoomBrick(BoomBrick boomBrick);
-
-    public void addPowerup(Powerup powerup);
-
-    public void removePowerup(Powerup powerup);
+    public void removeSprite(Sprite sprite);
 }
