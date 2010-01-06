@@ -8,6 +8,7 @@
  */
 package no.eirikb.bomberman.client.game.handler;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Image;
 import no.eirikb.bomberman.client.GamePanel;
 import no.eirikb.bomberman.client.game.Bomb;
@@ -15,7 +16,7 @@ import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.game.Sprite;
 import no.eirikb.bomberman.client.game.Way;
-import no.eirikb.bomberman.client.game.poweup.Powerup;
+import no.eirikb.bomberman.client.game.handler.helper.WalkHandler;
 
 /**
  *
@@ -24,119 +25,42 @@ import no.eirikb.bomberman.client.game.poweup.Powerup;
 public class PlayerHandler extends Handler {
 
     private int imgSize;
-    private final int LEFTDIFF = 0;
-    private final int TOPDIFF = -4;
+    private final int XDIFF = 0;
+    private final int YDIFF = -4;
+    private WalkHandler walkHandler;
 
     public PlayerHandler(Game game, GamePanel gamePanel) {
         super(game, gamePanel);
         imgSize = game.getImgSize();
-        drawPlayers();
-    }
-
-    public void drawPlayers() {
+        walkHandler = new WalkHandler();
         for (Player player : game.getPlayers()) {
-            gamePanel.drawPlayer(player);
+            drawPlayer(player);
         }
     }
 
-    public void addPlayer(Player player) {
-        gamePanel.drawPlayer(player);
+    private void drawPlayer(Player player) {
+        gamePanel.add(player.getImage(), (int) (player.getX() + XDIFF), (int) (player.getY() + YDIFF));
     }
 
     public void handle() {
         for (Player player : game.getPlayers()) {
             if (player.getWay() != Way.NONE) {
-                Image man = player.getImage();
-                double left = player.getX() - LEFTDIFF;
-                double top = player.getY() - TOPDIFF;
-                int spriteX = (int) (left / imgSize);
-                int spriteY = (int) (top / imgSize);
-                int modX = (int) left % imgSize;
-                int modY = (int) top % imgSize;
-
-                double newLeft = left;
-                double newTop = top;
+                if (walkHandler.walk(game, player)) {
+                    gamePanel.setWidgetPosition(player.getImage(), (int) player.getX() + XDIFF, (int) player.getY() + YDIFF);
+                }
                 switch (player.getWay()) {
                     case LEFT:
-                    case RIGHT:
-                        animate(player, player.getWay() == Way.LEFT ? 'l' : 'r');
-                        if (spriteY % 2 == 0) {
-                            if (modY == 0) {
-                                newLeft += player.getWay() == Way.LEFT ? -player.getSpeed() : player.getSpeed();
-                            } else if (modY - player.getSpeed() < 0) {
-                                newTop -= 1;
-                            } else {
-                                newTop -= player.getSpeed();
-                            }
-                        } else {
-                            if (modY + player.getSpeed() > imgSize) {
-                                newTop += 1;
-                            } else {
-                                newTop += player.getSpeed();
-                            }
-                        }
+                        animate(player, 'l');
                         break;
                     case UP:
-                    case DOWN:
-                        animate(player, player.getWay() == Way.UP ? 'u' : 'd');
-                        if (spriteX % 2 == 0) {
-                            if (modX == 0) {
-                                newTop += player.getWay() == Way.UP ? -player.getSpeed() : player.getSpeed();
-                            } else if (modX - player.getSpeed() < 0) {
-                                newLeft -= 1;
-                            } else {
-                                newLeft -= player.getSpeed();
-                            }
-                        } else {
-                            if (modX + player.getSpeed() > imgSize) {
-                                newLeft += 1;
-                            } else {
-                                newLeft += player.getSpeed();
-                            }
-                        }
+                        animate(player, 'u');
                         break;
-                }
-                Sprite canWalk = null;
-                if (newLeft > left) {
-                    if (game.canWalk((int) newLeft + imgSize - 1, (int) newTop) != null) {
-                        if ((canWalk = game.canWalk((int) left + imgSize, (int) newTop)) == null) {
-                            newLeft = left + 1;
-                        }
-                    }
-                } else if (newTop > top) {
-                    if (game.canWalk((int) newLeft, (int) newTop + imgSize - 1) != null) {
-                        if ((canWalk = game.canWalk((int) left, (int) top + imgSize)) == null) {
-                            newTop = top + 1;
-                        }
-                    }
-                } else if (newLeft < left) {
-                    if (game.canWalk((int) newLeft, (int) newTop) != null) {
-                        if ((canWalk = game.canWalk((int) left - 1, (int) newTop)) == null) {
-                            newLeft = left - 1;
-                        }
-                    }
-                } else if (newTop < top) {
-                    if (game.canWalk((int) newLeft, (int) newTop) != null) {
-                        if ((canWalk = game.canWalk((int) left, (int) top - 1)) == null) {
-                            newTop = top - 1;
-                        }
-                    }
-                }
-                if (newLeft >= 0 && newTop >= 0 && newLeft < game.getWidth()
-                        && newTop < game.getHeight() && canWalk == null) {
-                    spriteX = (int) (newLeft / imgSize);
-                    spriteY = (int) (newTop / imgSize);
-                    player.setX(newLeft + LEFTDIFF);
-                    player.setY(newTop + TOPDIFF);
-                    player.setSpriteX(spriteX);
-                    player.setSpriteY(spriteY);
-                    gamePanel.setWidgetPosition(man, (int) newLeft + LEFTDIFF, (int) newTop + TOPDIFF);
-                } else if (canWalk != null) {
-                    if (canWalk instanceof Powerup) {
-                        Powerup powerup = (Powerup) canWalk;
-                        powerup.powerUp(player);
-                        game.removePowerup(powerup);
-                    }
+                    case RIGHT:
+                        animate(player, 'r');
+                        break;
+                    case DOWN:
+                        animate(player, 'd');
+                        break;
                 }
             }
         }

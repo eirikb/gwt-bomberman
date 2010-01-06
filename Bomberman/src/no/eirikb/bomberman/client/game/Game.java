@@ -154,15 +154,6 @@ public class Game {
         return width;
     }
 
-    public Sprite canWalk(int newLeft, int newTop) {
-        int x = newLeft / imgSize;
-        int y = newTop / imgSize;
-        if (x >= 0 && x < sprites.length && y >= 0 && y < sprites[0].length) {
-            return sprites[newLeft / imgSize][newTop / imgSize];
-        }
-        return new Sprite(null);
-    }
-
     public void addGameListener(GameListener gameListener) {
         gameListeners.add(gameListener);
     }

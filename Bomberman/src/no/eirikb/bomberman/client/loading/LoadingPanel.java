@@ -19,9 +19,9 @@ import com.reveregroup.gwt.imagepreloader.ImagePreloader;
 import no.eirikb.bomberman.client.ProgressBar;
 import no.eirikb.bomberman.client.game.Settings;
 import no.eirikb.bomberman.client.game.Sprite;
+import no.eirikb.bomberman.client.game.builder.BoxBuilder;
 import no.eirikb.bomberman.client.image.ImageHandler;
 import no.eirikb.bomberman.client.image.ImageHandlerListener;
-import no.eirikb.bomberman.client.game.builder.BoxBuilder;
 import no.eirikb.bomberman.client.game.builder.BrickBuilder;
 
 /**
@@ -109,7 +109,9 @@ public class LoadingPanel extends VerticalPanel {
     }
 
     private void buildBoxes() {
-        sprites = new Sprite[settings.getMapWidth() / imgSize][settings.getMapHeight() / imgSize];
+        settings.setMapWidth((int) (settings.getMapWidth() / imgSize) * imgSize);
+        settings.setMapHeight((int) (settings.getMapHeight() / imgSize) * imgSize);
+        sprites = new Sprite[(settings.getMapWidth() / imgSize) + 1][(settings.getMapHeight() / imgSize) + 1];
         loadingLabel.setText("Info: Building boxes...");
         sprites = BoxBuilder.createBoxes(sprites);
         updateTotalLoading(90);

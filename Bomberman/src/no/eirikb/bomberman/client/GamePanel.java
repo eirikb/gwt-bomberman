@@ -9,7 +9,6 @@
 package no.eirikb.bomberman.client;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.game.Sprite;
 
 /**
@@ -34,9 +33,5 @@ public class GamePanel extends AbsolutePanel {
                 }
             }
         }
-    }
-
-    public void drawPlayer(Player player) {
-        add(player.getImage(), player.getSpriteX() * imgSize, player.getSpriteY() * imgSize);
     }
 }

@@ -92,7 +92,10 @@ public class Bomberman implements EntryPoint {
                         arrowKeyDown(event);
                     }
                 } else if (event.getNativeKeyCode() == 32) {
-                    BombBuilder.createBomb(game.getSprites(), player);
+                    Bomb bomb = BombBuilder.createBomb(game.getSprites(), player);
+                    if (bomb != null) {
+                        game.addBomb(bomb);
+                    }
                     if (keyHack != null) {
                         keyHack.setAnotherKeyPresses(true);
                     }
@@ -109,11 +112,6 @@ public class Bomberman implements EntryPoint {
                         keyHack.arrowKeyUp(event);
                     } else {
                         arrowKeyUp();
-                    }
-                } else {
-                    Bomb bomb = BombBuilder.createBomb(game.getSprites(), player);
-                    if (bomb != null) {
-                        game.addBomb(bomb);
                     }
                 }
             }
