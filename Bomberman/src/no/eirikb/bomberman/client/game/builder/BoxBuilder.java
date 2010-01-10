@@ -8,8 +8,6 @@
  */
 package no.eirikb.bomberman.client.game.builder;
 
-import com.google.gwt.user.client.ui.Image;
-import no.eirikb.bomberman.client.game.Box;
 import no.eirikb.bomberman.client.game.Sprite;
 
 /**
@@ -24,7 +22,7 @@ public class BoxBuilder {
         for (int spriteX = 0; spriteX < sprites.length; spriteX++) {
             for (int spriteY = 0; spriteY < sprites[0].length; spriteY++) {
                 if (spriteX % 2 != 0 && spriteY % 2 != 0) {
-                    Box box = new Box(new Image(BOXURL), spriteX, spriteY);
+                    Sprite box = new Sprite(spriteX, spriteY);
                     sprites[box.getSpriteX()][box.getSpriteY()] = box;
                 }
             }

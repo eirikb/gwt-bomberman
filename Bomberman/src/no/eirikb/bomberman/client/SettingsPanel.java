@@ -9,6 +9,7 @@
 package no.eirikb.bomberman.client;
 
 import com.google.gwt.dom.client.Style.FontWeight;
+import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -37,6 +38,8 @@ public class SettingsPanel extends VerticalPanel {
     private TextBox explosionHitPercentage;
     private TextBox sleepTime;
     private TextBox percentagePowerup;
+    private TextBox imageSize;
+    private TextBox maxPlayers;
 
     public SettingsPanel(ClickHandler clickHandler) {
         add("Map width (px): ", mapWidth = new TextBox(),
@@ -59,7 +62,13 @@ public class SettingsPanel extends VerticalPanel {
                 "How long each 'TICK' lasts. The interval between each calculation in milliseconds");
         add("Percentage powerup: ", percentagePowerup = new TextBox(),
                 "Amount of chance that when the brick perishes there will be a powerup");
-        add(new Button("Restart", clickHandler));
+        add("Image size: ", imageSize = new TextBox(),
+                "Size of sprites in pixels (they are rectangular)");
+        add("Maximum amount of players", maxPlayers = new TextBox(),
+                "Total amount of players in the game at the same time, when max players have joined the game will start");
+        if (clickHandler != null) {
+            add(new Button("Restart", clickHandler));
+        }
         update();
     }
 
@@ -105,6 +114,8 @@ public class SettingsPanel extends VerticalPanel {
         settings.setExplosionHitPercentage(getDouble(explosionHitPercentage, settings.getExplosionHitPercentage()).intValue());
         settings.setSleepTime(getDouble(sleepTime, settings.getSleepTime()).intValue());
         settings.setPercentagePowerup(getDouble(percentagePowerup, settings.getPercentagePowerup()).intValue());
+        settings.setImgSize(getDouble(imageSize, settings.getImgSize()).intValue());
+        settings.setMaxPlayers(getDouble(maxPlayers, settings.getMaxPlayers()).intValue());
     }
 
     private Double getDouble(TextBox textBox, double original) {

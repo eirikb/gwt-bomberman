@@ -6,26 +6,35 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client.service;
+package no.eirikb.bomberman.client.event;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import java.util.Map;
+import de.novanic.eventservice.client.event.Event;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.Player;
-import no.eirikb.bomberman.client.game.Settings;
-import no.eirikb.bomberman.client.game.Sprite;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public interface BombermanServiceAsync {
+public class GameEvent implements Event {
 
-    void join(String nick, AsyncCallback<Player> callback);
+    public static final String GAME_DOMAIN = "domain_game";
+    private Game game;
+    private Player player;
 
-    void createGame(String name, Sprite[][] sprites, Settings settings, AsyncCallback<Game> callback);
+    public GameEvent(Game game, Player player) {
+        this.game = game;
+        this.player = player;
+    }
 
-    void joinGame(String gameName, AsyncCallback<Game> callback);
+    public GameEvent() {
+    }
 
-    void getGames(AsyncCallback<Map<String, Game>> callback);
+    public Game getGame() {
+        return game;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
 }

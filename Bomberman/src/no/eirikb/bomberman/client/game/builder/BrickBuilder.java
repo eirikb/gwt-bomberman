@@ -8,8 +8,6 @@
  */
 package no.eirikb.bomberman.client.game.builder;
 
-import com.google.gwt.user.client.ui.Image;
-import no.eirikb.bomberman.client.game.Brick;
 import no.eirikb.bomberman.client.game.Settings;
 import no.eirikb.bomberman.client.game.Sprite;
 
@@ -28,7 +26,7 @@ public class BrickBuilder {
             final int spriteY = (int) (Math.random() * sprites[0].length);
             if (sprites[spriteX][spriteY] == null) {
 
-                final Brick brick = new Brick(new Image(BRICKURL), spriteX, spriteY);
+                final Sprite brick = new Sprite(spriteX, spriteY);
                 sprites[spriteX][spriteY] = brick;
             }
         }

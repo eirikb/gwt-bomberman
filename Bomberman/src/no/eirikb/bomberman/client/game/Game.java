@@ -8,6 +8,7 @@
  */
 package no.eirikb.bomberman.client.game;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,27 +19,25 @@ import no.eirikb.bomberman.client.game.poweup.Powerup;
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public class Game {
+public class Game implements Serializable {
 
+    private String name;
     private Sprite[][] sprites;
     private Map<String, Player> players;
     private List<Bomb> bombs;
     private List<Explosion> explosions;
     private List<BoomBrick> boomBricks;
     private List<Powerup> powerups;
-    private int width;
-    private int height;
-    private int imgSize;
     private List<GameListener> gameListeners;
+    private Settings settings;
 
     public Game() {
     }
 
-    public Game(Sprite[][] sprites, int width, int height, int imgSize) {
+    public Game(String name, Sprite[][] sprites, Settings settings) {
+        this.name = name;
         this.sprites = sprites;
-        this.width = width;
-        this.height = height;
-        this.imgSize = imgSize;
+        this.settings = settings;
         players = new HashMap<String, Player>();
         bombs = new ArrayList<Bomb>();
         explosions = new ArrayList<Explosion>();
@@ -146,15 +145,19 @@ public class Game {
     }
 
     public int getHeight() {
-        return height;
+        return settings.getMapHeight();
     }
 
     public int getImgSize() {
-        return imgSize;
+        return settings.getImgSize();
     }
 
     public int getWidth() {
-        return width;
+        return settings.getMapWidth();
+    }
+
+    public Settings getSettings() {
+        return settings;
     }
 
     public void addGameListener(GameListener gameListener) {
@@ -163,5 +166,13 @@ public class Game {
 
     public void removeGameListener(GameListener gameListener) {
         gameListeners.remove(gameListener);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPlayersSize() {
+        return players.size();
     }
 }

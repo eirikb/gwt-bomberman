@@ -8,11 +8,13 @@
  */
 package no.eirikb.bomberman.client.game;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public class Settings {
+public class Settings implements Serializable {
 
     private int mapWidth = 656;
     private int mapHeight = 496;
@@ -24,6 +26,8 @@ public class Settings {
     private int explosionHitPercentage = 50;
     private int sleepTime = 50;
     private int percentagePowerup = 40;
+    private int imgSize = 16;
+    private int maxPlayers = 2;
     private static final Settings INSTANCE = new Settings();
 
     private Settings() {
@@ -31,6 +35,14 @@ public class Settings {
 
     public static Settings getInstance() {
         return INSTANCE;
+    }
+
+    public int getImgSize() {
+        return imgSize;
+    }
+
+    public void setImgSize(int imgSize) {
+        this.imgSize = imgSize;
     }
 
     public int getBombTimer() {
@@ -111,6 +123,14 @@ public class Settings {
 
     public void setPercentagePowerup(int percentagePowerup) {
         this.percentagePowerup = percentagePowerup;
+    }
+
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
+
+    public void setMaxPlayers(int maxPlayers) {
+        this.maxPlayers = maxPlayers;
     }
 }
 

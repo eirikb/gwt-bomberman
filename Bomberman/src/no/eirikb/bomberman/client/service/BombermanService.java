@@ -10,7 +10,11 @@ package no.eirikb.bomberman.client.service;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import java.util.Map;
+import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.Player;
+import no.eirikb.bomberman.client.game.Settings;
+import no.eirikb.bomberman.client.game.Sprite;
 
 /**
  *
@@ -20,4 +24,10 @@ import no.eirikb.bomberman.client.game.Player;
 public interface BombermanService extends RemoteService {
 
     Player join(String nick);
+
+    Game createGame(String name, Sprite[][] sprites, Settings settings);
+
+    Game joinGame(String gameName);
+
+    Map<String, Game> getGames();
 }

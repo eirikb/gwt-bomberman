@@ -8,8 +8,6 @@
  */
 package no.eirikb.bomberman.client.game;
 
-import com.google.gwt.user.client.ui.Image;
-
 /**
  *
  * @author Eirik Brandtæg <eirikdb@gmail.com>
@@ -19,7 +17,7 @@ public class Box extends Sprite {
     public Box() {
     }
 
-    public Box(Image image, int spriteX, int spriteY) {
-        super(image, spriteX, spriteY);
+    public Box(int spriteX, int spriteY) {
+        super(spriteX, spriteY);
     }
 }

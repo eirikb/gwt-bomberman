@@ -6,12 +6,8 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client.service;
+package no.eirikb.bomberman.client.game.builder;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import java.util.Map;
-import no.eirikb.bomberman.client.game.Game;
-import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.game.Settings;
 import no.eirikb.bomberman.client.game.Sprite;
 
@@ -19,13 +15,12 @@ import no.eirikb.bomberman.client.game.Sprite;
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public interface BombermanServiceAsync {
+public class SpriteArrayBuilder {
 
-    void join(String nick, AsyncCallback<Player> callback);
-
-    void createGame(String name, Sprite[][] sprites, Settings settings, AsyncCallback<Game> callback);
-
-    void joinGame(String gameName, AsyncCallback<Game> callback);
-
-    void getGames(AsyncCallback<Map<String, Game>> callback);
+    public static Sprite[][] createSprites() {
+        Settings s = Settings.getInstance();
+        int w = (s.getMapWidth() / s.getImgSize()) + 1;
+        int h = (s.getMapHeight() / s.getImgSize()) + 1;
+        return new Sprite[w][h];
+    }
 }
