@@ -18,6 +18,9 @@ public class BoomBrick extends Brick {
 
     private int timer;
 
+    public BoomBrick() {
+    }
+
     public BoomBrick(Image image, int spriteX, int spriteY) {
         super(image, spriteX, spriteY);
     }

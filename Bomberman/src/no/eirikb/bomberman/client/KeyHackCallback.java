@@ -8,6 +8,8 @@
  */
 package no.eirikb.bomberman.client;
 
+import com.google.gwt.event.dom.client.KeyDownEvent;
+
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
@@ -15,4 +17,8 @@ package no.eirikb.bomberman.client;
 public interface KeyHackCallback {
 
     public void callback();
+
+    public void arrowKeyDown(KeyDownEvent event);
+
+    public void arrowKeyUp();
 }

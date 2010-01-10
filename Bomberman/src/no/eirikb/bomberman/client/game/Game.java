@@ -31,6 +31,9 @@ public class Game {
     private int imgSize;
     private List<GameListener> gameListeners;
 
+    public Game() {
+    }
+
     public Game(Sprite[][] sprites, int width, int height, int imgSize) {
         this.sprites = sprites;
         this.width = width;

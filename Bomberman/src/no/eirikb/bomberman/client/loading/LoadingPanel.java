@@ -13,16 +13,9 @@ import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.reveregroup.gwt.imagepreloader.ImageLoadEvent;
-import com.reveregroup.gwt.imagepreloader.ImageLoadHandler;
-import com.reveregroup.gwt.imagepreloader.ImagePreloader;
 import no.eirikb.bomberman.client.ProgressBar;
-import no.eirikb.bomberman.client.game.Settings;
-import no.eirikb.bomberman.client.game.Sprite;
-import no.eirikb.bomberman.client.game.builder.BoxBuilder;
 import no.eirikb.bomberman.client.image.ImageHandler;
 import no.eirikb.bomberman.client.image.ImageHandlerListener;
-import no.eirikb.bomberman.client.game.builder.BrickBuilder;
 
 /**
  *
@@ -33,13 +26,9 @@ public class LoadingPanel extends VerticalPanel {
     private Label loadingLabel;
     private Label totalLoadingLabel;
     private ProgressBar totalProgressBar;
-    private Sprite[][] sprites;
     private LoadListener loadListener;
-    private Settings settings;
-    private int imgSize;
 
     public LoadingPanel(LoadListener loadListener) {
-        this.settings = Settings.getInstance();
         this.loadListener = loadListener;
         loadingLabel = new Label("Info: Loading images...");
         add(loadingLabel);
@@ -50,24 +39,7 @@ public class LoadingPanel extends VerticalPanel {
     }
 
     public void initLoad() {
-        ImagePreloader.load("img/box.png", new ImageLoadHandler() {
-
-            public void imageLoaded(ImageLoadEvent event) {
-                imgSize = event.getDimensions().getWidth();
-                loadImages();
-            }
-        });
-    }
-
-    public void afterLoad() {
-        loadingLabel.setText("Images already loaded...");
-        totalProgressBar.setProgress(80);
-        DeferredCommand.addCommand(new Command() {
-
-            public void execute() {
-                buildBoxes();
-            }
-        });
+        loadImages();
     }
 
     private void loadImages() {
@@ -93,41 +65,19 @@ public class LoadingPanel extends VerticalPanel {
             }
 
             public void onDone(Image image, String url, int pos) {
-                int percentage = (int) (((double) (pos + 2) / imageUrls.length) * 80);
+                int percentage = (int) (((double) (pos + 2) / imageUrls.length) * 100);
                 updateTotalLoading(percentage);
                 if (pos == imageUrls.length - 1) {
                     DeferredCommand.addCommand(new Command() {
 
                         public void execute() {
-                            buildBoxes();
+                            loadListener.complete();
                         }
                     });
                 }
             }
         }, imageUrls);
 
-    }
-
-    private void buildBoxes() {
-        settings.setMapWidth((int) (settings.getMapWidth() / imgSize) * imgSize);
-        settings.setMapHeight((int) (settings.getMapHeight() / imgSize) * imgSize);
-        sprites = new Sprite[(settings.getMapWidth() / imgSize) + 1][(settings.getMapHeight() / imgSize) + 1];
-        loadingLabel.setText("Info: Building boxes...");
-        sprites = BoxBuilder.createBoxes(sprites);
-        updateTotalLoading(90);
-        DeferredCommand.addCommand(new Command() {
-
-            public void execute() {
-                buildBricks();
-            }
-        });
-    }
-
-    private void buildBricks() {
-        loadingLabel.setText("Info: Building bricks...");
-        sprites = BrickBuilder.createBricks(sprites);
-        updateTotalLoading(100);
-        loadListener.complete(sprites, imgSize);
     }
 
     private void updateTotalLoading(int percentage) {

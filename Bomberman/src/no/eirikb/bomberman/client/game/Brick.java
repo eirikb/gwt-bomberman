@@ -16,6 +16,9 @@ import com.google.gwt.user.client.ui.Image;
  */
 public class Brick extends Sprite {
 
+    public Brick() {
+    }
+
     public Brick(Image image, int spriteX, int spriteY) {
         super(image, spriteX, spriteY);
     }

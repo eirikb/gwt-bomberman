@@ -8,11 +8,13 @@
  */
 package no.eirikb.bomberman.client.game;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public class Animation {
+public class Animation implements Serializable {
 
     private int animation;
     private int animationSize;
@@ -22,6 +24,9 @@ public class Animation {
         this.animationSize = animationSize;
         this.animationTime = animationTime;
         animation = -1;
+    }
+
+    public Animation() {
     }
 
     public int getAnimationSize() {

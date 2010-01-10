@@ -22,6 +22,9 @@ public class Bomb extends Sprite {
     private int power;
     private Player owner;
 
+    public Bomb() {
+    }
+
     public Bomb(Image image, int spriteX, int spriteY, Player owner, int explodeTime, int power) {
         super(image, spriteX, spriteY);
         this.owner = owner;

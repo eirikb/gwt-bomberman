@@ -16,6 +16,9 @@ import com.google.gwt.user.client.ui.Image;
  */
 public class Box extends Sprite {
 
+    public Box() {
+    }
+
     public Box(Image image, int spriteX, int spriteY) {
         super(image, spriteX, spriteY);
     }

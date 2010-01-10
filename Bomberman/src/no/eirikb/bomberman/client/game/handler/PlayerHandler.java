@@ -8,8 +8,6 @@
  */
 package no.eirikb.bomberman.client.game.handler;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.ui.Image;
 import no.eirikb.bomberman.client.GamePanel;
 import no.eirikb.bomberman.client.game.Bomb;
 import no.eirikb.bomberman.client.game.Game;

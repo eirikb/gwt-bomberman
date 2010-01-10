@@ -8,8 +8,6 @@
  */
 package no.eirikb.bomberman.client.game;
 
-import com.google.gwt.user.client.ui.Image;
-
 /**
  *
  * @author Eirik Brandtæg <eirikdb@gmail.com>
@@ -25,8 +23,10 @@ public class Player extends Sprite {
     private double x;
     private double y;
 
-    public Player(Image image, String nick, double speed, int bombPower, int bombAbount) {
-        super(image);
+    public Player() {
+    }
+
+    public Player(String nick, double speed, int bombPower, int bombAbount) {
         this.nick = nick;
         this.speed = speed;
         this.bombPower = bombPower;
@@ -34,8 +34,7 @@ public class Player extends Sprite {
         way = Way.NONE;
     }
 
-    public Player(Image image, String nick) {
-        super(image);
+    public Player(String nick) {
         this.nick = nick;
         way = Way.NONE;
         speed = 2;

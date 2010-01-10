@@ -17,13 +17,13 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
  */
 public class KeyHack implements KeyHackCallback {
 
-    private Bomberman bomberman;
+    private KeyHackCallback keyHackCallback;
     private Long lastKeyPress;
     private Integer nativeKeyCode;
     private boolean anotherKeyPresses;
 
-    public KeyHack(Bomberman bomberman) {
-        this.bomberman = bomberman;
+    public KeyHack(KeyHackCallback keyHackCallback) {
+        this.keyHackCallback = keyHackCallback;
     }
 
     public void setAnotherKeyPresses(boolean anotherKeyPresses) {
@@ -37,7 +37,7 @@ public class KeyHack implements KeyHackCallback {
         }
         if (lastKeyPress == null) {
             nativeKeyCode = event.getNativeKeyCode();
-            bomberman.arrowKeyDown(event);
+            keyHackCallback.arrowKeyDown(event);
         }
     }
 
@@ -45,7 +45,7 @@ public class KeyHack implements KeyHackCallback {
         if (event.getNativeKeyCode() == nativeKeyCode) {
             if (anotherKeyPresses) {
                 anotherKeyPresses = false;
-                bomberman.arrowKeyUp();
+                keyHackCallback.arrowKeyUp();
             } else {
                 lastKeyPress = System.currentTimeMillis();
             }
@@ -55,7 +55,11 @@ public class KeyHack implements KeyHackCallback {
     public void callback() {
         if (lastKeyPress != null && System.currentTimeMillis() - lastKeyPress > 100) {
             lastKeyPress = null;
-            bomberman.arrowKeyUp();
+            keyHackCallback.arrowKeyUp();
         }
+    }
+
+    public void arrowKeyUp() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

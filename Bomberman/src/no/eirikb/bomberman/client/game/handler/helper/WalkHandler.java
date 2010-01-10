@@ -8,7 +8,6 @@
  */
 package no.eirikb.bomberman.client.game.handler.helper;
 
-import com.google.gwt.core.client.GWT;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.game.Sprite;
@@ -180,7 +179,6 @@ public class WalkHandler {
                     newX = way == Way.RIGHT ? newSpriteX * imgSize : newX;
                     break;
             }
-            GWT.log("newX: " + newX + ". newY: " + newY, null);
         }
     }
 }

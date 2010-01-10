@@ -22,6 +22,9 @@ public class CoreExplosion extends Explosion {
     private int size;
     private List<int[]> hits; // {x, y}
 
+    public CoreExplosion() {
+    }
+
     public CoreExplosion(Image image, int spriteX, int spriteY, ExplosionType explosionType, int size) {
         super(image, spriteX, spriteY, explosionType);
         this.size = size;

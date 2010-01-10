@@ -9,16 +9,17 @@
 package no.eirikb.bomberman.client.game;
 
 import com.google.gwt.user.client.ui.Image;
+import java.io.Serializable;
 
 /**
  *
  * @author Eirik Brandtæg <eirikdb@gmail.com>
  */
-public class Sprite {
+public class Sprite implements Serializable {
 
     private int spriteX;
     private int spriteY;
-    private Image image;
+    transient Image image;
     protected Animation animation;
 
     public Sprite(Image image, int spriteX, int spriteY) {
@@ -32,8 +33,7 @@ public class Sprite {
         this.spriteY = spriteY;
     }
 
-    public Sprite(Image image) {
-        this.image = image;
+    public Sprite() {
     }
 
     public int getSpriteX() {

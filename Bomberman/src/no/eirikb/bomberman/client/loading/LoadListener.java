@@ -8,13 +8,11 @@
  */
 package no.eirikb.bomberman.client.loading;
 
-import no.eirikb.bomberman.client.game.Sprite;
-
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
 public interface LoadListener {
 
-    public void complete(Sprite[][] sprites, int imgSize);
+    public void complete();
 }
