@@ -10,6 +10,7 @@ package no.eirikb.bomberman.client.event;
 
 import de.novanic.eventservice.client.event.listener.RemoteEventListener;
 import no.eirikb.bomberman.client.game.Game;
+import no.eirikb.bomberman.client.game.Player;
 
 /**
  *
@@ -18,4 +19,6 @@ import no.eirikb.bomberman.client.game.Game;
 public interface GameListener extends RemoteEventListener {
 
     void newGame(Game game);
+
+    void joinGame(Game game, Player player);
 }

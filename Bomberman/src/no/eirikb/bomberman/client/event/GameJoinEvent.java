@@ -15,12 +15,12 @@ import no.eirikb.bomberman.client.game.Player;
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public class CreateGameEvent extends GameEvent {
+public class GameJoinEvent extends GameEvent {
 
-    public CreateGameEvent() {
+    public GameJoinEvent() {
     }
 
-    public CreateGameEvent(Game game, Player player) {
+    public GameJoinEvent(Game game, Player player) {
         super(game, player);
     }
 }

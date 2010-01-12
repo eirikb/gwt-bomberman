@@ -6,25 +6,19 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client.game.handler;
+package no.eirikb.bomberman.client.ui.game;
 
-import no.eirikb.bomberman.client.ui.game.GamePanel;
-import no.eirikb.bomberman.client.game.Game;
-import no.eirikb.bomberman.client.game.GameListener;
+import com.google.gwt.event.dom.client.KeyDownEvent;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public abstract class Handler implements GameListener {
+public interface KeyHackCallback {
 
-    protected Game game;
-    protected GamePanel gamePanel;
+    public void callback();
 
-    public Handler(Game game, GamePanel gamePanel) {
-        this.game = game;
-        this.gamePanel = gamePanel;
-    }
+    public void arrowKeyDown(KeyDownEvent event);
 
-    protected abstract void handle();
+    public void arrowKeyUp();
 }

@@ -6,19 +6,21 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client;
+package no.eirikb.bomberman.client.event;
 
-import com.google.gwt.event.dom.client.KeyDownEvent;
+import no.eirikb.bomberman.client.game.Game;
+import no.eirikb.bomberman.client.game.Player;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public interface KeyHackCallback {
+public class GameCreateEvent extends GameEvent {
 
-    public void callback();
+    public GameCreateEvent() {
+    }
 
-    public void arrowKeyDown(KeyDownEvent event);
-
-    public void arrowKeyUp();
+    public GameCreateEvent(Game game, Player player) {
+        super(game, player);
+    }
 }

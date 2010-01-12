@@ -13,8 +13,9 @@ import de.novanic.eventservice.client.event.domain.DomainFactory;
 import de.novanic.eventservice.service.RemoteEventServiceServlet;
 import java.util.HashMap;
 import java.util.Map;
-import no.eirikb.bomberman.client.event.CreateGameEvent;
+import no.eirikb.bomberman.client.event.GameCreateEvent;
 import no.eirikb.bomberman.client.event.GameEvent;
+import no.eirikb.bomberman.client.event.GameJoinEvent;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.game.Settings;
@@ -55,7 +56,7 @@ public class BombermanServer extends RemoteEventServiceServlet implements Bomber
         if (games.get(name) == null) {
             Game game = new Game(name, sprites, settings);
             games.put(name, game);
-            addEvent(GAME_DOMAIN, new CreateGameEvent(game, player));
+            addEvent(GAME_DOMAIN, new GameCreateEvent(game, player));
             return game;
         } else {
             return null;
@@ -71,6 +72,7 @@ public class BombermanServer extends RemoteEventServiceServlet implements Bomber
         Player player = players.get((String) getThreadLocalRequest().getSession().getAttribute("nick"));
         if (game != null && player != null && game.getPlayersSize() < game.getSettings().getMaxPlayers()) {
             game.addPlayer(player);
+            addEvent(GAME_DOMAIN, new GameJoinEvent(game, player));
             return game;
         }
         return null;

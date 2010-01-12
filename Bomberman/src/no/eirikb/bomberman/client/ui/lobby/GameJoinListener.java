@@ -6,7 +6,7 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client;
+package no.eirikb.bomberman.client.ui.lobby;
 
 import no.eirikb.bomberman.client.game.Game;
 
@@ -14,7 +14,7 @@ import no.eirikb.bomberman.client.game.Game;
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public interface JoinGameListener {
+public interface GameJoinListener {
 
     public void onJoin(Game game);
 }

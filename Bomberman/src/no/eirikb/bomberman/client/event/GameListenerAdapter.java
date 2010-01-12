@@ -10,6 +10,7 @@ package no.eirikb.bomberman.client.event;
 
 import de.novanic.eventservice.client.event.Event;
 import no.eirikb.bomberman.client.game.Game;
+import no.eirikb.bomberman.client.game.Player;
 
 /**
  *
@@ -19,13 +20,19 @@ public class GameListenerAdapter implements GameListener {
 
     public void apply(Event anEvent) {
         if (anEvent instanceof GameEvent) {
-            if (anEvent instanceof CreateGameEvent) {
-                CreateGameEvent createGameEvent = (CreateGameEvent) anEvent;
+            if (anEvent instanceof GameCreateEvent) {
+                GameCreateEvent createGameEvent = (GameCreateEvent) anEvent;
                 newGame(createGameEvent.getGame());
+            } else if (anEvent instanceof GameJoinEvent) {
+                GameJoinEvent gameJoinEvent = (GameJoinEvent) anEvent;
+                joinGame(gameJoinEvent.getGame(), gameJoinEvent.getPlayer());
             }
         }
     }
 
     public void newGame(Game game) {
+    }
+
+    public void joinGame(Game game, Player player) {
     }
 }

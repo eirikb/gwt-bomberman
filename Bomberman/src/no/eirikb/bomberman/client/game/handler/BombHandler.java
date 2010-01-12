@@ -10,7 +10,7 @@ package no.eirikb.bomberman.client.game.handler;
 
 import java.util.ArrayList;
 import java.util.List;
-import no.eirikb.bomberman.client.GamePanel;
+import no.eirikb.bomberman.client.ui.game.GamePanel;
 import no.eirikb.bomberman.client.game.Bomb;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.Sprite;

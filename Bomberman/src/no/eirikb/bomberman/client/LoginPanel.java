@@ -10,17 +10,18 @@ package no.eirikb.bomberman.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.service.BombermanService;
 import no.eirikb.bomberman.client.service.BombermanServiceAsync;
@@ -29,70 +30,58 @@ import no.eirikb.bomberman.client.service.BombermanServiceAsync;
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public class LoginPanel extends AbsolutePanel {
+public class LoginPanel extends Composite {
 
-    private TextBox nickBox;
-    private Label infoLabel;
+    interface MyUiBinder extends UiBinder<Widget, LoginPanel> {
+    }
+    private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
     private LoginPanelListener loginPanelListener;
-    private BombermanServiceAsync bombermanService;
-    private Button loginButton;
+    @UiField
+    TextBox nickBox;
+    @UiField
+    Button loginButton;
+    @UiField
+    Label infoLabel;
 
     public LoginPanel(LoginPanelListener loginPanelListener) {
         this.loginPanelListener = loginPanelListener;
-        Image image = new Image("img/bg.png");
-        image.setSize("640px", "480px");
-        image.getElement().getStyle().setBackgroundColor("lime");
-        add(image);
-        nickBox = new TextBox();
-        add(new Label("Nickname:"), 200, 390);
-        add(nickBox, 200, 410);
-        add(loginButton = new Button("Log in", new ClickHandler() {
-
-            public void onClick(ClickEvent ce) {
-                login();
-            }
-        }), 200, 440);
-        nickBox.addKeyPressHandler(new KeyPressHandler() {
-
-            public void onKeyPress(KeyPressEvent kpe) {
-                if (kpe.getCharCode() == '\r') {
-                    login();
-                }
-            }
-        });
-        add(infoLabel = new Label(), 270, 448);
-        bombermanService = GWT.create(BombermanService.class);
+        initWidget(uiBinder.createAndBindUi(this));
     }
 
-    private void login() {
-        if (nickBox.getText().length() != 0 && loginButton.isEnabled()) {
-            loginButton.setEnabled(false);
-            infoLabel.setText("Logging on...");
+    @UiHandler("nickBox")
+    void handleUserNameKeyPress(KeyPressEvent e) {
+        if (e.getCharCode() == '\r') {
+            handleClick(null);
+        }
+    }
+
+    @UiHandler("loginButton")
+    void handleClick(ClickEvent e) {
+        if (nickBox.getText().length() == 0) {
+            nickBox.setFocus(true);
+        } else {
+            infoLabel.setText("Loggin in...");
 
             DeferredCommand.addCommand(new Command() {
 
                 public void execute() {
+                    BombermanServiceAsync bombermanService = GWT.create(BombermanService.class);
                     bombermanService.join(nickBox.getText(), new AsyncCallback<Player>() {
 
                         public void onFailure(Throwable thrwbl) {
-                            infoLabel.setText("Could not log on: " + thrwbl);
-                            loginButton.setEnabled(true);
+                            infoLabel.setText("Error: " + thrwbl);
                         }
 
                         public void onSuccess(Player player) {
-                            loginButton.setEnabled(true);
                             if (player != null) {
                                 loginPanelListener.onLogin(player);
                             } else {
-                                infoLabel.setText("Nickname taken");
-                                nickBox.selectAll();
+                                infoLabel.setText("Nickname already in use");
                             }
                         }
                     });
                 }
             });
-        } else {
-            nickBox.setFocus(true);
         }
     }
 
