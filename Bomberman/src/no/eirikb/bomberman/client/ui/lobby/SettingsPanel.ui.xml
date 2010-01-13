@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:lobby="urn:import:no.eirikb.bomberman.client.ui.lobby">
+
+    <g:HTMLPanel>
+        <g:HorizontalPanel>
+            <lobby:InfoPopup infoText="Width of the visible map in pixels" />
+            <g:Label>Map width:</g:Label>
+            <g:TextBox ui:field="mapWidth" />
+        </g:HorizontalPanel>
+
+        <g:HorizontalPanel>
+            <lobby:InfoPopup infoText="Height of the visible map in pixels" />
+            <g:Label>Map height:</g:Label>
+            <g:TextBox ui:field="mapHeight" />
+        </g:HorizontalPanel>
+
+        <g:HorizontalPanel>
+            <lobby:InfoPopup infoText="Speed of the player (man). Amount of pixels for each 'TICK' (one TICK ~ 50 ms). Can be decimal number, such as 0.5" />
+            <g:Label>Player speed:</g:Label>
+            <g:TextBox ui:field="playerSpeed" />
+        </g:HorizontalPanel>
+
+        <g:HorizontalPanel>
+            <lobby:InfoPopup infoText="Amount of bombs the player can have on the map at one time" />
+            <g:Label>Player bomb start amount:</g:Label>
+            <g:TextBox ui:field="playerBombStartAmount" />
+        </g:HorizontalPanel>
+
+        <g:HorizontalPanel>
+            <lobby:InfoPopup infoText="Amount of 'TICKs' before the bomb explodes (one TICK ~ 50 ms)" />
+            <g:Label>Bomb timer:</g:Label>
+            <g:TextBox ui:field="bombTimer" />
+        </g:HorizontalPanel>
+
+        <g:HorizontalPanel>
+            <lobby:InfoPopup infoText="Amount of sprites the bomb should expand out" />
+            <g:Label>Bomb power:</g:Label>
+            <g:TextBox ui:field="bombPower" />
+        </g:HorizontalPanel>
+
+        <g:HorizontalPanel>
+            <lobby:InfoPopup infoText="How much percentage of the map should be filled with bricks (entire map size in sprites)" />
+            <g:Label>Brick amount percentage:</g:Label>
+            <g:TextBox ui:field="brickAmountPercentage" />
+        </g:HorizontalPanel>
+
+        <g:HorizontalPanel>
+            <lobby:InfoPopup infoText="How much percentage of the players body must be inside the flame before he or she is killed. Set this to 101 and you ARE GOD" />
+            <g:Label>Explosion hit percentage:</g:Label>
+            <g:TextBox ui:field="explosionHitPercentage" />
+        </g:HorizontalPanel>
+
+        <g:HorizontalPanel>
+            <lobby:InfoPopup infoText="How long each 'TICK' lasts. The interval between each calculation in milliseconds" />
+            <g:Label>Sleep time:</g:Label>
+            <g:TextBox ui:field="sleepTime" />
+        </g:HorizontalPanel>
+
+        <g:HorizontalPanel>
+            <lobby:InfoPopup infoText="Amount of chance that when the brick perishes there will be a powerup" />
+            <g:Label>Percentage powerup:</g:Label>
+            <g:TextBox ui:field="percentagePowerup" />
+        </g:HorizontalPanel>
+        
+        <g:HorizontalPanel>
+            <lobby:InfoPopup infoText="Size of sprites in pixels (they are rectangular)" />
+            <g:Label>Image size:</g:Label>
+            <g:TextBox ui:field="imageSize" />
+        </g:HorizontalPanel>
+
+        <g:HorizontalPanel>
+            <lobby:InfoPopup infoText="Total amount of players in the game at the same time, when max players have joined the game will start" />
+            <g:Label>Max players:</g:Label>
+            <g:TextBox ui:field="maxPlayers" />
+        </g:HorizontalPanel>
+    </g:HTMLPanel>
+</ui:UiBinder>

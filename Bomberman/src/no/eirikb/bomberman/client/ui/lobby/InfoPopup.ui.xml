@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+    <ui:with field="res" type="no.eirikb.bomberman.client.resources.Resources" />
+
+    <g:HTMLPanel>
+        <g:Image resource="{res.infoIcon}" ui:field="infoIcon" />
+        <g:PopupPanel ui:field="popupPanel" autoHideEnabled="true" modal="true" animationEnabled="true">
+            <g:HTMLPanel>
+                <g:PushButton ui:field="closeButton">Close</g:PushButton>
+                <g:Label ui:field="infoLabel" />
+            </g:HTMLPanel>
+        </g:PopupPanel>
+    </g:HTMLPanel>
+
+</ui:UiBinder>

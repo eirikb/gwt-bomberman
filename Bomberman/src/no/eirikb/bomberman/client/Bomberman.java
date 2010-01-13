@@ -28,8 +28,7 @@ public class Bomberman implements EntryPoint {
     private RemoteEventService myRemoteEventService;
 
     public void onModuleLoad() {
-        //showLoginPanel();
-        showLobbyPanel();
+        showLoginPanel();
     }
 
     private void showLoginPanel() {

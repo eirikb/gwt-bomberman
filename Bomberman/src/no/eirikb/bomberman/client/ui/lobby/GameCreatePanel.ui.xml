@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:lobby="urn:import:no.eirikb.bomberman.client.ui.lobby">
     <g:HTMLPanel>
         <h3>Create game</h3>
-        <g:Label ui:field='infoLabel'>Loading games...</g:Label>
-        <div>game list:</div>
-        <g:ListBox ui:field="gameList" width='100%'/>
-        <g:Button ui:field='joinGameButton'>Join game</g:Button>
+        <g:Label ui:field="infoLabel" />
+        Game name:
+        <g:TextBox ui:field="gameNameBox" />
+        <g:DisclosurePanel animationEnabled="true">
+            <g:header>Show/Hide settings</g:header>
+            <lobby:SettingsPanel ui:field="settingsPanel" />
+        </g:DisclosurePanel>
+        <g:Button ui:field="createGameButton">Create game</g:Button>
     </g:HTMLPanel>
 </ui:UiBinder>
