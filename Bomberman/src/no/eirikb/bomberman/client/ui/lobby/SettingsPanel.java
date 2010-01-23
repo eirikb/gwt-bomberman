@@ -91,5 +91,7 @@ public class SettingsPanel extends Composite {
         explosionHitPercentage.setText("" + settings.getExplosionHitPercentage());
         sleepTime.setText("" + settings.getSleepTime());
         percentagePowerup.setText("" + settings.getPercentagePowerup());
+        imageSize.setText("" + settings.getImgSize());
+        maxPlayers.setText("" + settings.getMaxPlayers());
     }
 }
