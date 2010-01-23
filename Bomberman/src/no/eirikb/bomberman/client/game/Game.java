@@ -21,7 +21,7 @@ import no.eirikb.bomberman.client.game.poweup.Powerup;
  */
 public class Game implements Serializable {
 
-    private String name;
+    private GameInfo gameInfo;
     private Sprite[][] sprites;
     private Map<String, Player> players;
     private List<Bomb> bombs;
@@ -35,7 +35,7 @@ public class Game implements Serializable {
     }
 
     public Game(String name, Sprite[][] sprites, Settings settings) {
-        this.name = name;
+        this.gameInfo = new GameInfo(name, settings.getMaxPlayers());
         this.sprites = sprites;
         this.settings = settings;
         players = new HashMap<String, Player>();
@@ -80,11 +80,13 @@ public class Game implements Serializable {
 
     public void addPlayer(Player player) {
         players.put(player.getNick(), player);
+        gameInfo.setPlayerSize(players.size());
         addSpriteInvisible(player);
     }
 
     public void removePlayer(Player player) {
         players.remove(player.getNick());
+        gameInfo.setPlayerSize(players.size());
         removeSpriteInvisible(player);
     }
 
@@ -168,11 +170,11 @@ public class Game implements Serializable {
         gameListeners.remove(gameListener);
     }
 
-    public String getName() {
-        return name;
-    }
-
     public int getPlayersSize() {
         return players.size();
+    }
+
+    public GameInfo getGameInfo() {
+        return gameInfo;
     }
 }

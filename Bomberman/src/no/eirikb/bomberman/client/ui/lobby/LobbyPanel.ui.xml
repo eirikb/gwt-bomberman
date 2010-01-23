@@ -2,12 +2,15 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:lobby="urn:import:no.eirikb.bomberman.client.ui.lobby">
-    <g:TabPanel ui:field="tabPanel" animationEnabled="true">
-        <g:Tab text="Games">
-            <lobby:GameListPanel ui:field="gameListPanel" />
-        </g:Tab>
-        <g:Tab text="Create game">
-            <lobby:GameCreatePanel ui:field="gameCreatePanel" />
-        </g:Tab>
-    </g:TabPanel>
+    <g:HTMLPanel>
+        Info: <g:Label ui:field="infoLabel" />
+        <g:TabPanel ui:field="tabPanel" animationEnabled="true">
+            <g:Tab text="Games">
+                <lobby:GameListPanel ui:field="gameListPanel" />
+            </g:Tab>
+            <g:Tab text="Create game">
+                <lobby:GameCreatePanel ui:field="gameCreatePanel" />
+            </g:Tab>
+        </g:TabPanel>
+    </g:HTMLPanel>
 </ui:UiBinder>

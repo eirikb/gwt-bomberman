@@ -23,6 +23,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import no.eirikb.bomberman.client.game.Game;
+import no.eirikb.bomberman.client.game.GameInfo;
+import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.service.BombermanService;
 import no.eirikb.bomberman.client.service.BombermanServiceAsync;
 
@@ -35,7 +37,7 @@ public class GameListPanel extends Composite {
     interface MyUiBinder extends UiBinder<Widget, GameListPanel> {
     }
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
-    private Map<String, Game> games;
+    private Map<String, GameInfo> games;
     private GameJoinListener gameJoinListener;
     private BombermanServiceAsync bombermanService;
     @UiField
@@ -47,57 +49,76 @@ public class GameListPanel extends Composite {
 
     public GameListPanel() {
         initWidget(uiBinder.createAndBindUi(this));
-        games = new HashMap<String, Game>();
+        games = new HashMap<String, GameInfo>();
         bombermanService = GWT.create(BombermanService.class);
         infoLabel.setText("Loading games...");
 
-        bombermanService.getGames(new AsyncCallback<Map<String, Game>>() {
+        bombermanService.getGames(new AsyncCallback<Map<String, GameInfo>>() {
 
             public void onFailure(Throwable thrwbl) {
                 infoLabel.setText("Error: " + thrwbl);
             }
 
-            public void onSuccess(Map<String, Game> games2) {
-                games = games2;
+            public void onSuccess(Map<String, GameInfo> games) {
                 infoLabel.setText(games.size() == 0 ? "No games on server" : "");
-                for (Game game : games.values()) {
-                    gameList.addItem(game.getName());
+                for (GameInfo game : games.values()) {
+                    addGame(game);
                 }
             }
         });
     }
 
-    public void addGame(Game game) {
+    public void addGame(GameInfo game) {
         games.put(game.getName(), game);
-        gameList.addItem(game.getName());
+        gameList.addItem(game.getName() + " (" + game.getPlayerSize() + '/' + game.getMaxPlayers() + ')');
         infoLabel.setText("Update! New game: " + game.getName() + " (" + new Date() + ")");
     }
 
     @UiHandler("joinGameButton")
     void handleClick(ClickEvent e) {
-        String selected = gameList.getValue(gameList.getSelectedIndex());
-        if (selected != null) {
-            Game game = games.get(selected);
-            if (game != null) {
-                bombermanService.joinGame(game.getName(), new AsyncCallback<Game>() {
+        GameInfo game = getGame(gameList.getSelectedIndex());
+        if (game != null) {
+            bombermanService.joinGame(game.getName(), new AsyncCallback<GameInfo>() {
 
-                    public void onFailure(Throwable thrwbl) {
-                        infoLabel.setText("Error: " + thrwbl);
-                    }
+                public void onFailure(Throwable thrwbl) {
+                    infoLabel.setText("Error: " + thrwbl);
+                }
 
-                    public void onSuccess(Game game) {
-                        if (game != null) {
-                            gameJoinListener.onJoin(game);
-                        } else {
-                            infoLabel.setText("Unable to join game, it's porbably full");
-                        }
+                public void onSuccess(GameInfo game) {
+                    if (game != null) {
+                        gameJoinListener.onJoin(game);
+                    } else {
+                        infoLabel.setText("Unable to join game, it's porbably full");
                     }
-                });
-            }
+                }
+            });
         }
     }
 
     public void setGameJoinListener(GameJoinListener gameJoinListener) {
         this.gameJoinListener = gameJoinListener;
+    }
+
+    public void playerJoinGame(GameInfo game, Player player) {
+        for (int i = 0; i < gameList.getItemCount(); i++) {
+            GameInfo g = getGame(i);
+            if (g != null && g.getName().equals(game.getName())) {
+                gameList.removeItem(i);
+                addGame(game);
+                break;
+            }
+        }
+    }
+
+    private GameInfo getGame(int i) {
+        return getGame(gameList.getValue(i));
+    }
+
+    private GameInfo getGame(String gameName) {
+        int space = gameName.lastIndexOf(' ');
+        if (space >= 0) {
+            gameName = gameName.substring(0, space);
+        }
+        return games.get(gameName);
     }
 }

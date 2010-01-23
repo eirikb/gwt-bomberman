@@ -6,28 +6,28 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client.service;
+package no.eirikb.bomberman.client.event.lobby;
 
-import com.google.gwt.user.client.rpc.RemoteService;
-import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import java.util.Map;
 import no.eirikb.bomberman.client.game.GameInfo;
 import no.eirikb.bomberman.client.game.Player;
-import no.eirikb.bomberman.client.game.Settings;
-import no.eirikb.bomberman.client.game.Sprite;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-@RemoteServiceRelativePath("bombermanservice")
-public interface BombermanService extends RemoteService {
+public class GameCreateEvent extends LobbyEvent {
 
-    Player join(String nick);
+    private GameInfo game;
 
-    GameInfo createGame(String name, Sprite[][] sprites, Settings settings);
+    public GameCreateEvent() {
+    }
 
-    GameInfo joinGame(String gameName);
+    public GameCreateEvent(Player player, GameInfo game) {
+        super(player);
+        this.game = game;
+    }
 
-    Map<String, GameInfo> getGames();
+    public GameInfo getGame() {
+        return game;
+    }
 }

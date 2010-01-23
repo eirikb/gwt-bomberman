@@ -1,7 +1,9 @@
 package no.eirikb.bomberman.client;
 
+import no.eirikb.bomberman.client.event.lobby.GameCreateEvent;
+import no.eirikb.bomberman.client.event.lobby.PlayerJoinEvent;
+import no.eirikb.bomberman.client.event.lobby.PlayerJoinGameEvent;
 import no.eirikb.bomberman.client.ui.lobby.LobbyPanel;
-import no.eirikb.bomberman.client.ui.lobby.GameStartWaitPanel;
 import no.eirikb.bomberman.client.ui.lobby.GameJoinListener;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -10,10 +12,11 @@ import de.novanic.eventservice.client.event.RemoteEventService;
 import de.novanic.eventservice.client.event.RemoteEventServiceFactory;
 import de.novanic.eventservice.client.event.domain.Domain;
 import de.novanic.eventservice.client.event.domain.DomainFactory;
-import no.eirikb.bomberman.client.event.GameEvent;
-import no.eirikb.bomberman.client.event.GameListenerAdapter;
-import no.eirikb.bomberman.client.event.filter.GameEventFilter;
-import no.eirikb.bomberman.client.game.Game;
+import no.eirikb.bomberman.client.event.game.GameEvent;
+import no.eirikb.bomberman.client.event.game.GameListenerAdapter;
+import no.eirikb.bomberman.client.event.lobby.LobbyEvent;
+import no.eirikb.bomberman.client.event.lobby.LobbyListenerAdapter;
+import no.eirikb.bomberman.client.game.GameInfo;
 import no.eirikb.bomberman.client.game.Player;
 
 /**
@@ -21,11 +24,13 @@ import no.eirikb.bomberman.client.game.Player;
  */
 public class Bomberman implements EntryPoint {
 
+    private Player player;
+    private GameInfo gameInfo;
     private LoginPanel loginPanel;
     private LobbyPanel lobbyPanel;
-    private GameStartWaitPanel gameStartWaitPanel;
+    private RemoteEventService remoteEventService;
     private static final Domain GAME_DOMAIN = DomainFactory.getDomain(GameEvent.GAME_DOMAIN);
-    private RemoteEventService myRemoteEventService;
+    private static final Domain LOBBY_DOMAIN = DomainFactory.getDomain(LobbyEvent.LOBBY_DOMAIN);
 
     public void onModuleLoad() {
         showLoginPanel();
@@ -34,9 +39,11 @@ public class Bomberman implements EntryPoint {
     private void showLoginPanel() {
         RootPanel.get().add(loginPanel = new LoginPanel(new LoginPanel.LoginPanelListener() {
 
-            public void onLogin(Player player) {
+            public void onLogin(Player player2) {
+                player = player2;
                 RootPanel.get().remove(loginPanel);
                 startEventServiceListener();
+                remoteEventService.addListener(LOBBY_DOMAIN, new DefaultLobbyListener());
                 showLobbyPanel();
             }
         }));
@@ -47,40 +54,51 @@ public class Bomberman implements EntryPoint {
     private void showLobbyPanel() {
         RootPanel.get().add(lobbyPanel = new LobbyPanel(new GameJoinListener() {
 
-            public void onJoin(Game game) {
-                RootPanel.get().remove(lobbyPanel);
-                //  myRemoteEventService.registerEventFilter(GAME_DOMAIN, new GameEventFilter(game.getName()));
-                showGameStartWaitPanel(game);
+            public void onJoin(GameInfo game2) {
+                gameInfo = game2;
+                lobbyPanel.onJoin(game2);
+                if (gameInfo.getPlayerSize() == gameInfo.getMaxPlayers()) {
+                    startGame();
+                }
             }
         }));
     }
 
-    private void showGameStartWaitPanel(Game game) {
-        gameStartWaitPanel = new GameStartWaitPanel(game);
-        RootPanel.get().remove(lobbyPanel);
-        RootPanel.get().add(gameStartWaitPanel);
-    }
-
     private void startEventServiceListener() {
         final RemoteEventServiceFactory theRemoteEventHandlerFactory = RemoteEventServiceFactory.getInstance();
-        myRemoteEventService = theRemoteEventHandlerFactory.getRemoteEventService();
+        remoteEventService = theRemoteEventHandlerFactory.getRemoteEventService();
+    }
 
-        myRemoteEventService.addListener(GAME_DOMAIN, new DefaultGameListener(), new GameEventFilter(null));
+    private void startGame() {
+        gameInfo = null;
+        remoteEventService.removeListeners();
+        RootPanel.get().remove(loginPanel);
     }
 
     private class DefaultGameListener extends GameListenerAdapter {
+    }
+
+    private class DefaultLobbyListener extends LobbyListenerAdapter {
 
         @Override
-        public void newGame(Game game) {
-            lobbyPanel.addGame(game);
+        public void createGame(GameCreateEvent gameCreateEvent) {
+            lobbyPanel.addGame(gameCreateEvent.getGame());
         }
 
         @Override
-        public void joinGame(Game game, Player player) {
-            if (gameStartWaitPanel != null) {
-                gameStartWaitPanel.joinGame(game, player);
-            } else {
-                GWT.log("PROBLEM! 0001", null);
+        public void playerJoin(PlayerJoinEvent playerJoinEvent) {
+            lobbyPanel.playerJoin(playerJoinEvent.getPlayer());
+        }
+
+        @Override
+        public void playerJoinGame(PlayerJoinGameEvent gameJoinEvent) {
+            lobbyPanel.playerJoinGame(gameJoinEvent.getGame(), gameJoinEvent.getPlayer());
+            if (gameInfo != null && gameJoinEvent.getGame().getName().equals(gameInfo.getName())) {
+                gameInfo = gameJoinEvent.getGame();
+                if (gameInfo.getPlayerSize() == gameInfo.getMaxPlayers()) {
+                    GWT.log("HERE WE GO!!!", null);
+                    startGame();
+                }
             }
         }
     }

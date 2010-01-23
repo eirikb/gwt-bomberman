@@ -12,9 +12,13 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Widget;
+import java.util.Date;
 import no.eirikb.bomberman.client.game.Game;
+import no.eirikb.bomberman.client.game.GameInfo;
+import no.eirikb.bomberman.client.game.Player;
 
 /**
  *
@@ -25,6 +29,8 @@ public class LobbyPanel extends Composite {
     interface MyUiBinder extends UiBinder<Widget, LobbyPanel> {
     }
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
+    @UiField
+    Label infoLabel;
     @UiField
     TabPanel tabPanel;
     @UiField
@@ -39,17 +45,26 @@ public class LobbyPanel extends Composite {
         tabPanel.selectTab(0);
     }
 
-//
-//    public LobbyPanel(GameJoinListener joinGameListener) {
-//        DecoratedTabPanel tabPanel = new DecoratedTabPanel();
-//        tabPanel.setAnimationEnabled(true);
-//        tabPanel.setWidth("500px");
-//        tabPanel.add(gameListPanel = new GameListPanel(joinGameListener), "Game list");
-//        tabPanel.add(new CreateGamePanel(joinGameListener), "Create game");
-//        tabPanel.selectTab(0);
-//        RootPanel.get().add(tabPanel);
-//    }
-    public void addGame(Game game) {
+    public void playerJoin(Player player) {
+        infoLabel.setText("Player join: " + player.getNick() + " (" + new Date() + ')');
+    }
+
+    public void addGame(GameInfo game) {
+        infoLabel.setText("Game created: " + game.getName() + " (" + new Date() + ')');
         gameListPanel.addGame(game);
+    }
+
+    public void playerJoinGame(GameInfo game, Player player) {
+        infoLabel.setText("Player " + player.getNick() + " join game: " + game.getName() + " (" + new Date() + ')');
+        gameListPanel.playerJoinGame(game, player);
+    }
+
+    public void setInfoText(String text) {
+        infoLabel.setText(text);
+    }
+
+    public void onJoin(GameInfo game) {
+        infoLabel.setText("Waiting for players...");
+        tabPanel.setVisible(false);
     }
 }

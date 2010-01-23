@@ -6,29 +6,28 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client.ui.lobby;
+package no.eirikb.bomberman.client.event.lobby;
 
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import no.eirikb.bomberman.client.game.Game;
+import no.eirikb.bomberman.client.game.GameInfo;
 import no.eirikb.bomberman.client.game.Player;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public class GameStartWaitPanel extends VerticalPanel {
+public class PlayerJoinGameEvent extends LobbyEvent {
 
-    private Label infolLabel;
-    private Game game;
+    private GameInfo game;
 
-    public GameStartWaitPanel(Game game) {
-        this.game = game;
-        add(infolLabel = new Label("Waiting for players to connect..."));
+    public PlayerJoinGameEvent() {
     }
 
-    public void joinGame(Game game, Player player) {
+    public PlayerJoinGameEvent(Player player, GameInfo game) {
+        super(player);
         this.game = game;
-        infolLabel.setText("Player joined: " + player.getNick());
+    }
+
+    public GameInfo getGame() {
+        return game;
     }
 }

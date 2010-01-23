@@ -6,15 +6,28 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client.ui.lobby;
+package no.eirikb.bomberman.client.event.lobby;
 
-import no.eirikb.bomberman.client.game.GameInfo;
+import de.novanic.eventservice.client.event.Event;
+import no.eirikb.bomberman.client.game.Player;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public interface GameJoinListener {
+public class LobbyEvent implements Event {
 
-    public void onJoin(GameInfo game);
+    public static final String LOBBY_DOMAIN = "domain_lobby";
+    private Player player;
+
+    public LobbyEvent() {
+    }
+
+    public LobbyEvent(Player player) {
+        this.player = player;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
 }

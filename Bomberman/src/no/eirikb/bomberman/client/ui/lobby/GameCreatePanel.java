@@ -22,6 +22,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import no.eirikb.bomberman.client.game.Game;
+import no.eirikb.bomberman.client.game.GameInfo;
 import no.eirikb.bomberman.client.game.Settings;
 import no.eirikb.bomberman.client.game.Sprite;
 import no.eirikb.bomberman.client.game.builder.BoxBuilder;
@@ -71,23 +72,24 @@ public class GameCreatePanel extends Composite {
             setInfoTextBackground("Building bricks...");
             sprites = BrickBuilder.createBricks(sprites);
             final BombermanServiceAsync bombermanService = GWT.create(BombermanService.class);
-            bombermanService.createGame(gameName, sprites, Settings.getInstance(), new AsyncCallback<Game>() {
+            bombermanService.createGame(gameName, sprites, Settings.getInstance(), new AsyncCallback<GameInfo>() {
 
                 public void onFailure(Throwable caught) {
                     infoLabel.setText("Error: " + caught);
                 }
 
-                public void onSuccess(Game result) {
+                public void onSuccess(GameInfo result) {
                     if (result != null) {
                         setInfoTextBackground("Game created! Joining...");
-                        bombermanService.joinGame(result.getName(), new AsyncCallback<Game>() {
+                        bombermanService.joinGame(result.getName(), new AsyncCallback<GameInfo>() {
 
                             public void onFailure(Throwable caught) {
                                 infoLabel.setText("Error: " + caught);
                             }
 
-                            public void onSuccess(Game result) {
+                            public void onSuccess(GameInfo result) {
                                 if (result != null) {
+                                    infoLabel.setText("Waiting for players...");
                                     gameJoinListener.onJoin(result);
                                 } else {
                                     infoLabel.setText("Unkown error!");

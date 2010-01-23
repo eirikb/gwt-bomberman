@@ -6,21 +6,13 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client.event;
+package no.eirikb.bomberman.client.event.game;
 
-import no.eirikb.bomberman.client.game.Game;
-import no.eirikb.bomberman.client.game.Player;
+import de.novanic.eventservice.client.event.listener.RemoteEventListener;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public class GameCreateEvent extends GameEvent {
-
-    public GameCreateEvent() {
-    }
-
-    public GameCreateEvent(Game game, Player player) {
-        super(game, player);
-    }
+public interface GameListener extends RemoteEventListener {
 }

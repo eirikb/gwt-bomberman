@@ -10,7 +10,8 @@ package no.eirikb.bomberman.client.event.filter;
 
 import de.novanic.eventservice.client.event.Event;
 import de.novanic.eventservice.client.event.filter.EventFilter;
-import no.eirikb.bomberman.client.event.GameEvent;
+import no.eirikb.bomberman.client.event.game.GameEvent;
+import no.eirikb.bomberman.client.game.Game;
 
 /**
  *
@@ -18,26 +19,40 @@ import no.eirikb.bomberman.client.event.GameEvent;
  */
 public class GameEventFilter implements EventFilter {
 
-    private String name;
+    private Game game;
 
-    public GameEventFilter(String name) {
-        this.name = name;
+    public GameEventFilter(Game game) {
+        this.game = game;
     }
 
     public GameEventFilter() {
-        name = null;
     }
 
-    public boolean match(Event anEvent) {
-        if (anEvent instanceof GameEvent) {
-            GameEvent gameEvent = (GameEvent) anEvent;
-            return (gameEvent.getGame() != null && gameEvent.getGame().getName().equals(name));
+    public boolean match(Event event) {
+        if (event instanceof GameEvent) {
+            GameEvent gameEvent = (GameEvent) event;
+            return gameEvent.getGame() != null && game != null && gameEvent.getGame().getGameInfo().getName().equals(game.getGameInfo().getName());
+        }
+        return true;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final GameEventFilter other = (GameEventFilter) obj;
+        if (this.game != other.game && (this.game == null || !this.game.equals(other.game))) {
+            return false;
         }
         return true;
     }
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return game != null ? game.getGameInfo().getName().hashCode() : 0;
     }
 }

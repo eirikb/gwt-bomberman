@@ -6,35 +6,20 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client.event;
+package no.eirikb.bomberman.client.event.lobby;
 
-import de.novanic.eventservice.client.event.Event;
-import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.Player;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public class GameEvent implements Event {
+public class PlayerJoinEvent extends LobbyEvent {
 
-    public static final String GAME_DOMAIN = "domain_game";
-    private Game game;
-    private Player player;
-
-    public GameEvent(Game game, Player player) {
-        this.game = game;
-        this.player = player;
+    public PlayerJoinEvent(Player player) {
+        super(player);
     }
 
-    public GameEvent() {
-    }
-
-    public Game getGame() {
-        return game;
-    }
-
-    public Player getPlayer() {
-        return player;
+    public PlayerJoinEvent() {
     }
 }

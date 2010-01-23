@@ -6,15 +6,17 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client.ui.lobby;
+package no.eirikb.bomberman.client.event.game;
 
-import no.eirikb.bomberman.client.game.GameInfo;
+import de.novanic.eventservice.client.event.Event;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public interface GameJoinListener {
+public class GameListenerAdapter implements GameListener {
 
-    public void onJoin(GameInfo game);
+    public void apply(Event anEvent) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
