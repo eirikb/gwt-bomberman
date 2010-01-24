@@ -9,23 +9,13 @@
 package no.eirikb.bomberman.client.service;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import java.util.Map;
-import no.eirikb.bomberman.client.game.GameInfo;
-import no.eirikb.bomberman.client.game.Player;
-import no.eirikb.bomberman.client.game.Settings;
-import no.eirikb.bomberman.client.game.Sprite;
+import no.eirikb.bomberman.client.game.Game;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public interface BombermanServiceAsync {
+public interface GameServiceAsync {
 
-    void join(String nick, AsyncCallback<Player> callback);
-
-    void createGame(String name, Sprite[][] sprites, Settings settings, AsyncCallback<GameInfo> callback);
-
-    void joinGame(String gameName, AsyncCallback<GameInfo> callback);
-
-    void getGames(AsyncCallback<Map<String, GameInfo>> callback);
+    public void getGame(String name, AsyncCallback<Game> callback);
 }

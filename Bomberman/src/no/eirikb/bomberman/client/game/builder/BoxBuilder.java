@@ -8,6 +8,7 @@
  */
 package no.eirikb.bomberman.client.game.builder;
 
+import no.eirikb.bomberman.client.game.Box;
 import no.eirikb.bomberman.client.game.Sprite;
 
 /**
@@ -22,7 +23,7 @@ public class BoxBuilder {
         for (int spriteX = 0; spriteX < sprites.length; spriteX++) {
             for (int spriteY = 0; spriteY < sprites[0].length; spriteY++) {
                 if (spriteX % 2 != 0 && spriteY % 2 != 0) {
-                    Sprite box = new Sprite(spriteX, spriteY);
+                    Box box = new Box(spriteX, spriteY);
                     sprites[box.getSpriteX()][box.getSpriteY()] = box;
                 }
             }

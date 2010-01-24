@@ -11,10 +11,8 @@ package no.eirikb.bomberman.server;
 import de.novanic.eventservice.client.event.domain.Domain;
 import de.novanic.eventservice.client.event.domain.DomainFactory;
 import de.novanic.eventservice.service.RemoteEventServiceServlet;
-import java.util.HashMap;
 import java.util.Map;
 import no.eirikb.bomberman.client.event.lobby.GameCreateEvent;
-import no.eirikb.bomberman.client.event.game.GameEvent;
 import no.eirikb.bomberman.client.event.lobby.PlayerJoinGameEvent;
 import no.eirikb.bomberman.client.event.lobby.LobbyEvent;
 import no.eirikb.bomberman.client.game.Game;
@@ -22,30 +20,25 @@ import no.eirikb.bomberman.client.game.GameInfo;
 import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.game.Settings;
 import no.eirikb.bomberman.client.game.Sprite;
-import no.eirikb.bomberman.client.service.BombermanService;
+import no.eirikb.bomberman.client.service.LobbyService;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public class BombermanServer extends RemoteEventServiceServlet implements BombermanService {
+public class LobbyServer extends RemoteEventServiceServlet implements LobbyService {
 
-    private static final Domain GAME_DOMAIN = DomainFactory.getDomain(GameEvent.GAME_DOMAIN);
     private static final Domain LOBBY_DOMAIN = DomainFactory.getDomain(LobbyEvent.LOBBY_DOMAIN);
-    private Map<String, Player> players;
-    private Map<String, Game> games;
-    private Map<String, GameInfo> gameInfos;
+    private GameHandler gameHandler;
 
-    public BombermanServer() {
-        players = new HashMap<String, Player>();
-        games = new HashMap<String, Game>();
-        gameInfos = new HashMap<String, GameInfo>();
+    public LobbyServer() {
+        gameHandler = GameHandler.getInstance();
     }
 
     public Player join(String nick) {
-        if (players.get(nick) == null) {
+        if (gameHandler.getPlayer(nick) == null) {
             Player player = new Player(nick);
-            players.put(nick, player);
+            gameHandler.addPlayer(player);
             getThreadLocalRequest().getSession().setAttribute("nick", nick);
             return player;
         }
@@ -53,11 +46,10 @@ public class BombermanServer extends RemoteEventServiceServlet implements Bomber
     }
 
     public GameInfo createGame(String name, Sprite[][] sprites, Settings settings) {
-        Player player = players.get((String) getThreadLocalRequest().getSession().getAttribute("nick"));
-        if (games.get(name) == null) {
+        Player player = gameHandler.getPlayer((String) getThreadLocalRequest().getSession().getAttribute("nick"));
+        if (gameHandler.getGame(name) == null) {
             Game game = new Game(name, sprites, settings);
-            games.put(name, game);
-            gameInfos.put(name, game.getGameInfo());
+            gameHandler.addGame(game);
             addEvent(LOBBY_DOMAIN, new GameCreateEvent(player, game.getGameInfo()));
             return game.getGameInfo();
         } else {
@@ -66,12 +58,12 @@ public class BombermanServer extends RemoteEventServiceServlet implements Bomber
     }
 
     public Map<String, GameInfo> getGames() {
-        return gameInfos;
+        return gameHandler.getGameInfos();
     }
 
     public GameInfo joinGame(String gameName) {
-        Game game = games.get(gameName);
-        Player player = players.get((String) getThreadLocalRequest().getSession().getAttribute("nick"));
+        Game game = gameHandler.getGame(gameName);
+        Player player = gameHandler.getPlayer((String) getThreadLocalRequest().getSession().getAttribute("nick"));
         if (game != null && player != null && game.getPlayersSize() < game.getSettings().getMaxPlayers()) {
             game.addPlayer(player);
             addEvent(LOBBY_DOMAIN, new PlayerJoinGameEvent(player, game.getGameInfo()));

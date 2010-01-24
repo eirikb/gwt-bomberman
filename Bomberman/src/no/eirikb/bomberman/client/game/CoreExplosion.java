@@ -30,6 +30,7 @@ public class CoreExplosion extends Explosion {
         this.size = size;
         explosions = new ArrayList<Explosion>();
         hits = new ArrayList<int[]>();
+        setImage(image);
         setAnimation(new Animation(4, 4));
     }
 

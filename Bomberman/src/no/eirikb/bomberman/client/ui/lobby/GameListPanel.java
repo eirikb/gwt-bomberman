@@ -25,8 +25,8 @@ import java.util.Map;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.GameInfo;
 import no.eirikb.bomberman.client.game.Player;
-import no.eirikb.bomberman.client.service.BombermanService;
-import no.eirikb.bomberman.client.service.BombermanServiceAsync;
+import no.eirikb.bomberman.client.service.LobbyService;
+import no.eirikb.bomberman.client.service.LobbyServiceAsync;
 
 /**
  *
@@ -39,7 +39,7 @@ public class GameListPanel extends Composite {
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
     private Map<String, GameInfo> games;
     private GameJoinListener gameJoinListener;
-    private BombermanServiceAsync bombermanService;
+    private LobbyServiceAsync bombermanService;
     @UiField
     ListBox gameList;
     @UiField
@@ -50,7 +50,7 @@ public class GameListPanel extends Composite {
     public GameListPanel() {
         initWidget(uiBinder.createAndBindUi(this));
         games = new HashMap<String, GameInfo>();
-        bombermanService = GWT.create(BombermanService.class);
+        bombermanService = GWT.create(LobbyService.class);
         infoLabel.setText("Loading games...");
 
         bombermanService.getGames(new AsyncCallback<Map<String, GameInfo>>() {

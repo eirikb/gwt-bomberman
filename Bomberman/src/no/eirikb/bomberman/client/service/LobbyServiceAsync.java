@@ -6,30 +6,26 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client.game.poweup;
+package no.eirikb.bomberman.client.service;
 
-import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import java.util.Map;
+import no.eirikb.bomberman.client.game.GameInfo;
 import no.eirikb.bomberman.client.game.Player;
+import no.eirikb.bomberman.client.game.Settings;
 import no.eirikb.bomberman.client.game.Sprite;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public abstract class Powerup extends Sprite {
+public interface LobbyServiceAsync {
 
-    private Player player;
+    void join(String nick, AsyncCallback<Player> callback);
 
-    public Powerup(String IMAGEURL, int spriteX, int spriteY) {
-        super(spriteX, spriteY);
-        setImage(new Image(IMAGEURL));
-    }
+    void createGame(String name, Sprite[][] sprites, Settings settings, AsyncCallback<GameInfo> callback);
 
-    public void powerUp(Player player) {
-        this.player = player;
-    }
+    void joinGame(String gameName, AsyncCallback<GameInfo> callback);
 
-    public Player getPlayer() {
-        return player;
-    }
+    void getGames(AsyncCallback<Map<String, GameInfo>> callback);
 }

@@ -8,15 +8,11 @@
  */
 package no.eirikb.bomberman.client.image;
 
-import com.google.gwt.user.client.ui.Image;
-
 /**
  *
  * @author Eirik Brandtzæg eirikdb@gmail.com
  */
 public interface ImageHandlerListener {
 
-    public void onStart(String url, int pos);
-
-    public void onDone(Image image, String url, int pos);
+    public void onDone(String url, int pos);
 }

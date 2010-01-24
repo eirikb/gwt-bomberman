@@ -16,10 +16,17 @@ import com.google.gwt.user.client.ui.Image;
  */
 public class Brick extends Sprite {
 
+    private transient final String INITURL = "img/brick.png";
+
     public Brick() {
     }
 
-    public Brick(Image image, int spriteX, int spriteY) {
-        super(image, spriteX, spriteY);
+    public Brick(int spriteX, int spriteY) {
+        super(spriteX, spriteY);
+    }
+
+    @Override
+    public void initImage() {
+        setImage(new Image(INITURL));
     }
 }

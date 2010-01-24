@@ -16,13 +16,15 @@ import com.google.gwt.user.client.ui.Image;
  */
 public class BoomBrick extends Brick {
 
+    private transient final String IMAGEURL = "img/boombrick1.png";
     private int timer;
 
     public BoomBrick() {
     }
 
-    public BoomBrick(Image image, int spriteX, int spriteY) {
-        super(image, spriteX, spriteY);
+    public BoomBrick(int spriteX, int spriteY) {
+        super(spriteX, spriteY);
+        setImage(new Image(IMAGEURL));
     }
 
     @Override

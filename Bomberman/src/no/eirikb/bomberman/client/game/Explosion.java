@@ -24,7 +24,8 @@ public class Explosion extends Sprite {
     }
 
     public Explosion(Image image, int spriteX, int spriteY, ExplosionType explosionType) {
-        super(image, spriteX, spriteY);
+        super(spriteX, spriteY);
+        setImage(image);
         this.explosionType = explosionType;
     }
 

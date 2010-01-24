@@ -8,9 +8,8 @@
  */
 package no.eirikb.bomberman.client.image;
 
-import com.reveregroup.gwt.imagepreloader.ImageLoadEvent;
-import com.reveregroup.gwt.imagepreloader.ImageLoadHandler;
-import com.reveregroup.gwt.imagepreloader.ImagePreloader;
+import com.google.gwt.dom.client.ImageElement;
+import com.google.gwt.widgetideas.graphics.client.ImageLoader;
 
 /**
  *
@@ -18,18 +17,19 @@ import com.reveregroup.gwt.imagepreloader.ImagePreloader;
  */
 public class ImageHandler {
 
+    private int position;
+
     public void loadImages(final ImageHandlerListener imageHandlerListener, final String[] urls) {
+        position = 0;
         loadNext(imageHandlerListener, urls, 0);
     }
 
     private void loadNext(final ImageHandlerListener imageHandlerListener, final String[] urls, final int pos) {
-        imageHandlerListener.onStart(urls[pos], pos);
-        ImagePreloader.load(urls[pos], new ImageLoadHandler() {
+        ImageLoader.loadImages(urls, new ImageLoader.CallBack() {
 
-            public void imageLoaded(ImageLoadEvent event) {
-                imageHandlerListener.onDone(event.takeImage(), urls[pos], pos);
-                if (pos + 1 < urls.length) {
-                    loadNext(imageHandlerListener, urls, pos + 1);
+            public void onImagesLoaded(ImageElement[] imageElements) {
+                for (ImageElement element : imageElements) {
+                    imageHandlerListener.onDone(element.getSrc(), ++position);
                 }
             }
         });

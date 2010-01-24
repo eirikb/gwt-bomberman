@@ -56,15 +56,12 @@ public class LoadingPanel extends VerticalPanel {
         };
 
         for (int i = 0; i < imageUrls.length; i++) {
-            imageUrls[i] = "img/" + imageUrls[i] + ".png";
+            imageUrls[i] = "../img/" + imageUrls[i] + ".png";
         }
 
         new ImageHandler().loadImages(new ImageHandlerListener() {
 
-            public void onStart(String url, int pos) {
-            }
-
-            public void onDone(Image image, String url, int pos) {
+            public void onDone(String url, int pos) {
                 int percentage = (int) (((double) (pos + 2) / imageUrls.length) * 100);
                 updateTotalLoading(percentage);
                 if (pos == imageUrls.length - 1) {

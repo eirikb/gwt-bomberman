@@ -58,9 +58,10 @@ public class ExplosionHandler extends Handler {
             addExplosion((Explosion) sprite);
             if (sprite instanceof CoreExplosion) {
                 CoreExplosion coreExplosion = (CoreExplosion) sprite;
+                int imgSize = Settings.getInstance().getImgSize();
                 for (Player player : game.getPlayers()) {
-                    int pSpriteX = player.getSpriteX();
-                    int pSpriteY = player.getSpriteY();
+                    int pSpriteX = (int) (player.getX() / imgSize);
+                    int pSpriteY = (int) (player.getY() / imgSize);
                     int cSpriteX = coreExplosion.getSpriteX();
                     int cSpriteY = coreExplosion.getSpriteY();
                     if (pSpriteX == cSpriteX && pSpriteY == cSpriteY) {

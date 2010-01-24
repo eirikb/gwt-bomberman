@@ -6,30 +6,28 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client.game.poweup;
+package no.eirikb.bomberman.client.service;
 
-import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import java.util.Map;
+import no.eirikb.bomberman.client.game.GameInfo;
 import no.eirikb.bomberman.client.game.Player;
+import no.eirikb.bomberman.client.game.Settings;
 import no.eirikb.bomberman.client.game.Sprite;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public abstract class Powerup extends Sprite {
+@RemoteServiceRelativePath("lobbyservice")
+public interface LobbyService extends RemoteService {
 
-    private Player player;
+    Player join(String nick);
 
-    public Powerup(String IMAGEURL, int spriteX, int spriteY) {
-        super(spriteX, spriteY);
-        setImage(new Image(IMAGEURL));
-    }
+    GameInfo createGame(String name, Sprite[][] sprites, Settings settings);
 
-    public void powerUp(Player player) {
-        this.player = player;
-    }
+    GameInfo joinGame(String gameName);
 
-    public Player getPlayer() {
-        return player;
-    }
+    Map<String, GameInfo> getGames();
 }

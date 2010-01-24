@@ -8,16 +8,25 @@
  */
 package no.eirikb.bomberman.client.game;
 
+import com.google.gwt.user.client.ui.Image;
+
 /**
  *
  * @author Eirik Brandtæg <eirikdb@gmail.com>
  */
 public class Box extends Sprite {
 
+    private transient final String IMAGEURL = "img/box.png";
+
     public Box() {
     }
 
     public Box(int spriteX, int spriteY) {
         super(spriteX, spriteY);
+    }
+
+    @Override
+    public void initImage() {
+        setImage(new Image(IMAGEURL));
     }
 }

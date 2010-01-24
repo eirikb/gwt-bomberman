@@ -2,7 +2,7 @@
 <module rename-to='bomberman'>
     <inherits name='com.google.gwt.user.User'/>
     <inherits name="de.novanic.eventservice.GWTEventService"/>
-    <inherits name="com.reveregroup.gwt.imagepreloader.ImagePreloader" />
+    <inherits name='com.google.gwt.widgetideas.GWTCanvas'/>
     <entry-point class='no.eirikb.bomberman.client.Bomberman'/>
     <source path='client'/>
 </module>

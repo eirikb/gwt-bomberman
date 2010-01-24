@@ -8,6 +8,7 @@
  */
 package no.eirikb.bomberman.client.ui.game;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import no.eirikb.bomberman.client.game.Sprite;
 
@@ -28,8 +29,15 @@ public class GamePanel extends AbsolutePanel {
         for (int x = 0; x < sprites.length; x++) {
             for (int y = 0; y < sprites[0].length; y++) {
                 Sprite sprite = sprites[x][y];
-                if (sprite != null && sprite.getImage() != null) {
-                    add(sprite.getImage(), x * imgSize, y * imgSize);
+                if (sprite != null) {
+                    if (sprite.getImage() == null) {
+                        sprite.initImage();
+                    }
+                    if (sprite.getImage() != null) {
+                        add(sprite.getImage(), x * imgSize, y * imgSize);
+                    } else {
+                        GWT.log("OMM GG no IMAGE", null);
+                    }
                 }
             }
         }

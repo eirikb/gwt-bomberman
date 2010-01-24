@@ -8,6 +8,7 @@
  */
 package no.eirikb.bomberman.client.game.builder;
 
+import no.eirikb.bomberman.client.game.Brick;
 import no.eirikb.bomberman.client.game.Settings;
 import no.eirikb.bomberman.client.game.Sprite;
 
@@ -26,7 +27,7 @@ public class BrickBuilder {
             final int spriteY = (int) (Math.random() * sprites[0].length);
             if (sprites[spriteX][spriteY] == null) {
 
-                final Sprite brick = new Sprite(spriteX, spriteY);
+                final Brick brick = new Brick(spriteX, spriteY);
                 sprites[spriteX][spriteY] = brick;
             }
         }

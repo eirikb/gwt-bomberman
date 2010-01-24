@@ -28,8 +28,8 @@ import no.eirikb.bomberman.client.game.Sprite;
 import no.eirikb.bomberman.client.game.builder.BoxBuilder;
 import no.eirikb.bomberman.client.game.builder.BrickBuilder;
 import no.eirikb.bomberman.client.game.builder.SpriteArrayBuilder;
-import no.eirikb.bomberman.client.service.BombermanService;
-import no.eirikb.bomberman.client.service.BombermanServiceAsync;
+import no.eirikb.bomberman.client.service.LobbyService;
+import no.eirikb.bomberman.client.service.LobbyServiceAsync;
 
 /**
  *
@@ -71,7 +71,7 @@ public class GameCreatePanel extends Composite {
             sprites = BoxBuilder.createBoxes(sprites);
             setInfoTextBackground("Building bricks...");
             sprites = BrickBuilder.createBricks(sprites);
-            final BombermanServiceAsync bombermanService = GWT.create(BombermanService.class);
+            final LobbyServiceAsync bombermanService = GWT.create(LobbyService.class);
             bombermanService.createGame(gameName, sprites, Settings.getInstance(), new AsyncCallback<GameInfo>() {
 
                 public void onFailure(Throwable caught) {

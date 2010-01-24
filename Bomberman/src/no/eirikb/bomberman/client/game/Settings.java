@@ -16,6 +16,9 @@ import java.io.Serializable;
  */
 public class Settings implements Serializable {
 
+    public static void inject(Settings settings) {
+        INSTANCE = settings;
+    }
     private int mapWidth = 656;
     private int mapHeight = 496;
     private double playerSpeed = 3;
@@ -27,8 +30,8 @@ public class Settings implements Serializable {
     private int sleepTime = 50;
     private int percentagePowerup = 40;
     private int imgSize = 16;
-    private int maxPlayers = 2;
-    private static final Settings INSTANCE = new Settings();
+    private int maxPlayers = 1;
+    private static Settings INSTANCE = new Settings();
 
     private Settings() {
     }

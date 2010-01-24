@@ -8,6 +8,7 @@
  */
 package no.eirikb.bomberman.client.game.handler;
 
+import com.google.gwt.user.client.ui.Image;
 import no.eirikb.bomberman.client.ui.game.GamePanel;
 import no.eirikb.bomberman.client.game.Bomb;
 import no.eirikb.bomberman.client.game.Game;
@@ -22,14 +23,12 @@ import no.eirikb.bomberman.client.game.handler.helper.WalkHandler;
  */
 public class PlayerHandler extends Handler {
 
-    private int imgSize;
     private final int XDIFF = 0;
     private final int YDIFF = -4;
     private WalkHandler walkHandler;
 
     public PlayerHandler(Game game, GamePanel gamePanel) {
         super(game, gamePanel);
-        imgSize = game.getImgSize();
         walkHandler = new WalkHandler();
         for (Player player : game.getPlayers()) {
             drawPlayer(player);
@@ -37,6 +36,7 @@ public class PlayerHandler extends Handler {
     }
 
     private void drawPlayer(Player player) {
+        player.setImage(new Image("img/md1.png"));
         gamePanel.add(player.getImage(), (int) (player.getX() + XDIFF), (int) (player.getY() + YDIFF));
     }
 

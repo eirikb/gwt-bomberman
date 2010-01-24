@@ -6,21 +6,20 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client.game.builder;
+package no.eirikb.bomberman.client.resources;
 
-import com.google.gwt.user.client.ui.Image;
-import no.eirikb.bomberman.client.game.Player;
-import no.eirikb.bomberman.client.game.Settings;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.ClientBundle.Source;
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.resources.client.ImageResource.ImageOptions;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public class PlayerBuilder {
+public interface GameResouces extends ClientBundle {
 
-    private final static String PLAYERURL = "img/md1.png";
-
-    public static Player createPlayer(Settings settings, String nick) {
-        return new Player(nick, settings.getPlayerSpeed(), settings.getBombPower(), settings.getPlayerBombStartAmount());
-    }
+    @Source("md1.png")
+    @ImageOptions(flipRtl = true)
+    ImageResource manDown1();
 }

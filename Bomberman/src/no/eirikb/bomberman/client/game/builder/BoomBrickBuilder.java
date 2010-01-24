@@ -8,7 +8,6 @@
  */
 package no.eirikb.bomberman.client.game.builder;
 
-import com.google.gwt.user.client.ui.Image;
 import no.eirikb.bomberman.client.game.Animation;
 import no.eirikb.bomberman.client.game.BoomBrick;
 import no.eirikb.bomberman.client.game.Sprite;
@@ -19,10 +18,8 @@ import no.eirikb.bomberman.client.game.Sprite;
  */
 public class BoomBrickBuilder {
 
-    private static final String BOOMBRICKURL = "img/boombrick1.png";
-
     public static BoomBrick createBoomBrick(Sprite brick) {
-        BoomBrick boomBrick = new BoomBrick(new Image(BOOMBRICKURL), brick.getSpriteX(), brick.getSpriteY());
+        BoomBrick boomBrick = new BoomBrick(brick.getSpriteX(), brick.getSpriteY());
         boomBrick.setAnimation(new Animation(2, 10));
         return boomBrick;
     }

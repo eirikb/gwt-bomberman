@@ -8,6 +8,7 @@
  */
 package no.eirikb.bomberman.client.game.builder;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Image;
 import no.eirikb.bomberman.client.game.Bomb;
 import no.eirikb.bomberman.client.game.Player;
@@ -21,15 +22,13 @@ import no.eirikb.bomberman.client.game.Way;
  */
 public class BombBuilder {
 
-    private static final String BOMBURL = "img/bomb1.png";
-
     public static Bomb createBomb(Sprite[][] sprites, Player player) {
         Settings settings = Settings.getInstance();
         if (player.getBombAbount() > 0) {
             Way way = player.getWay() != Way.NONE ? player.getWay() : player.getLastWay();
             if (way != null) {
-                int spriteX = player.getSpriteX();
-                int spriteY = player.getSpriteY();
+                int spriteX = (int) (player.getX() / settings.getImgSize());
+                int spriteY = (int) (player.getY() / settings.getImgSize());
                 switch (way) {
                     case LEFT:
                         spriteX += 1;
@@ -39,10 +38,11 @@ public class BombBuilder {
                         break;
                 }
 
-                Bomb bomb = new Bomb(new Image(BOMBURL), spriteX, spriteY, player, settings.getBombTimer(), player.getBombPower());
+                Bomb bomb = new Bomb(spriteX, spriteY, player, settings.getBombTimer(), player.getBombPower());
                 if (bomb != null && bomb.getSpriteX() >= 0 && bomb.getSpriteY() >= 0
                         && bomb.getSpriteX() < sprites.length && bomb.getSpriteY() < sprites[0].length
                         && sprites[bomb.getSpriteX()][bomb.getSpriteY()] == null) {
+                    GWT.log("X: " + bomb.getSpriteX() + ". Y: " + bomb.getSpriteY(), null);
                     return bomb;
                 }
             }

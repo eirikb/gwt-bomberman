@@ -14,6 +14,7 @@ package no.eirikb.bomberman.client.game;
  */
 public class Player extends Sprite {
 
+    private transient final String IMAGEURL = "img/md1.png";
     private String nick;
     private Way way;
     private Way lastWay;
@@ -26,19 +27,9 @@ public class Player extends Sprite {
     public Player() {
     }
 
-    public Player(String nick, double speed, int bombPower, int bombAbount) {
-        this.nick = nick;
-        this.speed = speed;
-        this.bombPower = bombPower;
-        this.bombAbount = bombAbount;
-        way = Way.NONE;
-    }
-
     public Player(String nick) {
         this.nick = nick;
         way = Way.NONE;
-        speed = 2;
-        bombPower = 3;
     }
 
     public double getX() {

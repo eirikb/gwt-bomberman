@@ -19,14 +19,8 @@ public class Sprite implements Serializable {
 
     private int spriteX;
     private int spriteY;
-    transient Image image;
+    private transient Image image;
     protected Animation animation;
-
-    public Sprite(Image image, int spriteX, int spriteY) {
-        this.image = image;
-        this.spriteX = spriteX;
-        this.spriteY = spriteY;
-    }
 
     public Sprite(int spriteX, int spriteY) {
         this.spriteX = spriteX;
@@ -62,5 +56,12 @@ public class Sprite implements Serializable {
 
     public void setSpriteY(int y) {
         this.spriteY = y;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    public void initImage() {
     }
 }

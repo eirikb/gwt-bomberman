@@ -23,8 +23,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import no.eirikb.bomberman.client.game.Player;
-import no.eirikb.bomberman.client.service.BombermanService;
-import no.eirikb.bomberman.client.service.BombermanServiceAsync;
+import no.eirikb.bomberman.client.service.LobbyService;
+import no.eirikb.bomberman.client.service.LobbyServiceAsync;
 
 /**
  *
@@ -65,7 +65,7 @@ public class LoginPanel extends Composite {
             DeferredCommand.addCommand(new Command() {
 
                 public void execute() {
-                    BombermanServiceAsync bombermanService = GWT.create(BombermanService.class);
+                    LobbyServiceAsync bombermanService = GWT.create(LobbyService.class);
                     bombermanService.join(nickBox.getText(), new AsyncCallback<Player>() {
 
                         public void onFailure(Throwable thrwbl) {

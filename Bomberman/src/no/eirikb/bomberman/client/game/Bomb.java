@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.Image;
  */
 public class Bomb extends Sprite {
 
+    private transient final String IMAGEURL = "img/bomb1.png";
     private int explodeTime;
     private int timer;
     private int power;
@@ -24,12 +25,14 @@ public class Bomb extends Sprite {
     public Bomb() {
     }
 
-    public Bomb(Image image, int spriteX, int spriteY, Player owner, int explodeTime, int power) {
-        super(image, spriteX, spriteY);
+    public Bomb(int spriteX, int spriteY, Player owner, int explodeTime, int power) {
+        super(spriteX, spriteY);
         this.owner = owner;
         this.explodeTime = explodeTime;
         this.power = power;
+        setImage(new Image(IMAGEURL));
         setAnimation(new Animation(3, 10));
+        setImage(new Image(IMAGEURL));
     }
 
     public int getPower() {

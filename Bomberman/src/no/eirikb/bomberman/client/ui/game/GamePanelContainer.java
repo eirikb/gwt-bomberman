@@ -8,12 +8,15 @@
  */
 package no.eirikb.bomberman.client.ui.game;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -29,7 +32,6 @@ import no.eirikb.bomberman.client.game.Settings;
 import no.eirikb.bomberman.client.game.Sprite;
 import no.eirikb.bomberman.client.game.Way;
 import no.eirikb.bomberman.client.game.builder.BombBuilder;
-import no.eirikb.bomberman.client.game.builder.PlayerBuilder;
 import no.eirikb.bomberman.client.game.handler.GameHandler;
 
 /**
@@ -89,17 +91,16 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
                 }
             }
         });
-
-        textBox.setFocus(true);
+        add(textBox);
         startGame();
     }
 
     private void startGame() {
+        Settings.inject(game.getSettings());
         Settings settings = Settings.getInstance();
         gamePanel = new GamePanel(game.getImgSize(), settings.getMapWidth(), settings.getMapHeight());
         gamePanel.getElement().getStyle().setBackgroundColor("#abcdef");
         gameHandler = new GameHandler(game, gamePanel);
-
         final GamePanelContainer gamePanelContainer = this;
         useKeyHack = new CheckBox("Use KeyHack");
         useKeyHack.setValue(true);
@@ -127,6 +128,12 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
         gameHandler.start();
         add(gamePanel);
         killCheck();
+        DeferredCommand.addCommand(new Command() {
+
+            public void execute() {
+                textBox.setFocus(true);
+            }
+        });
     }
 
     public void arrowKeyDown(KeyDownEvent event) {
