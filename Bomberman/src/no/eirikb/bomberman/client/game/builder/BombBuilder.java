@@ -8,8 +8,6 @@
  */
 package no.eirikb.bomberman.client.game.builder;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.ui.Image;
 import no.eirikb.bomberman.client.game.Bomb;
 import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.game.Settings;
@@ -42,7 +40,6 @@ public class BombBuilder {
                 if (bomb != null && bomb.getSpriteX() >= 0 && bomb.getSpriteY() >= 0
                         && bomb.getSpriteX() < sprites.length && bomb.getSpriteY() < sprites[0].length
                         && sprites[bomb.getSpriteX()][bomb.getSpriteY()] == null) {
-                    GWT.log("X: " + bomb.getSpriteX() + ". Y: " + bomb.getSpriteY(), null);
                     return bomb;
                 }
             }

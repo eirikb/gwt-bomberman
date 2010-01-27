@@ -8,11 +8,12 @@
  */
 package no.eirikb.bomberman.client.game.handler;
 
+import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.ui.game.GamePanel;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.GameListener;
 import no.eirikb.bomberman.client.game.Sprite;
-import no.eirikb.bomberman.client.game.poweup.Powerup;
+import no.eirikb.bomberman.client.game.powerup.Powerup;
 
 /**
  *
@@ -22,7 +23,6 @@ public class PowerupHandler extends Handler implements GameListener {
 
     public PowerupHandler(Game game, GamePanel gamePanel) {
         super(game, gamePanel);
-        game.addGameListener(this);
     }
 
     @Override
@@ -38,6 +38,14 @@ public class PowerupHandler extends Handler implements GameListener {
     public void removeSprite(Sprite sprite) {
         if (sprite instanceof Powerup) {
             gamePanel.remove(sprite.getImage());
+        }
+    }
+
+    public void bump(Player player, Sprite sprite) {
+        if (sprite instanceof Powerup) {
+            Powerup powerup = (Powerup) sprite;
+            powerup.powerUp(player);
+            game.removePowerup(powerup);
         }
     }
 }

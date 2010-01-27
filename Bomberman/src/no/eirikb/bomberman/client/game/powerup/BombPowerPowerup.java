@@ -6,19 +6,25 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client.event.game;
+package no.eirikb.bomberman.client.game.powerup;
 
-import de.novanic.eventservice.client.event.listener.RemoteEventListener;
+import no.eirikb.bomberman.client.game.Player;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public interface GameListener extends RemoteEventListener {
+public class BombPowerPowerup extends Powerup {
 
-    void playerStartWalkingEvent(PlayerStartWalkingEvent event);
+    private final static String IMAGEURL = "img/pu1.png";
 
-    void playerStopWalkingEvent(PlayerStopWalkingEvent event);
+    public BombPowerPowerup(int spriteX, int spriteY) {
+        super(IMAGEURL, spriteX, spriteY);
+    }
 
-    void playerPlaceBombEvent(PlayerPlaceBombEvent event);
+    @Override
+    public void powerUp(Player player) {
+        super.powerUp(player);
+        player.setBombPower(player.getBombPower() + 1);
+    }
 }

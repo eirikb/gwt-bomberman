@@ -8,11 +8,13 @@
  */
 package no.eirikb.bomberman.client.game;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Eirik Brandtæg <eirikdb@gmail.com>
  */
-public enum Way {
+public enum Way implements Serializable {
 
     NONE, LEFT, UP, RIGHT, DOWN;
 }

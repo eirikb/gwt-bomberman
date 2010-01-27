@@ -12,8 +12,13 @@ import de.novanic.eventservice.client.event.domain.Domain;
 import de.novanic.eventservice.client.event.domain.DomainFactory;
 import de.novanic.eventservice.service.RemoteEventServiceServlet;
 import no.eirikb.bomberman.client.event.game.GameEvent;
+import no.eirikb.bomberman.client.event.game.PlayerPlaceBombEvent;
+import no.eirikb.bomberman.client.event.game.PlayerStartWalkingEvent;
+import no.eirikb.bomberman.client.event.game.PlayerStopWalkingEvent;
+import no.eirikb.bomberman.client.game.Bomb;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.Player;
+import no.eirikb.bomberman.client.game.Way;
 import no.eirikb.bomberman.client.service.GameService;
 
 /**
@@ -32,6 +37,7 @@ public class GameServer extends RemoteEventServiceServlet implements GameService
     public Game getGame(String name) {
         Player player = gameHandler.getPlayer((String) getThreadLocalRequest().getSession().getAttribute("nick"));
         Game game = gameHandler.getGame(name);
+        gameHandler.linkPlayerToGame(player, game);
         if (player != null && game != null) {
             for (Player p : game.getPlayers()) {
                 if (p.getNick().equals(player.getNick())) {
@@ -40,5 +46,23 @@ public class GameServer extends RemoteEventServiceServlet implements GameService
             }
         }
         return null;
+    }
+
+    public void startWalking(Way way) {
+        Player player = gameHandler.getPlayer((String) getThreadLocalRequest().getSession().getAttribute("nick"));
+        Game game = gameHandler.getGameByPlayer(player);
+        addEvent(GAME_DOMAIN, new PlayerStartWalkingEvent(game.getGameInfo().getName(), player.getNick(), way));
+    }
+
+    public void stopWalking(double x, double y) {
+        Player player = gameHandler.getPlayer((String) getThreadLocalRequest().getSession().getAttribute("nick"));
+        Game game = gameHandler.getGameByPlayer(player);
+        addEvent(GAME_DOMAIN, new PlayerStopWalkingEvent(game.getGameInfo().getName(), player.getNick(), x, y));
+    }
+
+    public void addBomb(Bomb bomb) {
+        Player player = gameHandler.getPlayer((String) getThreadLocalRequest().getSession().getAttribute("nick"));
+        Game game = gameHandler.getGameByPlayer(player);
+        addEvent(GAME_DOMAIN, new PlayerPlaceBombEvent(game.getGameInfo().getName(), player.getNick(), bomb));
     }
 }

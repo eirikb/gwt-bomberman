@@ -8,9 +8,9 @@
  */
 package no.eirikb.bomberman.client.game.builder;
 
-import no.eirikb.bomberman.client.game.poweup.BombAmountPowerup;
-import no.eirikb.bomberman.client.game.poweup.BombPowerPowerup;
-import no.eirikb.bomberman.client.game.poweup.Powerup;
+import no.eirikb.bomberman.client.game.powerup.BombAmountPowerup;
+import no.eirikb.bomberman.client.game.powerup.BombPowerPowerup;
+import no.eirikb.bomberman.client.game.powerup.Powerup;
 
 /**
  *

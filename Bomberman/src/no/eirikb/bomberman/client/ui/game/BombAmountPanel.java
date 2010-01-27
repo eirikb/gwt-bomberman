@@ -15,8 +15,8 @@ import no.eirikb.bomberman.client.game.Bomb;
 import no.eirikb.bomberman.client.game.GameListener;
 import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.game.Sprite;
-import no.eirikb.bomberman.client.game.poweup.BombAmountPowerup;
-import no.eirikb.bomberman.client.game.poweup.Powerup;
+import no.eirikb.bomberman.client.game.powerup.BombAmountPowerup;
+import no.eirikb.bomberman.client.game.powerup.Powerup;
 
 /**
  *
@@ -61,5 +61,8 @@ public class BombAmountPanel extends HorizontalPanel implements GameListener {
                 add(new Image(BOMBURL));
             }
         }
+    }
+
+    public void bump(Player player, Sprite sprite) {
     }
 }

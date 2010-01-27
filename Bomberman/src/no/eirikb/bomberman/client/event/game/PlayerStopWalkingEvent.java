@@ -8,31 +8,29 @@
  */
 package no.eirikb.bomberman.client.event.game;
 
-import de.novanic.eventservice.client.event.Event;
-
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public class GameEvent implements Event {
+public class PlayerStopWalkingEvent extends GameEvent {
 
-    public static final String GAME_DOMAIN = "domain_game";
-    private String gameName;
-    private String playerNick;
+    private double x;
+    private double y;
 
-    public GameEvent() {
+    public PlayerStopWalkingEvent() {
     }
 
-    public GameEvent(String gameName, String playerNick) {
-        this.gameName = gameName;
-        this.playerNick = playerNick;
+    public PlayerStopWalkingEvent(String gameName, String playerName, double x, double y) {
+        super(gameName, playerName);
+        this.x = x;
+        this.y = y;
     }
 
-    public String getGameName() {
-        return gameName;
+    public double getX() {
+        return x;
     }
 
-    public String getPlayerNick() {
-        return playerNick;
+    public double getY() {
+        return y;
     }
 }

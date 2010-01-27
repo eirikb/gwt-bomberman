@@ -17,6 +17,23 @@ import de.novanic.eventservice.client.event.Event;
 public class GameListenerAdapter implements GameListener {
 
     public void apply(Event anEvent) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (anEvent instanceof GameEvent) {
+            if (anEvent instanceof PlayerStartWalkingEvent) {
+                playerStartWalkingEvent((PlayerStartWalkingEvent) anEvent);
+            } else if (anEvent instanceof PlayerStopWalkingEvent) {
+                playerStopWalkingEvent((PlayerStopWalkingEvent) anEvent);
+            } else if (anEvent instanceof PlayerPlaceBombEvent) {
+                playerPlaceBombEvent((PlayerPlaceBombEvent) anEvent);
+            }
+        }
+    }
+
+    public void playerStartWalkingEvent(PlayerStartWalkingEvent event) {
+    }
+
+    public void playerStopWalkingEvent(PlayerStopWalkingEvent event) {
+    }
+
+    public void playerPlaceBombEvent(PlayerPlaceBombEvent event) {
     }
 }

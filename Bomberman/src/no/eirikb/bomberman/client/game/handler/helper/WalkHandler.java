@@ -8,10 +8,12 @@
  */
 package no.eirikb.bomberman.client.game.handler.helper;
 
+import com.google.gwt.core.client.GWT;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.game.Sprite;
 import no.eirikb.bomberman.client.game.Way;
+import no.eirikb.bomberman.client.game.powerup.Powerup;
 
 /**
  *
@@ -88,9 +90,21 @@ public class WalkHandler {
                 sprite2 = sprites[(int) ((newX + imgSize - 1) / imgSize)][spriteY + 1];
                 break;
         }
-        if (sprite1 == null && sprite2 == null) {
+        if (canWalk(sprite1) == null && canWalk(sprite2) == null) {
             if (way != player.getWay()) {
                 snapTofloor();
+            } else {
+                if (sprite1 == sprite2) {
+                    if (sprite1 instanceof Powerup) {
+                        game.bump(player, sprite1);
+                    }
+                } else {
+                    if (sprite1 instanceof Powerup) {
+                        game.bump(player, sprite1);
+                    } else if (sprite2 instanceof Powerup) {
+                        game.bump(player, sprite1);
+                    }
+                }
             }
             return true;
         } else {
@@ -102,10 +116,10 @@ public class WalkHandler {
         if (snapToSprite()) {
             return true;
         } else {
-            if (sprite1 != null && sprite2 != null) {
+            if (canWalk(sprite1) != null && canWalk(sprite2) != null) {
                 return false;
             } else {
-                Sprite sprite = sprite1 != null ? sprite1 : sprite2;
+                Sprite sprite = canWalk(sprite1) != null ? sprite1 : sprite2;
                 switch (way) {
                     case LEFT:
                     case RIGHT:
@@ -121,7 +135,7 @@ public class WalkHandler {
     }
 
     private boolean snapToSprite() {
-        Sprite snap = sprite1 != null ? sprite1 : sprite2;
+        Sprite snap = canWalk(sprite1) != null ? sprite1 : sprite2;
         switch (way) {
             case LEFT:
                 newX = snap.getSpriteX() * imgSize + imgSize;
@@ -180,5 +194,9 @@ public class WalkHandler {
                     break;
             }
         }
+    }
+
+    private Sprite canWalk(Sprite sprite) {
+        return sprite == null || sprite.getzAxis() < player.getzAxis() ? null : sprite;
     }
 }

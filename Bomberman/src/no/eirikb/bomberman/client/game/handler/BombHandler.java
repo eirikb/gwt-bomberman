@@ -10,6 +10,7 @@ package no.eirikb.bomberman.client.game.handler;
 
 import java.util.ArrayList;
 import java.util.List;
+import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.ui.game.GamePanel;
 import no.eirikb.bomberman.client.game.Bomb;
 import no.eirikb.bomberman.client.game.Game;
@@ -56,5 +57,8 @@ public class BombHandler extends Handler {
     }
 
     public void removeSprite(Sprite sprite) {
+    }
+
+    public void bump(Player player, Sprite sprite) {
     }
 }

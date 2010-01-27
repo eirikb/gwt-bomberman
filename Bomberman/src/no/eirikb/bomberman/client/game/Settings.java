@@ -30,7 +30,7 @@ public class Settings implements Serializable {
     private int sleepTime = 50;
     private int percentagePowerup = 40;
     private int imgSize = 16;
-    private int maxPlayers = 1;
+    private int maxPlayers = 2;
     private static Settings INSTANCE = new Settings();
 
     private Settings() {

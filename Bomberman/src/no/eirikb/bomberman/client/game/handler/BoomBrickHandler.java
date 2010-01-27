@@ -10,6 +10,7 @@ package no.eirikb.bomberman.client.game.handler;
 
 import java.util.ArrayList;
 import java.util.List;
+import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.ui.game.GamePanel;
 import no.eirikb.bomberman.client.game.Bomb;
 import no.eirikb.bomberman.client.game.BoomBrick;
@@ -20,7 +21,7 @@ import no.eirikb.bomberman.client.game.Settings;
 import no.eirikb.bomberman.client.game.Sprite;
 import no.eirikb.bomberman.client.game.builder.BoomBrickBuilder;
 import no.eirikb.bomberman.client.game.builder.PowerupBuilder;
-import no.eirikb.bomberman.client.game.poweup.Powerup;
+import no.eirikb.bomberman.client.game.powerup.Powerup;
 
 /**
  *
@@ -90,5 +91,8 @@ public class BoomBrickHandler extends Handler {
                 bomb.forceExplode();
             }
         }
+    }
+
+    public void bump(Player player, Sprite sprite) {
     }
 }

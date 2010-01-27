@@ -21,6 +21,7 @@ public class Sprite implements Serializable {
     private int spriteY;
     private transient Image image;
     protected Animation animation;
+    private int zAxis = 1;
 
     public Sprite(int spriteX, int spriteY) {
         this.spriteX = spriteX;
@@ -63,5 +64,13 @@ public class Sprite implements Serializable {
     }
 
     public void initImage() {
+    }
+
+    public int getzAxis() {
+        return zAxis;
+    }
+
+    public void setzAxis(int zAxis) {
+        this.zAxis = zAxis;
     }
 }

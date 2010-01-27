@@ -10,7 +10,9 @@ package no.eirikb.bomberman.client.service;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import no.eirikb.bomberman.client.game.Bomb;
 import no.eirikb.bomberman.client.game.Game;
+import no.eirikb.bomberman.client.game.Way;
 
 /**
  *
@@ -20,4 +22,10 @@ import no.eirikb.bomberman.client.game.Game;
 public interface GameService extends RemoteService {
 
     Game getGame(String name);
+
+    void startWalking(Way way);
+
+    void stopWalking(double x, double y);
+
+    void addBomb(Bomb bomb);
 }

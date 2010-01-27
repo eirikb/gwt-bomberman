@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import no.eirikb.bomberman.client.game.poweup.Powerup;
+import no.eirikb.bomberman.client.game.powerup.Powerup;
 
 /**
  *
@@ -176,5 +176,17 @@ public class Game implements Serializable {
 
     public GameInfo getGameInfo() {
         return gameInfo;
+    }
+
+    public void bump(Player player, Sprite sprite) {
+        if (sprites[sprite.getSpriteX()][sprite.getSpriteY()] != null) {
+            for (GameListener gameListener : gameListeners) {
+                gameListener.bump(player, sprite);
+            }
+        }
+    }
+
+    public Player getPlayer(String nick) {
+        return players.get(nick);
     }
 }

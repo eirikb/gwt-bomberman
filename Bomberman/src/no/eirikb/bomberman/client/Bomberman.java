@@ -1,5 +1,6 @@
 package no.eirikb.bomberman.client;
 
+import no.eirikb.bomberman.client.event.game.PlayerPlaceBombEvent;
 import no.eirikb.bomberman.client.event.lobby.GameCreateEvent;
 import no.eirikb.bomberman.client.event.lobby.PlayerJoinEvent;
 import no.eirikb.bomberman.client.event.lobby.PlayerJoinGameEvent;
@@ -16,6 +17,8 @@ import de.novanic.eventservice.client.event.domain.Domain;
 import de.novanic.eventservice.client.event.domain.DomainFactory;
 import no.eirikb.bomberman.client.event.game.GameEvent;
 import no.eirikb.bomberman.client.event.game.GameListenerAdapter;
+import no.eirikb.bomberman.client.event.game.PlayerStartWalkingEvent;
+import no.eirikb.bomberman.client.event.game.PlayerStopWalkingEvent;
 import no.eirikb.bomberman.client.event.lobby.LobbyEvent;
 import no.eirikb.bomberman.client.event.lobby.LobbyListenerAdapter;
 import no.eirikb.bomberman.client.game.Game;
@@ -49,8 +52,8 @@ public class Bomberman implements EntryPoint {
     private static final Domain LOBBY_DOMAIN = DomainFactory.getDomain(LobbyEvent.LOBBY_DOMAIN);
 
     public void onModuleLoad() {
-        //showLoginPanel();
-        hack();
+        showLoginPanel();
+        //hack();
     }
 
     // TODO REMOVE!
@@ -71,6 +74,7 @@ public class Bomberman implements EntryPoint {
                     Sprite[][] sprites = SpriteArrayBuilder.createSprites();
                     sprites = BoxBuilder.createBoxes(sprites);
                     sprites = BrickBuilder.createBricks(sprites);
+                    Settings.getInstance().setMaxPlayers(1);
                     lobbyService.createGame(random, sprites, Settings.getInstance(), new AsyncCallback<GameInfo>() {
 
                         public void onFailure(Throwable caught) {
@@ -173,6 +177,7 @@ public class Bomberman implements EntryPoint {
                             gamePanel.start();
                             RootPanel.get().remove(loadingPanel);
                             RootPanel.get().add(gamePanel);
+                            remoteEventService.addListener(GAME_DOMAIN, new DefaultGameListener());
                         }
                     });
                     RootPanel.get().add(loadingPanel);
@@ -186,6 +191,21 @@ public class Bomberman implements EntryPoint {
     }
 
     private class DefaultGameListener extends GameListenerAdapter {
+
+        @Override
+        public void playerStartWalkingEvent(PlayerStartWalkingEvent event) {
+            gamePanel.playerStartWalkingEvent(event);
+        }
+
+        @Override
+        public void playerStopWalkingEvent(PlayerStopWalkingEvent event) {
+            gamePanel.playerStopWalkingEvent(event);
+        }
+
+        @Override
+        public void playerPlaceBombEvent(PlayerPlaceBombEvent event) {
+            gamePanel.playerPlaceBombEvent(event);
+        }
     }
 
     private class DefaultLobbyListener extends LobbyListenerAdapter {

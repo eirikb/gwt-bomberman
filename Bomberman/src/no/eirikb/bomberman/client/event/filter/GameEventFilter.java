@@ -31,7 +31,7 @@ public class GameEventFilter implements EventFilter {
     public boolean match(Event event) {
         if (event instanceof GameEvent) {
             GameEvent gameEvent = (GameEvent) event;
-            return gameEvent.getGame() != null && game != null && gameEvent.getGame().getGameInfo().getName().equals(game.getGameInfo().getName());
+            return gameEvent.getGameName() != null && game != null && gameEvent.getGameName().equals(game.getGameInfo().getName());
         }
         return true;
     }

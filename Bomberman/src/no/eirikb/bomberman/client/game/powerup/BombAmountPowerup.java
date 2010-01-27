@@ -6,7 +6,7 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client.game.poweup;
+package no.eirikb.bomberman.client.game.powerup;
 
 import no.eirikb.bomberman.client.game.Player;
 

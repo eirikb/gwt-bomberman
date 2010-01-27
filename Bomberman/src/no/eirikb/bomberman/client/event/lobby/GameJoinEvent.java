@@ -6,30 +6,28 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client.game.poweup;
+package no.eirikb.bomberman.client.event.lobby;
 
-import com.google.gwt.user.client.ui.Image;
+import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.Player;
-import no.eirikb.bomberman.client.game.Sprite;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public abstract class Powerup extends Sprite {
+public class GameJoinEvent extends LobbyEvent {
 
-    private Player player;
+    private Game game;
 
-    public Powerup(String IMAGEURL, int spriteX, int spriteY) {
-        super(spriteX, spriteY);
-        setImage(new Image(IMAGEURL));
+    public GameJoinEvent() {
     }
 
-    public void powerUp(Player player) {
-        this.player = player;
+    public GameJoinEvent(Player player, Game game) {
+        super(player);
+        this.game = game;
     }
 
-    public Player getPlayer() {
-        return player;
+    public Game getGame() {
+        return game;
     }
 }

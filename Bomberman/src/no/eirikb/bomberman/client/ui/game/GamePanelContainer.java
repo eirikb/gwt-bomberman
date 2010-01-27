@@ -17,6 +17,7 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -24,6 +25,9 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import no.eirikb.bomberman.client.event.game.PlayerPlaceBombEvent;
+import no.eirikb.bomberman.client.event.game.PlayerStartWalkingEvent;
+import no.eirikb.bomberman.client.event.game.PlayerStopWalkingEvent;
 import no.eirikb.bomberman.client.game.Bomb;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.GameListener;
@@ -33,6 +37,8 @@ import no.eirikb.bomberman.client.game.Sprite;
 import no.eirikb.bomberman.client.game.Way;
 import no.eirikb.bomberman.client.game.builder.BombBuilder;
 import no.eirikb.bomberman.client.game.handler.GameHandler;
+import no.eirikb.bomberman.client.service.GameService;
+import no.eirikb.bomberman.client.service.GameServiceAsync;
 
 /**
  *
@@ -47,10 +53,12 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
     private GamePanel gamePanel;
     private GameHandler gameHandler;
     private CheckBox useKeyHack;
+    private GameServiceAsync gameService;
 
     public GamePanelContainer(Game game, Player player) {
         this.game = game;
         this.player = player;
+        gameService = GWT.create(GameService.class);
     }
 
     public void start() {
@@ -70,6 +78,14 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
                     Bomb bomb = BombBuilder.createBomb(game.getSprites(), player);
                     if (bomb != null) {
                         game.addBomb(bomb);
+                        gameService.addBomb(bomb, new AsyncCallback() {
+
+                            public void onFailure(Throwable caught) {
+                            }
+
+                            public void onSuccess(Object result) {
+                            }
+                        });
                     }
                     if (keyHack != null) {
                         keyHack.setAnotherKeyPresses(true);
@@ -146,10 +162,26 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
         } else if (event.isDownArrow()) {
             player.setWay(Way.DOWN);
         }
+        gameService.startWalking(player.getWay(), new AsyncCallback() {
+
+            public void onFailure(Throwable caught) {
+            }
+
+            public void onSuccess(Object result) {
+            }
+        });
     }
 
     public void arrowKeyUp() {
         player.setWay(Way.NONE);
+        gameService.stopWalking(player.getX(), player.getY(), new AsyncCallback() {
+
+            public void onFailure(Throwable caught) {
+            }
+
+            public void onSuccess(Object result) {
+            }
+        });
     }
 
     private void killCheck() {
@@ -190,11 +222,35 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
                     }
                 }
             }
+
+            public void bump(Player player, Sprite sprite) {
+            }
         });
 
     }
 
     public void callback() {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void playerStartWalkingEvent(PlayerStartWalkingEvent event) {
+        Player p = game.getPlayer(event.getPlayerNick());
+        if (p != null) {
+            p.setWay(event.getWay());
+        }
+    }
+
+    public void playerStopWalkingEvent(PlayerStopWalkingEvent event) {
+        Player p = game.getPlayer(event.getPlayerNick());
+        if (p != null) {
+            p.setWay(Way.NONE);
+            p.setX(event.getX());
+            p.setY(event.getY());
+        }
+    }
+
+    public void playerPlaceBombEvent(PlayerPlaceBombEvent event) {
+        Bomb b = event.getBomb();
+        game.addBomb(new Bomb(b.getSpriteX(), b.getSpriteY(), game.getPlayer(event.getPlayerNick()), Settings.getInstance().getBombTimer(), b.getPower()));
     }
 }

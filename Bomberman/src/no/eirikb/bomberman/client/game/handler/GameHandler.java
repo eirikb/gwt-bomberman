@@ -8,7 +8,6 @@
  */
 package no.eirikb.bomberman.client.game.handler;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Timer;
 import java.util.ArrayList;
 import java.util.List;

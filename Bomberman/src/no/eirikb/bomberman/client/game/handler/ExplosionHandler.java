@@ -99,4 +99,7 @@ public class ExplosionHandler extends Handler {
             }
         }
     }
+
+    public void bump(Player player, Sprite sprite) {
+    }
 }

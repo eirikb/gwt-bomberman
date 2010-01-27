@@ -24,11 +24,13 @@ public class GameHandler {
     private Map<String, Player> players;
     private Map<String, Game> games;
     private Map<String, GameInfo> gameInfos;
+    private Map<Player, Game> playerGames;
 
     private GameHandler() {
         players = new HashMap<String, Player>();
         games = new HashMap<String, Game>();
         gameInfos = new HashMap<String, GameInfo>();
+        playerGames = new HashMap<Player, Game>();
     }
 
     public Player getPlayer(String nick) {
@@ -54,5 +56,13 @@ public class GameHandler {
 
     public static GameHandler getInstance() {
         return INSTANCE;
+    }
+
+    public void linkPlayerToGame(Player player, Game game) {
+        playerGames.put(player, game);
+    }
+
+    public Game getGameByPlayer(Player player) {
+        return playerGames.get(player);
     }
 }

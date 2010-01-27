@@ -8,6 +8,7 @@
  */
 package no.eirikb.bomberman.client.game.handler;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Image;
 import no.eirikb.bomberman.client.ui.game.GamePanel;
 import no.eirikb.bomberman.client.game.Bomb;
@@ -84,5 +85,8 @@ public class PlayerHandler extends Handler {
             Bomb bomb = (Bomb) sprite;
             bomb.getOwner().setBombAbount(bomb.getOwner().getBombAbount() + 1);
         }
+    }
+
+    public void bump(Player player, Sprite sprite) {
     }
 }
