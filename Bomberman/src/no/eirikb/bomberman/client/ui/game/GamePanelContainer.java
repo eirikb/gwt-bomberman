@@ -235,14 +235,14 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
 
     public void playerStartWalkingEvent(PlayerStartWalkingEvent event) {
         Player p = game.getPlayer(event.getPlayerNick());
-        if (p != null) {
+        if (p != null && p != player) {
             p.setWay(event.getWay());
         }
     }
 
     public void playerStopWalkingEvent(PlayerStopWalkingEvent event) {
         Player p = game.getPlayer(event.getPlayerNick());
-        if (p != null) {
+        if (p != null && p != player) {
             p.setWay(Way.NONE);
             p.setX(event.getX());
             p.setY(event.getY());
@@ -251,6 +251,9 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
 
     public void playerPlaceBombEvent(PlayerPlaceBombEvent event) {
         Bomb b = event.getBomb();
-        game.addBomb(new Bomb(b.getSpriteX(), b.getSpriteY(), game.getPlayer(event.getPlayerNick()), Settings.getInstance().getBombTimer(), b.getPower()));
+        Player p = game.getPlayer(event.getPlayerNick());
+        if (p != null && p != player) {
+            game.addBomb(new Bomb(b.getSpriteX(), b.getSpriteY(), p, Settings.getInstance().getBombTimer(), b.getPower()));
+        }
     }
 }

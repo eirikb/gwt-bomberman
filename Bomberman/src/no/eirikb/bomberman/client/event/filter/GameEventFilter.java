@@ -11,7 +11,6 @@ package no.eirikb.bomberman.client.event.filter;
 import de.novanic.eventservice.client.event.Event;
 import de.novanic.eventservice.client.event.filter.EventFilter;
 import no.eirikb.bomberman.client.event.game.GameEvent;
-import no.eirikb.bomberman.client.game.Game;
 
 /**
  *
@@ -19,10 +18,12 @@ import no.eirikb.bomberman.client.game.Game;
  */
 public class GameEventFilter implements EventFilter {
 
-    private Game game;
+    private String gameName;
+    private String playerNick;
 
-    public GameEventFilter(Game game) {
-        this.game = game;
+    public GameEventFilter(String gameName, String playerNick) {
+        this.gameName = gameName;
+        this.playerNick = playerNick;
     }
 
     public GameEventFilter() {
@@ -31,28 +32,25 @@ public class GameEventFilter implements EventFilter {
     public boolean match(Event event) {
         if (event instanceof GameEvent) {
             GameEvent gameEvent = (GameEvent) event;
-            return gameEvent.getGameName() != null && game != null && gameEvent.getGameName().equals(game.getGameInfo().getName());
+            return !(gameEvent.getGameName().equals(gameName) && !gameEvent.getPlayerNick().equals(playerNick));
         }
         return true;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final GameEventFilter other = (GameEventFilter) obj;
-        if (this.game != other.game && (this.game == null || !this.game.equals(other.game))) {
-            return false;
-        }
-        return true;
+        GameEventFilter gameEventFilter = (GameEventFilter) obj;
+        return gameName.equals(gameEventFilter.gameName);
     }
 
     @Override
     public int hashCode() {
-        return game != null ? game.getGameInfo().getName().hashCode() : 0;
+        return gameName.hashCode();
     }
 }

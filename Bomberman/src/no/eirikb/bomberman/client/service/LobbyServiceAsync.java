@@ -21,6 +21,8 @@ import no.eirikb.bomberman.client.game.Sprite;
  */
 public interface LobbyServiceAsync {
 
+    void checkSession(AsyncCallback<Player> callback);
+
     void join(String nick, AsyncCallback<Player> callback);
 
     void createGame(String name, Sprite[][] sprites, Settings settings, AsyncCallback<GameInfo> callback);

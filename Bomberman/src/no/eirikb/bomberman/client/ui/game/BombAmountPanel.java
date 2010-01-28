@@ -8,6 +8,7 @@
  */
 package no.eirikb.bomberman.client.ui.game;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;

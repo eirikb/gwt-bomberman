@@ -15,6 +15,7 @@ import de.novanic.eventservice.client.event.RemoteEventService;
 import de.novanic.eventservice.client.event.RemoteEventServiceFactory;
 import de.novanic.eventservice.client.event.domain.Domain;
 import de.novanic.eventservice.client.event.domain.DomainFactory;
+import no.eirikb.bomberman.client.event.filter.GameEventFilter;
 import no.eirikb.bomberman.client.event.game.GameEvent;
 import no.eirikb.bomberman.client.event.game.GameListenerAdapter;
 import no.eirikb.bomberman.client.event.game.PlayerStartWalkingEvent;
@@ -52,8 +53,8 @@ public class Bomberman implements EntryPoint {
     private static final Domain LOBBY_DOMAIN = DomainFactory.getDomain(LobbyEvent.LOBBY_DOMAIN);
 
     public void onModuleLoad() {
-        showLoginPanel();
-        //hack();
+        //showLoginPanel();
+        hack();
     }
 
     // TODO REMOVE!
@@ -111,18 +112,36 @@ public class Bomberman implements EntryPoint {
     }
 
     private void showLoginPanel() {
-        RootPanel.get().add(loginPanel = new LoginPanel(new LoginPanel.LoginPanelListener() {
+
+        LobbyServiceAsync lobbyService = GWT.create(LobbyService.class);
+        final LoginPanel.LoginPanelListener loginPanelListener = new LoginPanel.LoginPanelListener() {
 
             public void onLogin(Player player2) {
                 player = player2;
-                RootPanel.get().remove(loginPanel);
+                if (loginPanel != null) {
+                    RootPanel.get().remove(loginPanel);
+                }
                 startEventServiceListener();
                 remoteEventService.addListener(LOBBY_DOMAIN, new DefaultLobbyListener());
                 showLobbyPanel();
             }
-        }));
+        };
 
-        loginPanel.setFocus();
+        lobbyService.checkSession(new AsyncCallback<Player>() {
+
+            public void onFailure(Throwable caught) {
+                GWT.log("ERRRRORR", caught);
+            }
+
+            public void onSuccess(Player result) {
+                if (result != null) {
+                    loginPanelListener.onLogin(result);
+                } else {
+                    RootPanel.get().add(loginPanel = new LoginPanel(loginPanelListener));
+                    loginPanel.setFocus();
+                }
+            }
+        });
     }
 
     private void showLobbyPanel() {
@@ -136,6 +155,7 @@ public class Bomberman implements EntryPoint {
                 }
             }
         }));
+        lobbyPanel.setInfoText("Welcome " + player.getNick());
     }
 
     private void startEventServiceListener() {
@@ -177,7 +197,8 @@ public class Bomberman implements EntryPoint {
                             gamePanel.start();
                             RootPanel.get().remove(loadingPanel);
                             RootPanel.get().add(gamePanel);
-                            remoteEventService.addListener(GAME_DOMAIN, new DefaultGameListener());
+                            remoteEventService.addListener(GAME_DOMAIN, new DefaultGameListener(),
+                                    new GameEventFilter(result.getGameInfo().getName(), player.getNick()));
                         }
                     });
                     RootPanel.get().add(loadingPanel);

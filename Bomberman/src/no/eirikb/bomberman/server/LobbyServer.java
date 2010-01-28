@@ -66,9 +66,25 @@ public class LobbyServer extends RemoteEventServiceServlet implements LobbyServi
         Player player = gameHandler.getPlayer((String) getThreadLocalRequest().getSession().getAttribute("nick"));
         if (game != null && player != null && game.getPlayersSize() < game.getSettings().getMaxPlayers()) {
             game.addPlayer(player);
+            switch (game.getPlayersSize()) {
+                case 2:
+                    player.setX(game.getWidth() - game.getImgSize());
+                    break;
+                case 3:
+                    player.setY(game.getHeight() - game.getImgSize());
+                    break;
+                case 4:
+                    player.setX(game.getWidth() - game.getImgSize());
+                    player.setY(game.getHeight() - game.getImgSize());
+                    break;
+            }
             addEvent(LOBBY_DOMAIN, new PlayerJoinGameEvent(player, game.getGameInfo()));
             return game.getGameInfo();
         }
         return null;
+    }
+
+    public Player checkSession() {
+        return gameHandler.getPlayer((String) getThreadLocalRequest().getSession().getAttribute("nick"));
     }
 }
