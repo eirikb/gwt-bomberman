@@ -44,46 +44,45 @@ public class LoadingPanel extends VerticalPanel {
     }
 
     public void initLoad() {
-        LobbyServiceAsync lobbyService = GWT.create(LobbyService.class);
+        final String[] imageUrls = {"brick", "pu1", "boomcore4", "boomenddown3",
+            "boomsidevertical4", "ml2", "md1", "boomendleft1", "boomcore3", "mu2",
+            "boomsidevertical2", "boomsidehorizontal1", "boomenddown1", "boomsidehorizontal3",
+            "boomcore2", "mu1", "boombrick2", "boomsidehorizontal2", "bomb3", "boombrick1",
+            "md2", "bg", "boomendleft3", "boomendleft4", "mr2", "boomendright4", "boomendup2",
+            "boomenddown2", "bomb1", "boomendup3", "boomendleft2", "boomenddown4", "ml3",
+            "boomendright1", "boomendup4", "boomcore1", "box", "boomsidevertical3", "mr1",
+            "boomsidevertical1", "boomendright2", "boomsidehorizontal4", "ml1", "bomb2",
+            "md3", "mu3", "boomendright3", "boomendup1"};
 
-        lobbyService.getImages(new AsyncCallback<String[]>() {
-
-            public void onFailure(Throwable caught) {
-                GWT.log("Could not fetch images!", caught);
+        if (imageUrls != null && imageUrls.length != lastLength) {
+            lastLength = imageUrls.length;
+            for (int i = 0; i < imageUrls.length; i++) {
+                imageUrls[i] = "../img/" + imageUrls[i] + ".png";
             }
 
-            public void onSuccess(final String[] imageUrls) {
-                if (imageUrls != null && imageUrls.length != lastLength) {
-                    lastLength = imageUrls.length;
-                    for (int i = 0; i < imageUrls.length; i++) {
-                        imageUrls[i] = "../img/" + imageUrls[i];
-                    }
+            ImageLoader.loadImages(imageUrls, new ImageLoader.CallBack() {
 
-                    ImageLoader.loadImages(imageUrls, new ImageLoader.CallBack() {
+                private int pos = 0;
+                private int percentage = 0;
 
-                        private int pos = 0;
-                        private int percentage = 0;
-
-                        public void onImagesLoaded(ImageElement[] imageElements) {
-                            pos += imageElements.length;
-                            int percentage2 = (int) (((double) pos / imageUrls.length) * 100);
-                            if (percentage != percentage2) {
-                                percentage = percentage2;
-                                updateTotalLoading(percentage);
-                                if (pos == imageUrls.length) {
-                                    done = true;
-                                    loadListener.complete();
-                                }
-                            }
+                public void onImagesLoaded(ImageElement[] imageElements) {
+                    pos += imageElements.length;
+                    int percentage2 = (int) (((double) pos / imageUrls.length) * 100);
+                    if (percentage != percentage2) {
+                        percentage = percentage2;
+                        updateTotalLoading(percentage);
+                        if (pos == imageUrls.length) {
+                            done = true;
+                            loadListener.complete();
                         }
-                    });
-                } else if (imageUrls.length == lastLength) {
-                    loadListener.complete();
-                } else {
-                    loadingLabel.setText("Unable to fetch images! BREAKDOWN!");
+                    }
                 }
-            }
-        });
+            });
+        } else if (imageUrls.length == lastLength) {
+            loadListener.complete();
+        } else {
+            loadingLabel.setText("Unable to fetch images! BREAKDOWN!");
+        }
     }
 
     private void updateTotalLoading(final int percentage) {
