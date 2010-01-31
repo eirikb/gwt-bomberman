@@ -26,11 +26,13 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import no.eirikb.bomberman.client.event.game.PlayerDieEvent;
+import no.eirikb.bomberman.client.event.game.PlayerGotPowerupEvent;
 import no.eirikb.bomberman.client.event.game.PlayerPlaceBombEvent;
 import no.eirikb.bomberman.client.event.game.PlayerResurectEvent;
 import no.eirikb.bomberman.client.event.game.PlayerStartWalkingEvent;
 import no.eirikb.bomberman.client.event.game.PlayerStopWalkingEvent;
 import no.eirikb.bomberman.client.game.Bomb;
+import no.eirikb.bomberman.client.game.Brick;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.GameListener;
 import no.eirikb.bomberman.client.game.Player;
@@ -39,6 +41,7 @@ import no.eirikb.bomberman.client.game.Sprite;
 import no.eirikb.bomberman.client.game.Way;
 import no.eirikb.bomberman.client.game.builder.BombBuilder;
 import no.eirikb.bomberman.client.game.handler.GameHandler;
+import no.eirikb.bomberman.client.game.powerup.Powerup;
 import no.eirikb.bomberman.client.service.GameService;
 import no.eirikb.bomberman.client.service.GameServiceAsync;
 
@@ -283,7 +286,7 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
     public void playerDieEvent(PlayerDieEvent event) {
         Player player = game.getAlivePlayer(event.getPlayerNick());
         if (player != null && player != gamePanel.getPlayer()) {
-            gamePanel.remove(player.getImage());
+            game.playerDie(player);
         }
     }
 
@@ -293,6 +296,15 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
             player.setX(player.getStartX());
             player.setY(player.getStartY());
             game.playerLive(player);
+        }
+    }
+
+    public void playerGotPowerupEvent(PlayerGotPowerupEvent event) {
+        Player player = game.getAlivePlayer(event.getPlayerNick());
+        if (player != null && player != gamePanel.getPlayer()) {
+            Powerup powerup = (Powerup) game.getSprites()[event.getPowerup().getSpriteX()][event.getPowerup().getSpriteY()];
+            powerup.powerUp(player);
+            game.removePowerup(powerup);
         }
     }
 }

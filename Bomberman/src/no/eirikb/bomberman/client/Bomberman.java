@@ -1,6 +1,7 @@
 package no.eirikb.bomberman.client;
 
 import no.eirikb.bomberman.client.event.game.PlayerDieEvent;
+import no.eirikb.bomberman.client.event.game.PlayerGotPowerupEvent;
 import no.eirikb.bomberman.client.event.game.PlayerPlaceBombEvent;
 import no.eirikb.bomberman.client.event.game.PlayerResurectEvent;
 import no.eirikb.bomberman.client.event.lobby.GameCreateEvent;
@@ -247,6 +248,11 @@ public class Bomberman implements EntryPoint {
         @Override
         public void playerResurectEvent(PlayerResurectEvent event) {
             gamePanel.playerResurectEvent(event);
+        }
+
+        @Override
+        public void playerGotPowerupEvent(PlayerGotPowerupEvent event) {
+            gamePanel.playerGotPowerupEvent(event);
         }
     }
 

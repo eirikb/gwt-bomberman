@@ -96,8 +96,8 @@ public class PlayerHandler extends Handler {
     }
 
     public void playerDie(Player player) {
+        gamePanel.remove(player.getImage());
         if (player == gamePanel.getPlayer()) {
-            gamePanel.remove(player.getImage());
             GameServiceAsync gameService = GWT.create(GameService.class);
             gameService.died(new AsyncCallback() {
 

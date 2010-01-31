@@ -28,6 +28,8 @@ public class GameListenerAdapter implements GameListener {
                 playerDieEvent((PlayerDieEvent) anEvent);
             } else if (anEvent instanceof PlayerResurectEvent) {
                 playerResurectEvent((PlayerResurectEvent) anEvent);
+            } else if (anEvent instanceof PlayerGotPowerupEvent) {
+                playerGotPowerupEvent((PlayerGotPowerupEvent) anEvent);
             }
         }
     }
@@ -45,5 +47,8 @@ public class GameListenerAdapter implements GameListener {
     }
 
     public void playerResurectEvent(PlayerResurectEvent event) {
+    }
+
+    public void playerGotPowerupEvent(PlayerGotPowerupEvent event) {
     }
 }
