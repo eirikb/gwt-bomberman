@@ -9,7 +9,6 @@
 package no.eirikb.bomberman.client.game;
 
 import com.google.gwt.user.client.ui.Image;
-import no.eirikb.bomberman.client.game.powerup.Powerup;
 
 /**
  *

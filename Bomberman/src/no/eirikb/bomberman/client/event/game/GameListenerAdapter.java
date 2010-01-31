@@ -24,6 +24,10 @@ public class GameListenerAdapter implements GameListener {
                 playerStopWalkingEvent((PlayerStopWalkingEvent) anEvent);
             } else if (anEvent instanceof PlayerPlaceBombEvent) {
                 playerPlaceBombEvent((PlayerPlaceBombEvent) anEvent);
+            } else if (anEvent instanceof PlayerDieEvent) {
+                playerDieEvent((PlayerDieEvent) anEvent);
+            } else if (anEvent instanceof PlayerResurectEvent) {
+                playerResurectEvent((PlayerResurectEvent) anEvent);
             }
         }
     }
@@ -35,5 +39,11 @@ public class GameListenerAdapter implements GameListener {
     }
 
     public void playerPlaceBombEvent(PlayerPlaceBombEvent event) {
+    }
+
+    public void playerDieEvent(PlayerDieEvent event) {
+    }
+
+    public void playerResurectEvent(PlayerResurectEvent event) {
     }
 }

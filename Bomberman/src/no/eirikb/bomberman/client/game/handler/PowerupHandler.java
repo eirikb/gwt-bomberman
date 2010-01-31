@@ -8,12 +8,16 @@
  */
 package no.eirikb.bomberman.client.game.handler;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.ui.game.GamePanel;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.GameListener;
 import no.eirikb.bomberman.client.game.Sprite;
 import no.eirikb.bomberman.client.game.powerup.Powerup;
+import no.eirikb.bomberman.client.service.GameService;
+import no.eirikb.bomberman.client.service.GameServiceAsync;
 
 /**
  *
@@ -31,6 +35,7 @@ public class PowerupHandler extends Handler implements GameListener {
 
     public void addSprite(Sprite sprite) {
         if (sprite instanceof Powerup) {
+            sprite.initImage();
             gamePanel.add(sprite.getImage(), sprite.getSpriteX() * game.getImgSize(), sprite.getSpriteY() * game.getImgSize());
         }
     }
@@ -42,10 +47,27 @@ public class PowerupHandler extends Handler implements GameListener {
     }
 
     public void bump(Player player, Sprite sprite) {
-        if (sprite instanceof Powerup) {
-            Powerup powerup = (Powerup) sprite;
-            powerup.powerUp(player);
-            game.removePowerup(powerup);
+        if (player == gamePanel.getPlayer()) {
+            if (sprite instanceof Powerup) {
+                Powerup powerup = (Powerup) sprite;
+                powerup.powerUp(player);
+                game.removePowerup(powerup);
+                GameServiceAsync gameService = GWT.create(GameService.class);
+                gameService.gotPowerup(powerup, new AsyncCallback() {
+
+                    public void onFailure(Throwable caught) {
+                    }
+
+                    public void onSuccess(Object result) {
+                    }
+                });
+            }
         }
+    }
+
+    public void playerDie(Player player) {
+    }
+
+    public void playerLive(Player player) {
     }
 }

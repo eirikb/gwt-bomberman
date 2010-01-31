@@ -23,6 +23,8 @@ public class Player extends Sprite {
     private int bombAbount;
     private double x;
     private double y;
+    private int startX;
+    private int startY;
 
     public Player() {
     }
@@ -95,6 +97,24 @@ public class Player extends Sprite {
 
     public int getBombAbount() {
         return bombAbount;
+    }
+
+    public int getStartX() {
+        return startX;
+    }
+
+    public void setStartX(int startX) {
+        this.startX = startX;
+        setX(startX);
+    }
+
+    public int getStartY() {
+        return startY;
+    }
+
+    public void setStartY(int startY) {
+        this.startY = startY;
+        setY(startY);
     }
 
     public void setBombAbount(int bombAbount) {

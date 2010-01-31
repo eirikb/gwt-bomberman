@@ -12,12 +12,19 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import no.eirikb.bomberman.client.game.Bomb;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.Way;
+import no.eirikb.bomberman.client.game.powerup.Powerup;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
 public interface GameServiceAsync {
+
+    public void died(AsyncCallback callback);
+
+    public void resurect(AsyncCallback callback);
+
+    public void gotPowerup(Powerup powerup, AsyncCallback callback);
 
     public void getGame(String name, AsyncCallback<Game> callback);
 

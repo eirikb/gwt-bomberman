@@ -21,4 +21,8 @@ public interface GameListener extends RemoteEventListener {
     void playerStopWalkingEvent(PlayerStopWalkingEvent event);
 
     void playerPlaceBombEvent(PlayerPlaceBombEvent event);
+
+    void playerDieEvent(PlayerDieEvent event);
+
+    void playerResurectEvent(PlayerResurectEvent event);
 }

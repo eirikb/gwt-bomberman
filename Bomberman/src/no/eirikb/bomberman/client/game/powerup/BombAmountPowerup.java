@@ -8,6 +8,7 @@
  */
 package no.eirikb.bomberman.client.game.powerup;
 
+import com.google.gwt.user.client.ui.Image;
 import no.eirikb.bomberman.client.game.Player;
 
 /**
@@ -16,15 +17,23 @@ import no.eirikb.bomberman.client.game.Player;
  */
 public class BombAmountPowerup extends Powerup {
 
-    private static final String IMAGEURL = "img/pu2.png";
+    private static final String INITURL = "img/pu2.png";
+
+    public BombAmountPowerup() {
+    }
 
     public BombAmountPowerup(int spriteX, int spriteY) {
-        super(IMAGEURL, spriteX, spriteY);
+        super(spriteX, spriteY);
     }
 
     @Override
     public void powerUp(Player player) {
         super.powerUp(player);
         player.setBombAbount(player.getBombAbount() + 1);
+    }
+
+    @Override
+    public void initImage() {
+        setImage(new Image(INITURL));
     }
 }

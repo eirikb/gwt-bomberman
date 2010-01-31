@@ -6,32 +6,27 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client.game.powerup;
+package no.eirikb.bomberman.client.event.game;
 
-import no.eirikb.bomberman.client.game.Player;
-import no.eirikb.bomberman.client.game.Sprite;
+import no.eirikb.bomberman.client.game.powerup.Powerup;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public abstract class Powerup extends Sprite {
+public class PlayerGotPowerupEvent extends GameEvent {
 
-    private Player player;
+    private Powerup powerup;
 
-    public Powerup() {
+    public PlayerGotPowerupEvent(String gameName, String playerNick, Powerup powerup) {
+        super(gameName, playerNick);
+        this.powerup = powerup;
     }
 
-    public Powerup(int spriteX, int spriteY) {
-        super(spriteX, spriteY);
-        setzAxis(0);
+    public PlayerGotPowerupEvent() {
     }
 
-    public void powerUp(Player player) {
-        this.player = player;
-    }
-
-    public Player getPlayer() {
-        return player;
+    public Powerup getPowerup() {
+        return powerup;
     }
 }

@@ -66,4 +66,10 @@ public class BombAmountPanel extends HorizontalPanel implements GameListener {
 
     public void bump(Player player, Sprite sprite) {
     }
+
+    public void playerDie(Player player) {
+    }
+
+    public void playerLive(Player player) {
+    }
 }

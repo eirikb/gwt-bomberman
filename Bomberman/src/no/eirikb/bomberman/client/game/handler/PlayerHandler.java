@@ -9,6 +9,7 @@
 package no.eirikb.bomberman.client.game.handler;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Image;
 import no.eirikb.bomberman.client.ui.game.GamePanel;
 import no.eirikb.bomberman.client.game.Bomb;
@@ -17,6 +18,8 @@ import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.game.Sprite;
 import no.eirikb.bomberman.client.game.Way;
 import no.eirikb.bomberman.client.game.handler.helper.WalkHandler;
+import no.eirikb.bomberman.client.service.GameService;
+import no.eirikb.bomberman.client.service.GameServiceAsync;
 
 /**
  *
@@ -31,7 +34,7 @@ public class PlayerHandler extends Handler {
     public PlayerHandler(Game game, GamePanel gamePanel) {
         super(game, gamePanel);
         walkHandler = new WalkHandler();
-        for (Player player : game.getPlayers()) {
+        for (Player player : game.getAlivePlayers()) {
             drawPlayer(player);
         }
     }
@@ -42,7 +45,7 @@ public class PlayerHandler extends Handler {
     }
 
     public void handle() {
-        for (Player player : game.getPlayers()) {
+        for (Player player : game.getAlivePlayers()) {
             if (player.getWay() != Way.NONE) {
                 if (walkHandler.walk(game, player)) {
                     gamePanel.setWidgetPosition(player.getImage(), (int) player.getX() + XDIFF, (int) player.getY() + YDIFF);
@@ -77,6 +80,8 @@ public class PlayerHandler extends Handler {
             Bomb bomb = (Bomb) sprite;
             Player player = bomb.getOwner();
             player.setBombAbount(player.getBombAbount() - 1);
+        } else if (sprite instanceof Player) {
+            drawPlayer((Player) sprite);
         }
     }
 
@@ -88,5 +93,24 @@ public class PlayerHandler extends Handler {
     }
 
     public void bump(Player player, Sprite sprite) {
+    }
+
+    public void playerDie(Player player) {
+        if (player == gamePanel.getPlayer()) {
+            gamePanel.remove(player.getImage());
+            GameServiceAsync gameService = GWT.create(GameService.class);
+            gameService.died(new AsyncCallback() {
+
+                public void onFailure(Throwable caught) {
+                }
+
+                public void onSuccess(Object result) {
+                }
+            });
+        }
+    }
+
+    public void playerLive(Player player) {
+        drawPlayer(player);
     }
 }

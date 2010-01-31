@@ -10,6 +10,7 @@ package no.eirikb.bomberman.client.game;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,8 @@ public class Game implements Serializable {
 
     private GameInfo gameInfo;
     private Sprite[][] sprites;
-    private Map<String, Player> players;
+    private Map<String, Player> alivePlayers;
+    private Map<String, Player> deadPlayers;
     private List<Bomb> bombs;
     private List<Explosion> explosions;
     private List<BoomBrick> boomBricks;
@@ -38,7 +40,8 @@ public class Game implements Serializable {
         this.gameInfo = new GameInfo(name, settings.getMaxPlayers());
         this.sprites = sprites;
         this.settings = settings;
-        players = new HashMap<String, Player>();
+        alivePlayers = new HashMap<String, Player>();
+        deadPlayers = new HashMap<String, Player>();
         bombs = new ArrayList<Bomb>();
         explosions = new ArrayList<Explosion>();
         boomBricks = new ArrayList<BoomBrick>();
@@ -79,15 +82,9 @@ public class Game implements Serializable {
     }
 
     public void addPlayer(Player player) {
-        players.put(player.getNick(), player);
-        gameInfo.setPlayerSize(players.size());
+        alivePlayers.put(player.getNick(), player);
+        gameInfo.setPlayerSize(alivePlayers.size());
         addSpriteInvisible(player);
-    }
-
-    public void removePlayer(Player player) {
-        players.remove(player.getNick());
-        gameInfo.setPlayerSize(players.size());
-        removeSpriteInvisible(player);
     }
 
     public void addBomb(Bomb bomb) {
@@ -130,8 +127,16 @@ public class Game implements Serializable {
         removeSprite(powerup);
     }
 
-    public Iterable<Player> getPlayers() {
-        return players.values();
+    public void playerDie(Player player) {
+        alivePlayers.remove(player.getNick());
+        deadPlayers.put(player.getNick(), player);
+        for (GameListener gameListener : gameListeners) {
+            gameListener.playerDie(player);
+        }
+    }
+
+    public Iterable<Player> getAlivePlayers() {
+        return alivePlayers.values();
     }
 
     public List<Bomb> getBombs() {
@@ -170,8 +175,8 @@ public class Game implements Serializable {
         gameListeners.remove(gameListener);
     }
 
-    public int getPlayersSize() {
-        return players.size();
+    public int getAlivePlayersSize() {
+        return alivePlayers.size();
     }
 
     public GameInfo getGameInfo() {
@@ -186,7 +191,19 @@ public class Game implements Serializable {
         }
     }
 
-    public Player getPlayer(String nick) {
-        return players.get(nick);
+    public Player getAlivePlayer(String nick) {
+        return alivePlayers.get(nick);
+    }
+
+    public Player getDeadPlayer(String playerNick) {
+        return deadPlayers.get(playerNick);
+    }
+
+    public void playerLive(Player player) {
+        alivePlayers.put(player.getNick(), player);
+        deadPlayers.remove(player.getNick());
+        for (GameListener gameListener : gameListeners) {
+            gameListener.playerLive(player);
+        }
     }
 }

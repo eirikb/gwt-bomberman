@@ -17,10 +17,8 @@ import no.eirikb.bomberman.client.game.BoomBrick;
 import no.eirikb.bomberman.client.game.Brick;
 import no.eirikb.bomberman.client.game.CoreExplosion;
 import no.eirikb.bomberman.client.game.Game;
-import no.eirikb.bomberman.client.game.Settings;
 import no.eirikb.bomberman.client.game.Sprite;
 import no.eirikb.bomberman.client.game.builder.BoomBrickBuilder;
-import no.eirikb.bomberman.client.game.builder.PowerupBuilder;
 import no.eirikb.bomberman.client.game.powerup.Powerup;
 
 /**
@@ -92,5 +90,11 @@ public class BoomBrickHandler extends Handler {
     }
 
     public void bump(Player player, Sprite sprite) {
+    }
+
+    public void playerDie(Player player) {
+    }
+
+    public void playerLive(Player player) {
     }
 }

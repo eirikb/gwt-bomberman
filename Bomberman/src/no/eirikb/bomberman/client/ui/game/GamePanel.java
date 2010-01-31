@@ -10,6 +10,7 @@ package no.eirikb.bomberman.client.ui.game;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.game.Sprite;
 
 /**
@@ -19,10 +20,16 @@ import no.eirikb.bomberman.client.game.Sprite;
 public class GamePanel extends AbsolutePanel {
 
     private int imgSize;
+    private Player player;
 
-    public GamePanel(int imgSize, int width, int height) {
+    public GamePanel(Player player, int imgSize, int width, int height) {
+        this.player = player;
         this.imgSize = imgSize;
         setSize(width + "px", height + "px");
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public void drawSprites(Sprite[][] sprites) {

@@ -19,4 +19,8 @@ public interface GameListener {
     public void removeSprite(Sprite sprite);
 
     public void bump(Player player, Sprite sprite);
+
+    public void playerDie(Player player);
+
+    public void playerLive(Player player);
 }

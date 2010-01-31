@@ -61,4 +61,10 @@ public class BombHandler extends Handler {
 
     public void bump(Player player, Sprite sprite) {
     }
+
+    public void playerDie(Player player) {
+    }
+
+    public void playerLive(Player player) {
+    }
 }

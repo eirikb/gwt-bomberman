@@ -25,7 +25,9 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import no.eirikb.bomberman.client.event.game.PlayerDieEvent;
 import no.eirikb.bomberman.client.event.game.PlayerPlaceBombEvent;
+import no.eirikb.bomberman.client.event.game.PlayerResurectEvent;
 import no.eirikb.bomberman.client.event.game.PlayerStartWalkingEvent;
 import no.eirikb.bomberman.client.event.game.PlayerStopWalkingEvent;
 import no.eirikb.bomberman.client.game.Bomb;
@@ -49,19 +51,17 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
     private TextBox textBox;
     private KeyHack keyHack;
     private Game game;
-    private Player player;
     private GamePanel gamePanel;
     private GameHandler gameHandler;
     private CheckBox useKeyHack;
     private GameServiceAsync gameService;
 
-    public GamePanelContainer(Game game, Player player) {
+    public GamePanelContainer(Game game) {
         this.game = game;
-        this.player = player;
         gameService = GWT.create(GameService.class);
     }
 
-    public void start() {
+    public void start(final Player player) {
 
         textBox = new TextBox();
 
@@ -108,13 +108,13 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
             }
         });
         add(textBox);
-        startGame();
+        startGame(player);
     }
 
-    private void startGame() {
+    private void startGame(Player player) {
         Settings.inject(game.getSettings());
         Settings settings = Settings.getInstance();
-        gamePanel = new GamePanel(game.getImgSize(), settings.getMapWidth(), settings.getMapHeight());
+        gamePanel = new GamePanel(player, game.getImgSize(), settings.getMapWidth(), settings.getMapHeight());
         gamePanel.getElement().getStyle().setBackgroundColor("#abcdef");
         gameHandler = new GameHandler(game, gamePanel);
         final GamePanelContainer gamePanelContainer = this;
@@ -138,7 +138,7 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
             keyHack = new KeyHack(this);
             gameHandler.setKeyHackCallback(keyHack);
         }
-        BombAmountPanel bombAmountPanel = new BombAmountPanel(player);
+        BombAmountPanel bombAmountPanel = new BombAmountPanel(gamePanel.getPlayer());
         game.addGameListener(bombAmountPanel);
         add(bombAmountPanel);
         gameHandler.start();
@@ -153,6 +153,7 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
     }
 
     public void arrowKeyDown(KeyDownEvent event) {
+        Player player = gamePanel.getPlayer();
         if (event.isLeftArrow()) {
             player.setWay(Way.LEFT);
         } else if (event.isUpArrow()) {
@@ -162,6 +163,7 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
         } else if (event.isDownArrow()) {
             player.setWay(Way.DOWN);
         }
+
         gameService.startWalking(player.getWay(), new AsyncCallback() {
 
             public void onFailure(Throwable caught) {
@@ -173,6 +175,7 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
     }
 
     public void arrowKeyUp() {
+        Player player = gamePanel.getPlayer();
         player.setWay(Way.NONE);
         gameService.stopWalking(player.getX(), player.getY(), new AsyncCallback() {
 
@@ -185,45 +188,65 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
     }
 
     private void killCheck() {
+        final Player player = gamePanel.getPlayer();
         game.addGameListener(new GameListener() {
 
             public void addSprite(Sprite sprite) {
             }
 
             public void removeSprite(Sprite sprite) {
-                if (sprite instanceof Player) {
-                    if ((Player) sprite == player) {
-                        gamePanel.remove(player.getImage());
-                        final DialogBox dialogBox = new DialogBox();
-                        dialogBox.setText("Oh noes!");
-                        VerticalPanel v = new VerticalPanel();
-                        v.add(new Image("img/ohnoes.jpg"));
-                        v.add(new Label("Congratulations! You just died"));
-                        Button resurectButton = new Button("Resurect!", new ClickHandler() {
-
-                            public void onClick(ClickEvent event) {
-                                player.setSpriteX(0);
-                                player.setSpriteY(0);
-                                gamePanel.add(player.getImage(), 0, 0);
-                                game.addPlayer(player);
-                                dialogBox.setVisible(false);
-                                dialogBox.hide();
-                                textBox.setFocus(true);
-                            }
-                        });
-                        v.add(resurectButton);
-                        dialogBox.setWidget(v);
-                        dialogBox.setAnimationEnabled(true);
-                        dialogBox.setPopupPosition(gamePanel.getAbsoluteLeft()
-                                + (Settings.getInstance().getMapWidth() / 4),
-                                gamePanel.getAbsoluteTop() + (Settings.getInstance().getMapHeight() / 4));
-                        dialogBox.show();
-                        resurectButton.setFocus(true);
-                    }
-                }
             }
 
             public void bump(Player player, Sprite sprite) {
+            }
+
+            public void playerDie(final Player player) {
+                if (player == gamePanel.getPlayer()) {
+                    gameService.died(new AsyncCallback() {
+
+                        public void onFailure(Throwable caught) {
+                        }
+
+                        public void onSuccess(Object result) {
+                        }
+                    });
+                    gamePanel.remove(player.getImage());
+                    final DialogBox dialogBox = new DialogBox();
+                    dialogBox.setText("Oh noes!");
+                    VerticalPanel v = new VerticalPanel();
+                    v.add(new Image("img/ohnoes.jpg"));
+                    v.add(new Label("Congratulations! You just died"));
+                    Button resurectButton = new Button("Resurect!", new ClickHandler() {
+
+                        public void onClick(ClickEvent event) {
+                            gameService.resurect(new AsyncCallback() {
+
+                                public void onFailure(Throwable caught) {
+                                }
+
+                                public void onSuccess(Object result) {
+                                }
+                            });
+                            player.setX(player.getStartX());
+                            player.setY(player.getStartY());
+                            game.playerLive(player);
+                            dialogBox.setVisible(false);
+                            dialogBox.hide();
+                            textBox.setFocus(true);
+                        }
+                    });
+                    v.add(resurectButton);
+                    dialogBox.setWidget(v);
+                    dialogBox.setAnimationEnabled(true);
+                    dialogBox.setPopupPosition(gamePanel.getAbsoluteLeft()
+                            + (Settings.getInstance().getMapWidth() / 4),
+                            gamePanel.getAbsoluteTop() + (Settings.getInstance().getMapHeight() / 4));
+                    dialogBox.show();
+                    resurectButton.setFocus(true);
+                }
+            }
+
+            public void playerLive(Player player) {
             }
         });
 
@@ -234,26 +257,42 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
     }
 
     public void playerStartWalkingEvent(PlayerStartWalkingEvent event) {
-        Player p = game.getPlayer(event.getPlayerNick());
-        if (p != null && p != player) {
-            p.setWay(event.getWay());
+        Player player = game.getAlivePlayer(event.getPlayerNick());
+        if (player != null && player != gamePanel.getPlayer()) {
+            player.setWay(event.getWay());
         }
     }
 
     public void playerStopWalkingEvent(PlayerStopWalkingEvent event) {
-        Player p = game.getPlayer(event.getPlayerNick());
-        if (p != null && p != player) {
-            p.setWay(Way.NONE);
-            p.setX(event.getX());
-            p.setY(event.getY());
+        Player player = game.getAlivePlayer(event.getPlayerNick());
+        if (player != null && player != gamePanel.getPlayer()) {
+            player.setWay(Way.NONE);
+            player.setX(event.getX());
+            player.setY(event.getY());
         }
     }
 
     public void playerPlaceBombEvent(PlayerPlaceBombEvent event) {
         Bomb b = event.getBomb();
-        Player p = game.getPlayer(event.getPlayerNick());
-        if (p != null && p != player) {
-            game.addBomb(new Bomb(b.getSpriteX(), b.getSpriteY(), p, Settings.getInstance().getBombTimer(), b.getPower()));
+        Player player = game.getAlivePlayer(event.getPlayerNick());
+        if (player != null && player != gamePanel.getPlayer()) {
+            game.addBomb(new Bomb(b.getSpriteX(), b.getSpriteY(), player, Settings.getInstance().getBombTimer(), b.getPower()));
+        }
+    }
+
+    public void playerDieEvent(PlayerDieEvent event) {
+        Player player = game.getAlivePlayer(event.getPlayerNick());
+        if (player != null && player != gamePanel.getPlayer()) {
+            gamePanel.remove(player.getImage());
+        }
+    }
+
+    public void playerResurectEvent(PlayerResurectEvent event) {
+        Player player = game.getDeadPlayer(event.getPlayerNick());
+        if (player != null && player != gamePanel.getPlayer()) {
+            player.setX(player.getStartX());
+            player.setY(player.getStartY());
+            game.playerLive(player);
         }
     }
 }

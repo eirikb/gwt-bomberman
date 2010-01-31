@@ -25,22 +25,34 @@ public class BombBuilder {
         if (player.getBombAbount() > 0) {
             Way way = player.getWay() != Way.NONE ? player.getWay() : player.getLastWay();
             if (way != null) {
-                int spriteX = (int) (player.getX() / settings.getImgSize());
-                int spriteY = (int) (player.getY() / settings.getImgSize());
-                switch (way) {
+                int spriteX = (int) ((player.getX() + (settings.getImgSize() / 2)) / settings.getImgSize());
+                int spriteY = (int) ((player.getY() + (settings.getImgSize() / 2)) / settings.getImgSize());
+
+                switch (player.getLastWay()) {
                     case LEFT:
-                        spriteX += 1;
+                        spriteX--;
                         break;
                     case UP:
-                        spriteY += 1;
+                        spriteY--;
+                        break;
+                    case RIGHT:
+                        spriteX++;
+                        break;
+                    case DOWN:
+                        spriteY++;
                         break;
                 }
 
-                Bomb bomb = new Bomb(spriteX, spriteY, player, settings.getBombTimer(), player.getBombPower());
-                if (bomb != null && bomb.getSpriteX() >= 0 && bomb.getSpriteY() >= 0
-                        && bomb.getSpriteX() < sprites.length && bomb.getSpriteY() < sprites[0].length
-                        && sprites[bomb.getSpriteX()][bomb.getSpriteY()] == null) {
-                    return bomb;
+                if (sprites[spriteX][spriteY] != null) {
+                    spriteX = (int) ((player.getX() + (settings.getImgSize() / 2)) / settings.getImgSize());
+                    spriteY = (int) ((player.getY() + (settings.getImgSize() / 2)) / settings.getImgSize());
+                }
+                if (sprites[spriteX][spriteY] == null) {
+                    Bomb bomb = new Bomb(spriteX, spriteY, player, settings.getBombTimer(), player.getBombPower());
+                    if (bomb != null && bomb.getSpriteX() >= 0 && bomb.getSpriteY() >= 0
+                            && bomb.getSpriteX() < sprites.length && bomb.getSpriteY() < sprites[0].length) {
+                        return bomb;
+                    }
                 }
             }
         }

@@ -13,6 +13,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import no.eirikb.bomberman.client.game.Bomb;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.Way;
+import no.eirikb.bomberman.client.game.powerup.Powerup;
 
 /**
  *
@@ -20,6 +21,12 @@ import no.eirikb.bomberman.client.game.Way;
  */
 @RemoteServiceRelativePath("gameservice")
 public interface GameService extends RemoteService {
+
+    void died();
+
+    void resurect();
+
+    void gotPowerup(Powerup powerup);
 
     Game getGame(String name);
 

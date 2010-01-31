@@ -59,13 +59,14 @@ public class ExplosionHandler extends Handler {
             if (sprite instanceof CoreExplosion) {
                 CoreExplosion coreExplosion = (CoreExplosion) sprite;
                 int imgSize = Settings.getInstance().getImgSize();
-                for (Player player : game.getPlayers()) {
+                List<Player> toDie = new ArrayList<Player>();
+                for (Player player : game.getAlivePlayers()) {
                     int pSpriteX = (int) (player.getX() / imgSize);
                     int pSpriteY = (int) (player.getY() / imgSize);
                     int cSpriteX = coreExplosion.getSpriteX();
                     int cSpriteY = coreExplosion.getSpriteY();
                     if (pSpriteX == cSpriteX && pSpriteY == cSpriteY) {
-                        game.removePlayer(player);
+                        toDie.add(player);
                     } else {
                         if (Math.max(pSpriteX, cSpriteX) - Math.min(pSpriteX, cSpriteX) <= coreExplosion.getSize()
                                 && Math.max(pSpriteY, cSpriteY) - Math.min(pSpriteY, cSpriteY) <= coreExplosion.getSize()) {
@@ -79,12 +80,15 @@ public class ExplosionHandler extends Handler {
                                 if (w >= 0 && h >= 0) {
                                     double percentage = ((w * h) / (game.getImgSize() * game.getImgSize())) * 100;
                                     if (percentage >= Settings.getInstance().getExplosionHitPercentage()) {
-                                        game.removePlayer(player);
+                                        toDie.add(player);
                                     }
                                 }
                             }
                         }
                     }
+                }
+                for (Player player : toDie) {
+                    game.playerDie(player);
                 }
             }
         }
@@ -101,5 +105,11 @@ public class ExplosionHandler extends Handler {
     }
 
     public void bump(Player player, Sprite sprite) {
+    }
+
+    public void playerDie(Player player) {
+    }
+
+    public void playerLive(Player player) {
     }
 }

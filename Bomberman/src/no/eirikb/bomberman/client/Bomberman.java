@@ -1,6 +1,8 @@
 package no.eirikb.bomberman.client;
 
+import no.eirikb.bomberman.client.event.game.PlayerDieEvent;
 import no.eirikb.bomberman.client.event.game.PlayerPlaceBombEvent;
+import no.eirikb.bomberman.client.event.game.PlayerResurectEvent;
 import no.eirikb.bomberman.client.event.lobby.GameCreateEvent;
 import no.eirikb.bomberman.client.event.lobby.PlayerJoinEvent;
 import no.eirikb.bomberman.client.event.lobby.PlayerJoinGameEvent;
@@ -58,7 +60,7 @@ public class Bomberman implements EntryPoint {
 
     public void onModuleLoad() {
         showLoginPanel();
-        // hack();
+        //hack();
     }
 
     // TODO REMOVE!
@@ -189,7 +191,7 @@ public class Bomberman implements EntryPoint {
                         loadingPanel = new LoadingPanel(new LoadListener() {
 
                             public void complete() {
-                                for (Player p : result.getPlayers()) {
+                                for (Player p : result.getAlivePlayers()) {
                                     if (p.getNick().equals(player.getNick())) {
                                         player = p;
                                     }
@@ -197,8 +199,8 @@ public class Bomberman implements EntryPoint {
                                     p.setBombPower(result.getSettings().getBombPower());
                                     p.setSpeed(result.getSettings().getPlayerSpeed());
                                 }
-                                gamePanel = new GamePanelContainer(result, player);
-                                gamePanel.start();
+                                gamePanel = new GamePanelContainer(result);
+                                gamePanel.start(player);
                                 RootPanel.get().remove(loadingPanel);
                                 RootPanel.get().add(gamePanel);
                                 remoteEventService.addListener(GAME_DOMAIN, new DefaultGameListener(),
@@ -235,6 +237,16 @@ public class Bomberman implements EntryPoint {
         @Override
         public void playerPlaceBombEvent(PlayerPlaceBombEvent event) {
             gamePanel.playerPlaceBombEvent(event);
+        }
+
+        @Override
+        public void playerDieEvent(PlayerDieEvent event) {
+            gamePanel.playerDieEvent(event);
+        }
+
+        @Override
+        public void playerResurectEvent(PlayerResurectEvent event) {
+            gamePanel.playerResurectEvent(event);
         }
     }
 
