@@ -55,11 +55,9 @@ public class BoomBrickHandler extends Handler {
         }
         for (BoomBrick boomBrick : toRemove) {
             game.removeBoomBrick(boomBrick);
-            if (Math.random() * 100 <= Settings.getInstance().getPercentagePowerup()) {
-                Powerup powerup = PowerupBuilder.createPowerup(boomBrick.getSpriteX(), boomBrick.getSpriteY());
-                if (powerup != null) {
-                    game.addPowerup(powerup);
-                }
+            Powerup powerup = boomBrick.getPowerup();
+            if (powerup != null) {
+                game.addPowerup(powerup);
             }
         }
     }
@@ -84,7 +82,7 @@ public class BoomBrickHandler extends Handler {
             Sprite sprite = sprites[spriteX][spriteY];
             if (sprite instanceof Brick) {
                 gamePanel.remove(sprite.getImage());
-                BoomBrick boomBrick = BoomBrickBuilder.createBoomBrick(sprite);
+                BoomBrick boomBrick = BoomBrickBuilder.createBoomBrick((Brick) sprite);
                 game.addBoomBrick(boomBrick);
             } else if (sprite instanceof Bomb) {
                 Bomb bomb = (Bomb) sprite;

@@ -9,6 +9,7 @@
 package no.eirikb.bomberman.client.game;
 
 import com.google.gwt.user.client.ui.Image;
+import no.eirikb.bomberman.client.game.powerup.Powerup;
 
 /**
  *
@@ -17,12 +18,21 @@ import com.google.gwt.user.client.ui.Image;
 public class Brick extends Sprite {
 
     private transient final String INITURL = "img/brick.png";
+    private Powerup powerup;
 
     public Brick() {
     }
 
     public Brick(int spriteX, int spriteY) {
         super(spriteX, spriteY);
+    }
+
+    public Powerup getPowerup() {
+        return powerup;
+    }
+
+    public void setPowerup(Powerup powerup) {
+        this.powerup = powerup;
     }
 
     @Override

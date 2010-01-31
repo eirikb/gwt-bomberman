@@ -8,6 +8,9 @@
  */
 package no.eirikb.bomberman.client.game.builder;
 
+import no.eirikb.bomberman.client.game.Brick;
+import no.eirikb.bomberman.client.game.Settings;
+import no.eirikb.bomberman.client.game.Sprite;
 import no.eirikb.bomberman.client.game.powerup.BombAmountPowerup;
 import no.eirikb.bomberman.client.game.powerup.BombPowerPowerup;
 import no.eirikb.bomberman.client.game.powerup.Powerup;
@@ -20,7 +23,7 @@ public class PowerupBuilder {
 
     private static final int POWERUPAMOUNT = 2;
 
-    public static Powerup createPowerup(int spriteX, int spriteY) {
+    private static Powerup createPowerup(int spriteX, int spriteY) {
         switch ((int) (Math.random() * POWERUPAMOUNT)) {
             case 0:
                 return new BombAmountPowerup(spriteX, spriteY);
@@ -28,5 +31,22 @@ public class PowerupBuilder {
                 return new BombPowerPowerup(spriteX, spriteY);
         }
         return null;
+    }
+
+    public static Sprite[][] createPowerups(Sprite[][] sprites) {
+        for (int x = 0; x < sprites.length; x++) {
+            for (int y = 0; y < sprites[0].length; y++) {
+                Sprite sprite = sprites[x][y];
+                if (sprite != null && sprite instanceof Brick) {
+                    if (Math.random() * 100 <= Settings.getInstance().getPercentagePowerup()) {
+                        Powerup powerup = PowerupBuilder.createPowerup(sprite.getSpriteX(), sprite.getSpriteY());
+                        if (powerup != null) {
+                            ((Brick) sprite).setPowerup(powerup);
+                        }
+                    }
+                }
+            }
+        }
+        return sprites;
     }
 }

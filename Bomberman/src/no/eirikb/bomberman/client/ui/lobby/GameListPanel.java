@@ -1,4 +1,4 @@
-/*
+ /*
  * ----------------------------------------------------------------------------
  * "THE BEER-WARE LICENSE" (Revision 42):
  * <eirikdb@gmail.com> wrote this file. As long as you retain this notice you
@@ -22,7 +22,6 @@ import com.google.gwt.user.client.ui.Widget;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.GameInfo;
 import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.service.LobbyService;

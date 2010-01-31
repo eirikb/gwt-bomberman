@@ -21,12 +21,12 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.GameInfo;
 import no.eirikb.bomberman.client.game.Settings;
 import no.eirikb.bomberman.client.game.Sprite;
 import no.eirikb.bomberman.client.game.builder.BoxBuilder;
 import no.eirikb.bomberman.client.game.builder.BrickBuilder;
+import no.eirikb.bomberman.client.game.builder.PowerupBuilder;
 import no.eirikb.bomberman.client.game.builder.SpriteArrayBuilder;
 import no.eirikb.bomberman.client.service.LobbyService;
 import no.eirikb.bomberman.client.service.LobbyServiceAsync;
@@ -71,6 +71,8 @@ public class GameCreatePanel extends Composite {
             sprites = BoxBuilder.createBoxes(sprites);
             setInfoTextBackground("Building bricks...");
             sprites = BrickBuilder.createBricks(sprites);
+            setInfoTextBackground("Building powerups...");
+            sprites = PowerupBuilder.createPowerups(sprites);
             final LobbyServiceAsync bombermanService = GWT.create(LobbyService.class);
             bombermanService.createGame(gameName, sprites, Settings.getInstance(), new AsyncCallback<GameInfo>() {
 

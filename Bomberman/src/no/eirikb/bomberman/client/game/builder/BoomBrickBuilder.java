@@ -10,7 +10,7 @@ package no.eirikb.bomberman.client.game.builder;
 
 import no.eirikb.bomberman.client.game.Animation;
 import no.eirikb.bomberman.client.game.BoomBrick;
-import no.eirikb.bomberman.client.game.Sprite;
+import no.eirikb.bomberman.client.game.Brick;
 
 /**
  *
@@ -18,8 +18,8 @@ import no.eirikb.bomberman.client.game.Sprite;
  */
 public class BoomBrickBuilder {
 
-    public static BoomBrick createBoomBrick(Sprite brick) {
-        BoomBrick boomBrick = new BoomBrick(brick.getSpriteX(), brick.getSpriteY());
+    public static BoomBrick createBoomBrick(Brick brick) {
+        BoomBrick boomBrick = new BoomBrick(brick);
         boomBrick.setAnimation(new Animation(2, 10));
         return boomBrick;
     }

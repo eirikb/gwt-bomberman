@@ -8,6 +8,8 @@ import no.eirikb.bomberman.client.ui.lobby.LobbyPanel;
 import no.eirikb.bomberman.client.ui.lobby.GameJoinListener;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -29,6 +31,7 @@ import no.eirikb.bomberman.client.game.Settings;
 import no.eirikb.bomberman.client.game.Sprite;
 import no.eirikb.bomberman.client.game.builder.BoxBuilder;
 import no.eirikb.bomberman.client.game.builder.BrickBuilder;
+import no.eirikb.bomberman.client.game.builder.PowerupBuilder;
 import no.eirikb.bomberman.client.game.builder.SpriteArrayBuilder;
 import no.eirikb.bomberman.client.loading.LoadListener;
 import no.eirikb.bomberman.client.loading.LoadingPanel;
@@ -48,13 +51,14 @@ public class Bomberman implements EntryPoint {
     private LoginPanel loginPanel;
     private LobbyPanel lobbyPanel;
     private GamePanelContainer gamePanel;
+    private LoadingPanel loadingPanel;
     private RemoteEventService remoteEventService;
     private static final Domain GAME_DOMAIN = DomainFactory.getDomain(GameEvent.GAME_DOMAIN);
     private static final Domain LOBBY_DOMAIN = DomainFactory.getDomain(LobbyEvent.LOBBY_DOMAIN);
 
     public void onModuleLoad() {
-        //showLoginPanel();
-        hack();
+        showLoginPanel();
+        // hack();
     }
 
     // TODO REMOVE!
@@ -75,6 +79,7 @@ public class Bomberman implements EntryPoint {
                     Sprite[][] sprites = SpriteArrayBuilder.createSprites();
                     sprites = BoxBuilder.createBoxes(sprites);
                     sprites = BrickBuilder.createBricks(sprites);
+                    sprites = PowerupBuilder.createPowerups(sprites);
                     Settings.getInstance().setMaxPlayers(1);
                     lobbyService.createGame(random, sprites, Settings.getInstance(), new AsyncCallback<GameInfo>() {
 
@@ -173,8 +178,6 @@ public class Bomberman implements EntryPoint {
         GameServiceAsync gameService = GWT.create(GameService.class);
         gameService.getGame(gameName, new AsyncCallback<Game>() {
 
-            private LoadingPanel loadingPanel;
-
             public void onFailure(Throwable caught) {
                 Window.alert("OOMGGGG! " + caught);
             }
@@ -182,28 +185,34 @@ public class Bomberman implements EntryPoint {
             public void onSuccess(final Game result) {
                 if (result != null) {
 
-                    loadingPanel = new LoadingPanel(new LoadListener() {
+                    if (loadingPanel == null) {
+                        loadingPanel = new LoadingPanel(new LoadListener() {
 
-                        public void complete() {
-                            for (Player p : result.getPlayers()) {
-                                if (p.getNick().equals(player.getNick())) {
-                                    player = p;
+                            public void complete() {
+                                for (Player p : result.getPlayers()) {
+                                    if (p.getNick().equals(player.getNick())) {
+                                        player = p;
+                                    }
+                                    p.setBombAbount(result.getSettings().getPlayerBombStartAmount());
+                                    p.setBombPower(result.getSettings().getBombPower());
+                                    p.setSpeed(result.getSettings().getPlayerSpeed());
                                 }
-                                p.setBombAbount(result.getSettings().getPlayerBombStartAmount());
-                                p.setBombPower(result.getSettings().getBombPower());
-                                p.setSpeed(result.getSettings().getPlayerSpeed());
+                                gamePanel = new GamePanelContainer(result, player);
+                                gamePanel.start();
+                                RootPanel.get().remove(loadingPanel);
+                                RootPanel.get().add(gamePanel);
+                                remoteEventService.addListener(GAME_DOMAIN, new DefaultGameListener(),
+                                        new GameEventFilter(result.getGameInfo().getName(), player.getNick()));
                             }
-                            gamePanel = new GamePanelContainer(result, player);
-                            gamePanel.start();
-                            RootPanel.get().remove(loadingPanel);
-                            RootPanel.get().add(gamePanel);
-                            remoteEventService.addListener(GAME_DOMAIN, new DefaultGameListener(),
-                                    new GameEventFilter(result.getGameInfo().getName(), player.getNick()));
+                        });
+                    }
+                    RootPanel.get().add(loadingPanel);
+                    DeferredCommand.addCommand(new Command() {
+
+                        public void execute() {
+                            loadingPanel.initLoad();
                         }
                     });
-                    RootPanel.get().add(loadingPanel);
-                    loadingPanel.initLoad();
-
                 } else {
                     Window.alert("GAME WWWAAAS NULL! OMG!");
                 }

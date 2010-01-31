@@ -1,4 +1,4 @@
-/*
+ /*
  * ----------------------------------------------------------------------------
  * "THE BEER-WARE LICENSE" (Revision 42):
  * <eirikdb@gmail.com> wrote this file. As long as you retain this notice you
@@ -11,6 +11,7 @@ package no.eirikb.bomberman.server;
 import de.novanic.eventservice.client.event.domain.Domain;
 import de.novanic.eventservice.client.event.domain.DomainFactory;
 import de.novanic.eventservice.service.RemoteEventServiceServlet;
+import java.io.File;
 import java.util.Map;
 import no.eirikb.bomberman.client.event.lobby.GameCreateEvent;
 import no.eirikb.bomberman.client.event.lobby.PlayerJoinGameEvent;
@@ -86,5 +87,13 @@ public class LobbyServer extends RemoteEventServiceServlet implements LobbyServi
 
     public Player checkSession() {
         return gameHandler.getPlayer((String) getThreadLocalRequest().getSession().getAttribute("nick"));
+    }
+
+    public String[] getImages() {
+        File imageDir = new File("war/img/");
+        if (imageDir != null && imageDir.isDirectory()) {
+            return imageDir.list();
+        }
+        return null;
     }
 }

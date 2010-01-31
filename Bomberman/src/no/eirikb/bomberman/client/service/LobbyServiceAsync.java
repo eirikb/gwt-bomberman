@@ -21,6 +21,8 @@ import no.eirikb.bomberman.client.game.Sprite;
  */
 public interface LobbyServiceAsync {
 
+    void getImages(AsyncCallback<String[]> callback);
+
     void checkSession(AsyncCallback<Player> callback);
 
     void join(String nick, AsyncCallback<Player> callback);

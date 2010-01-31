@@ -9,6 +9,7 @@
 package no.eirikb.bomberman.client.game;
 
 import com.google.gwt.user.client.ui.Image;
+import no.eirikb.bomberman.client.game.powerup.Powerup;
 
 /**
  *
@@ -22,8 +23,9 @@ public class BoomBrick extends Brick {
     public BoomBrick() {
     }
 
-    public BoomBrick(int spriteX, int spriteY) {
-        super(spriteX, spriteY);
+    public BoomBrick(Brick brick) {
+        super(brick.getSpriteX(), brick.getSpriteY());
+        setPowerup(brick.getPowerup());
         setImage(new Image(IMAGEURL));
     }
 

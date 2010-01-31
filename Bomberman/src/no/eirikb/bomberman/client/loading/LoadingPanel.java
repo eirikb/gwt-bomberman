@@ -8,14 +8,17 @@
  */
 package no.eirikb.bomberman.client.loading;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
-import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.widgetideas.graphics.client.ImageLoader;
 import no.eirikb.bomberman.client.ProgressBar;
-import no.eirikb.bomberman.client.image.ImageHandler;
-import no.eirikb.bomberman.client.image.ImageHandlerListener;
+import no.eirikb.bomberman.client.service.LobbyService;
+import no.eirikb.bomberman.client.service.LobbyServiceAsync;
 
 /**
  *
@@ -27,6 +30,8 @@ public class LoadingPanel extends VerticalPanel {
     private Label totalLoadingLabel;
     private ProgressBar totalProgressBar;
     private LoadListener loadListener;
+    private boolean done;
+    private int lastLength;
 
     public LoadingPanel(LoadListener loadListener) {
         this.loadListener = loadListener;
@@ -34,51 +39,66 @@ public class LoadingPanel extends VerticalPanel {
         add(loadingLabel);
         totalLoadingLabel = new Label("Total progress: 0%");
         add(totalLoadingLabel);
-        totalProgressBar = new ProgressBar(50);
+        totalProgressBar = new ProgressBar(100);
         add(totalProgressBar);
     }
 
     public void initLoad() {
-        loadImages();
-    }
+        LobbyServiceAsync lobbyService = GWT.create(LobbyService.class);
 
-    private void loadImages() {
-        final String[] imageUrls = {
-            "bg", "bomb1", "bomb2", "bomb3", "boombrick1", "boombrick2", "boomcore1",
-            "boomcore2", "boomcore3", "boomcore4", "boomenddown1", "boomenddown2",
-            "boomenddown3", "boomenddown4", "boomendleft1", "boomendleft2", "boomendleft3",
-            "boomendleft4", "boomendright1", "boomendright2", "boomendright3", "boomendright4",
-            "boomendup1", "boomendup2", "boomendup3", "boomendup4", "boomsidehorizontal1",
-            "boomsidehorizontal2", "boomsidehorizontal3", "boomsidehorizontal4", "boomsidevertical1",
-            "boomsidevertical2", "boomsidevertical3", "boomsidevertical4", "box", "brick",
-            "md1", "md2", "md3", "md4", "ml1", "ml2", "ml3", "ml4", "mr1", "mr2", "mr3", "mr4",
-            "mu1", "mu2", "mu3", "mu4", "pu1", "pu2", "pu3", "pu4"
-        };
+        lobbyService.getImages(new AsyncCallback<String[]>() {
 
-        for (int i = 0; i < imageUrls.length; i++) {
-            imageUrls[i] = "../img/" + imageUrls[i] + ".png";
-        }
+            public void onFailure(Throwable caught) {
+                GWT.log("Could not fetch images!", caught);
+            }
 
-        new ImageHandler().loadImages(new ImageHandlerListener() {
+            public void onSuccess(final String[] imageUrls) {
+                if (imageUrls != null && imageUrls.length != lastLength) {
+                    lastLength = imageUrls.length;
+                    for (int i = 0; i < imageUrls.length; i++) {
+                        imageUrls[i] = "../img/" + imageUrls[i];
+                    }
 
-            public void onDone(String url, int pos) {
-                int percentage = (int) (((double) (pos + 2) / imageUrls.length) * 100);
-                updateTotalLoading(percentage);
-                if (pos == imageUrls.length - 1) {
-                    DeferredCommand.addCommand(new Command() {
+                    ImageLoader.loadImages(imageUrls, new ImageLoader.CallBack() {
 
-                        public void execute() {
-                            loadListener.complete();
+                        private int pos = 0;
+                        private int percentage = 0;
+
+                        public void onImagesLoaded(ImageElement[] imageElements) {
+                            pos += imageElements.length;
+                            int percentage2 = (int) (((double) pos / imageUrls.length) * 100);
+                            if (percentage != percentage2) {
+                                percentage = percentage2;
+                                updateTotalLoading(percentage);
+                                if (pos == imageUrls.length) {
+                                    done = true;
+                                    loadListener.complete();
+                                }
+                            }
                         }
                     });
+                } else if (imageUrls.length == lastLength) {
+                    loadListener.complete();
+                } else {
+                    loadingLabel.setText("Unable to fetch images! BREAKDOWN!");
                 }
             }
-        }, imageUrls);
-
+        });
     }
 
-    private void updateTotalLoading(int percentage) {
-        totalLoadingLabel.setText("Total progress: " + percentage + '%');
-        totalProgressBar.setProgress(percentage);
+    private void updateTotalLoading(final int percentage) {
+        DeferredCommand.addCommand(new Command() {
+
+            public void execute() {
+                if (!done) {
+                    totalLoadingLabel.setText("Total progress: " + percentage + '%');
+                    totalProgressBar.setProgress(percentage);
+                }
+            }
+        });
+    }
+
+    public boolean isDone() {
+        return done;
     }
 }

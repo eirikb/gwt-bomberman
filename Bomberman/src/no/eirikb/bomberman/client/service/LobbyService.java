@@ -23,6 +23,8 @@ import no.eirikb.bomberman.client.game.Sprite;
 @RemoteServiceRelativePath("lobbyservice")
 public interface LobbyService extends RemoteService {
 
+    String[] getImages();
+
     Player checkSession();
 
     Player join(String nick);
