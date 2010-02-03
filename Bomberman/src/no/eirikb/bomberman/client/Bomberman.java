@@ -1,5 +1,6 @@
 package no.eirikb.bomberman.client;
 
+import no.eirikb.bomberman.client.ui.lobby.LoginPanel;
 import no.eirikb.bomberman.client.event.game.PlayerDieEvent;
 import no.eirikb.bomberman.client.event.game.PlayerGotPowerupEvent;
 import no.eirikb.bomberman.client.event.game.PlayerPlaceBombEvent;
