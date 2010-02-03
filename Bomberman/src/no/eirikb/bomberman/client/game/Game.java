@@ -123,9 +123,12 @@ public class Game implements Serializable {
     }
 
     public void removePowerup(Powerup powerup) {
-        Powerup toRemove = powerups.remove(powerups.indexOf(powerup));
-        if (sprites[toRemove.getSpriteX()][toRemove.getSpriteY()] instanceof Powerup) {
-            removeSprite(toRemove);
+        int pos = powerups.indexOf(powerup);
+        if (pos >= 0) {
+            Powerup toRemove = powerups.remove(pos);
+            if (sprites[toRemove.getSpriteX()][toRemove.getSpriteY()] instanceof Powerup) {
+                removeSprite(toRemove);
+            }
         }
     }
 

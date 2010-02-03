@@ -34,4 +34,22 @@ public abstract class Powerup extends Sprite {
     public Player getPlayer() {
         return player;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Powerup other = (Powerup) obj;
+        return (other.getSpriteX() == getSpriteX() && other.getSpriteY() == getSpriteY());
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        return hash;
+    }
 }
