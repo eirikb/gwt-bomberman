@@ -10,8 +10,15 @@ package no.eirikb.bomberman.server;
 
 import de.novanic.eventservice.client.event.domain.Domain;
 import de.novanic.eventservice.client.event.domain.DomainFactory;
+import de.novanic.eventservice.config.EventServiceConfigurationFactory;
 import de.novanic.eventservice.service.RemoteEventServiceServlet;
+import de.novanic.eventservice.service.UserTimeoutListener;
+import de.novanic.eventservice.service.registry.user.UserActivityScheduler;
+import de.novanic.eventservice.service.registry.user.UserInfo;
+import de.novanic.eventservice.service.registry.user.UserManager;
+import de.novanic.eventservice.service.registry.user.UserManagerFactory;
 import java.io.File;
+import java.util.Date;
 import java.util.Map;
 import no.eirikb.bomberman.client.event.lobby.GameCreateEvent;
 import no.eirikb.bomberman.client.event.lobby.PlayerJoinGameEvent;
@@ -34,9 +41,19 @@ public class LobbyServer extends RemoteEventServiceServlet implements LobbyServi
 
     public LobbyServer() {
         gameHandler = GameHandler.getInstance();
+        UserManager userManager = UserManagerFactory.getInstance().getUserManager(40000);
+        UserActivityScheduler userActivityScheduler = userManager.getUserActivityScheduler();
+        userActivityScheduler.addTimeoutListener(new UserTimeoutListener() {
+
+            public void onTimeout(UserInfo ui) {
+                System.out.println(new Date() + " - TIMEOUT! LOLOL " + ui.getUserId());
+            }
+        });
     }
 
     public Player join(String nick) {
+        UserManager userManager = UserManagerFactory.getInstance().getUserManager();
+
         if (gameHandler.getPlayer(nick) == null) {
             Player player = new Player(nick);
             gameHandler.addPlayer(player);

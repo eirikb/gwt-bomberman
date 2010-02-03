@@ -91,7 +91,6 @@ public class GameCreatePanel extends Composite {
 
                             public void onSuccess(GameInfo result) {
                                 if (result != null) {
-                                    infoLabel.setText("Waiting for players...");
                                     gameJoinListener.onJoin(result);
                                 } else {
                                     infoLabel.setText("Unkown error!");

@@ -36,6 +36,8 @@ public class LobbyPanel extends Composite {
     GameListPanel gameListPanel;
     @UiField
     GameCreatePanel gameCreatePanel;
+    @UiField
+    GameWaitPanel gameWaitPanel;
 
     public LobbyPanel(GameJoinListener gameJoinListener) {
         initWidget(uiBinder.createAndBindUi(this));
@@ -56,6 +58,9 @@ public class LobbyPanel extends Composite {
     public void playerJoinGame(GameInfo game, Player player) {
         infoLabel.setText("Player " + player.getNick() + " join game: " + game.getName() + " (" + new Date() + ')');
         gameListPanel.playerJoinGame(game, player);
+        if (gameWaitPanel.isVisible()) {
+            gameWaitPanel.playerJoinGame(game, player);
+        }
     }
 
     public void setInfoText(String text) {
@@ -63,7 +68,8 @@ public class LobbyPanel extends Composite {
     }
 
     public void onJoin(GameInfo game) {
-        infoLabel.setText("Waiting for players...");
+        infoLabel.setText("Joined " + game.getName() + ". Waiting for players...");
         tabPanel.setVisible(false);
+        gameWaitPanel.setVisible(true);
     }
 }

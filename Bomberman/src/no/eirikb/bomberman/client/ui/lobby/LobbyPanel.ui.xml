@@ -4,6 +4,7 @@
              xmlns:lobby="urn:import:no.eirikb.bomberman.client.ui.lobby">
     <g:HTMLPanel>
         Info: <g:Label ui:field="infoLabel" />
+        <lobby:GameWaitPanel ui:field="gameWaitPanel" visible="false" />
         <g:TabPanel ui:field="tabPanel" animationEnabled="true">
             <g:Tab text="Games">
                 <lobby:GameListPanel ui:field="gameListPanel" />

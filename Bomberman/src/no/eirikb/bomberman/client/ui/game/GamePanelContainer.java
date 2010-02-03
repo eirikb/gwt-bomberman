@@ -302,8 +302,8 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
     public void playerGotPowerupEvent(PlayerGotPowerupEvent event) {
         Player player = game.getAlivePlayer(event.getPlayerNick());
         if (player != null && player != gamePanel.getPlayer()) {
-            Powerup powerup = (Powerup) game.getSprites()[event.getPowerup().getSpriteX()][event.getPowerup().getSpriteY()];
-            powerup.powerUp(player);
+            Powerup powerup = event.getPowerup();
+            event.getPowerup().powerUp(player);
             game.removePowerup(powerup);
         }
     }
