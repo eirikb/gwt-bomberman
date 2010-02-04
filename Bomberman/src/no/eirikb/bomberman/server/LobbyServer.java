@@ -10,7 +10,6 @@ package no.eirikb.bomberman.server;
 
 import de.novanic.eventservice.client.event.domain.Domain;
 import de.novanic.eventservice.client.event.domain.DomainFactory;
-import de.novanic.eventservice.config.EventServiceConfigurationFactory;
 import de.novanic.eventservice.service.RemoteEventServiceServlet;
 import de.novanic.eventservice.service.UserTimeoutListener;
 import de.novanic.eventservice.service.registry.user.UserActivityScheduler;
@@ -19,7 +18,9 @@ import de.novanic.eventservice.service.registry.user.UserManager;
 import de.novanic.eventservice.service.registry.user.UserManagerFactory;
 import java.io.File;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Map;
+import javax.servlet.http.HttpSession;
 import no.eirikb.bomberman.client.event.lobby.GameCreateEvent;
 import no.eirikb.bomberman.client.event.lobby.PlayerJoinGameEvent;
 import no.eirikb.bomberman.client.event.lobby.LobbyEvent;
@@ -103,6 +104,12 @@ public class LobbyServer extends RemoteEventServiceServlet implements LobbyServi
     }
 
     public Player checkSession() {
+        HttpSession session = getThreadLocalRequest().getSession();
+        System.out.println("Session: " + session);
+        Enumeration attributes = session.getAttributeNames();
+        while (attributes.hasMoreElements()) {
+            System.out.println("Attribute: " + attributes.nextElement());
+        }
         return gameHandler.getPlayer((String) getThreadLocalRequest().getSession().getAttribute("nick"));
     }
 
