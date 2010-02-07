@@ -21,9 +21,11 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
+import no.eirikb.bomberman.client.event.game.PlayerQuitGameEvent;
 import no.eirikb.bomberman.client.event.lobby.GameCreateEvent;
 import no.eirikb.bomberman.client.event.lobby.PlayerJoinGameEvent;
 import no.eirikb.bomberman.client.event.lobby.LobbyEvent;
+import no.eirikb.bomberman.client.event.lobby.PlayerQuitEvent;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.GameInfo;
 import no.eirikb.bomberman.client.game.Player;
@@ -47,25 +49,29 @@ public class LobbyServer extends RemoteEventServiceServlet implements LobbyServi
         userActivityScheduler.addTimeoutListener(new UserTimeoutListener() {
 
             public void onTimeout(UserInfo ui) {
-                System.out.println(new Date() + " - TIMEOUT! LOLOL " + ui.getUserId());
+                Player player = gameHandler.getPlayerBySessionId(ui.getUserId());
+                addEvent(LOBBY_DOMAIN, new PlayerQuitEvent(gameHandler.getPlayerBySessionId(ui.getUserId())));
+                Game game = gameHandler.getGameByPlayer(player);
+                if (game != null) {
+                    addEvent(GameServer.GAME_DOMAIN, new PlayerQuitGameEvent(game.getGameInfo().getName(), player.getNick()));
+                }
+                System.out.println("TIMEOUT! " + new Date() + " - " + player.getNick() + " (" + game + ')');
+                gameHandler.removePlayer(player);
             }
         });
     }
 
     public Player join(String nick) {
-        UserManager userManager = UserManagerFactory.getInstance().getUserManager();
-
         if (gameHandler.getPlayer(nick) == null) {
             Player player = new Player(nick);
-            gameHandler.addPlayer(player);
-            getThreadLocalRequest().getSession().setAttribute("nick", nick);
+            gameHandler.addPlayer(getThreadLocalRequest().getSession().getId(), player);
             return player;
         }
         return null;
     }
 
     public GameInfo createGame(String name, Sprite[][] sprites, Settings settings) {
-        Player player = gameHandler.getPlayer((String) getThreadLocalRequest().getSession().getAttribute("nick"));
+        Player player = gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
         if (gameHandler.getGame(name) == null) {
             Game game = new Game(name, sprites, settings);
             gameHandler.addGame(game);
@@ -82,7 +88,7 @@ public class LobbyServer extends RemoteEventServiceServlet implements LobbyServi
 
     public GameInfo joinGame(String gameName) {
         Game game = gameHandler.getGame(gameName);
-        Player player = gameHandler.getPlayer((String) getThreadLocalRequest().getSession().getAttribute("nick"));
+        Player player = gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
         if (game != null && player != null && game.getAlivePlayersSize() < game.getSettings().getMaxPlayers()) {
             game.addPlayer(player);
             switch (game.getAlivePlayersSize()) {
@@ -110,7 +116,7 @@ public class LobbyServer extends RemoteEventServiceServlet implements LobbyServi
         while (attributes.hasMoreElements()) {
             System.out.println("Attribute: " + attributes.nextElement());
         }
-        return gameHandler.getPlayer((String) getThreadLocalRequest().getSession().getAttribute("nick"));
+        return gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
     }
 
     public String[] getImages() {

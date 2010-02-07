@@ -26,6 +26,8 @@ public class LobbyListenerAdapter implements LobbyListener {
                 playerJoinGame((PlayerJoinGameEvent) event);
             } else if (event instanceof PlayerJoinEvent) {
                 playerJoin((PlayerJoinEvent) event);
+            } else if (event instanceof PlayerQuitEvent) {
+                playerQuitEvent((PlayerQuitEvent) event);
             }
         }
     }
@@ -37,5 +39,8 @@ public class LobbyListenerAdapter implements LobbyListener {
     }
 
     public void playerJoin(PlayerJoinEvent playerJoinEvent) {
+    }
+
+    public void playerQuitEvent(PlayerQuitEvent playerQuitEvent) {
     }
 }

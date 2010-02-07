@@ -8,19 +8,18 @@
  */
 package no.eirikb.bomberman.client.event.lobby;
 
-import de.novanic.eventservice.client.event.listener.RemoteEventListener;
+import no.eirikb.bomberman.client.game.Player;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public interface LobbyListener extends RemoteEventListener {
+public class PlayerQuitEvent extends LobbyEvent {
 
-    void createGame(GameCreateEvent gameCreateEvent);
+    public PlayerQuitEvent() {
+    }
 
-    void playerJoinGame(PlayerJoinGameEvent gameJoinEvent);
-
-    void playerJoin(PlayerJoinEvent playerJoinEvent);
-
-    void playerQuitEvent(PlayerQuitEvent playerQuitEvent);
+    public PlayerQuitEvent(Player player) {
+        super(player);
+    }
 }

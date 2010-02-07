@@ -6,21 +6,18 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client.event.lobby;
-
-import de.novanic.eventservice.client.event.listener.RemoteEventListener;
+package no.eirikb.bomberman.client.event.game;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public interface LobbyListener extends RemoteEventListener {
+public class PlayerQuitGameEvent extends GameEvent {
 
-    void createGame(GameCreateEvent gameCreateEvent);
+    public PlayerQuitGameEvent() {
+    }
 
-    void playerJoinGame(PlayerJoinGameEvent gameJoinEvent);
-
-    void playerJoin(PlayerJoinEvent playerJoinEvent);
-
-    void playerQuitEvent(PlayerQuitEvent playerQuitEvent);
+    public PlayerQuitGameEvent(String gameName, String playerNick) {
+        super(gameName, playerNick);
+    }
 }

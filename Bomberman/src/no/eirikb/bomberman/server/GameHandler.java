@@ -25,20 +25,23 @@ public class GameHandler {
     private Map<String, Game> games;
     private Map<String, GameInfo> gameInfos;
     private Map<Player, Game> playerGames;
+    private Map<String, Player> playerSession;
 
     private GameHandler() {
         players = new HashMap<String, Player>();
         games = new HashMap<String, Game>();
         gameInfos = new HashMap<String, GameInfo>();
         playerGames = new HashMap<Player, Game>();
+        playerSession = new HashMap<String, Player>();
     }
 
-    public Player getPlayer(String nick) {
-        return players.get(nick);
+    public Player getPlayer(String sessionId) {
+        return players.get(sessionId);
     }
 
-    public void addPlayer(Player player) {
+    public void addPlayer(String sessionId, Player player) {
         players.put(player.getNick(), player);
+        playerSession.put(sessionId, player);
     }
 
     public Game getGame(String name) {
@@ -64,5 +67,18 @@ public class GameHandler {
 
     public Game getGameByPlayer(Player player) {
         return playerGames.get(player);
+    }
+
+    public Player getPlayerBySessionId(String sessionId) {
+        return playerSession.get(sessionId);
+    }
+
+    void removePlayer(Player player) {
+        players.remove(player.getNick());
+        playerSession.remove(player.getNick());
+        Game game = playerGames.get(player);
+        if (game != null)  {
+            game.removePlayer(player);
+        }
     }
 }

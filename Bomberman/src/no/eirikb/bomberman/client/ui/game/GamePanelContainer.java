@@ -28,11 +28,11 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import no.eirikb.bomberman.client.event.game.PlayerDieEvent;
 import no.eirikb.bomberman.client.event.game.PlayerGotPowerupEvent;
 import no.eirikb.bomberman.client.event.game.PlayerPlaceBombEvent;
+import no.eirikb.bomberman.client.event.game.PlayerQuitGameEvent;
 import no.eirikb.bomberman.client.event.game.PlayerResurectEvent;
 import no.eirikb.bomberman.client.event.game.PlayerStartWalkingEvent;
 import no.eirikb.bomberman.client.event.game.PlayerStopWalkingEvent;
 import no.eirikb.bomberman.client.game.Bomb;
-import no.eirikb.bomberman.client.game.Brick;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.GameListener;
 import no.eirikb.bomberman.client.game.Player;
@@ -306,5 +306,11 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
             event.getPowerup().powerUp(player);
             game.removePowerup(powerup);
         }
+    }
+
+    public void playerQuitGameEvent(PlayerQuitGameEvent event) {
+        Player player = game.getAlivePlayer(event.getPlayerNick());
+        player = player == null ? game.getDeadPlayer(event.getPlayerNick()) : player;
+        GWT.log("A player quit inside my game! :O   (" + player + ')', null);
     }
 }

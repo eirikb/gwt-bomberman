@@ -91,7 +91,7 @@
  *
  * @author Bjarne Matzen - Bjarne[dot]Matzen[at]gmail[dot]com
  */
-package no.eirikb.bomberman.client;
+package no.eirikb.bomberman.client.ui;
 
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;

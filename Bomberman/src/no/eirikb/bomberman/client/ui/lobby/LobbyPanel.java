@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Widget;
+import java.util.Collections;
 import java.util.Date;
 import no.eirikb.bomberman.client.game.GameInfo;
 import no.eirikb.bomberman.client.game.Player;
@@ -48,6 +49,10 @@ public class LobbyPanel extends Composite {
 
     public void playerJoin(Player player) {
         infoLabel.setText("Player join: " + player.getNick() + " (" + new Date() + ')');
+    }
+
+    public void playerQuit(Player player) {
+        infoLabel.setText("Player quit: " + player.getNick() + " (" + new Date() + ')');
     }
 
     public void addGame(GameInfo game) {

@@ -4,7 +4,9 @@
 
     </ui:style>
     <g:HTMLPanel>
-        Players:
+        <g:Button ui:field="returnButton">Return</g:Button>
+        <g:Button ui:field="forceStartButton">Force start</g:Button>
+        <p>Players:</p>
         <g:StackPanel ui:field="stackPanel" />
     </g:HTMLPanel>
 </ui:UiBinder>

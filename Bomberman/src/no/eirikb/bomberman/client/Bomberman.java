@@ -1,6 +1,8 @@
 package no.eirikb.bomberman.client;
 
-import no.eirikb.bomberman.client.ui.lobby.LoginPanel;
+import no.eirikb.bomberman.client.event.game.PlayerQuitGameEvent;
+import no.eirikb.bomberman.client.event.lobby.PlayerQuitEvent;
+import no.eirikb.bomberman.client.ui.LoginPanel;
 import no.eirikb.bomberman.client.event.game.PlayerDieEvent;
 import no.eirikb.bomberman.client.event.game.PlayerGotPowerupEvent;
 import no.eirikb.bomberman.client.event.game.PlayerPlaceBombEvent;
@@ -255,6 +257,11 @@ public class Bomberman implements EntryPoint {
         public void playerGotPowerupEvent(PlayerGotPowerupEvent event) {
             gamePanel.playerGotPowerupEvent(event);
         }
+
+        @Override
+        public void playerQuitGameEvent(PlayerQuitGameEvent event) {
+            gamePanel.playerQuitGameEvent(event);
+        }
     }
 
     private class DefaultLobbyListener extends LobbyListenerAdapter {
@@ -284,6 +291,13 @@ public class Bomberman implements EntryPoint {
                     GWT.log("HERE WE GO!!!", null);
                     startGame();
                 }
+            }
+        }
+
+        @Override
+        public void playerQuitEvent(PlayerQuitEvent playerQuitEvent) {
+            if (lobbyPanel != null) {
+                lobbyPanel.playerQuit(playerQuitEvent.getPlayer());
             }
         }
     }

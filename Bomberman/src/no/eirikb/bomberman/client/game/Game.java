@@ -211,4 +211,9 @@ public class Game implements Serializable {
             gameListener.playerLive(player);
         }
     }
+
+    public void removePlayer(Player player) {
+        alivePlayers.remove(player.getNick());
+        deadPlayers.remove(player.getNick());
+    }
 }

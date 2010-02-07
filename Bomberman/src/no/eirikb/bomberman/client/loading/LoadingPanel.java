@@ -14,7 +14,7 @@ import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.widgetideas.graphics.client.ImageLoader;
-import no.eirikb.bomberman.client.ProgressBar;
+import no.eirikb.bomberman.client.ui.ProgressBar;
 
 /**
  *
