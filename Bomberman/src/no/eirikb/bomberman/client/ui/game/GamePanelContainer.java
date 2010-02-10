@@ -16,14 +16,18 @@ import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Event.NativePreviewEvent;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import no.eirikb.bomberman.client.event.game.PlayerDieEvent;
 import no.eirikb.bomberman.client.event.game.PlayerGotPowerupEvent;
@@ -51,7 +55,7 @@ import no.eirikb.bomberman.client.service.GameServiceAsync;
  */
 public class GamePanelContainer extends VerticalPanel implements KeyHackCallback {
 
-    private TextBox textBox;
+    private FocusPanel focusPanel;
     private KeyHack keyHack;
     private Game game;
     private GamePanel gamePanel;
@@ -65,12 +69,13 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
     }
 
     public void start(final Player player) {
-
-        textBox = new TextBox();
-
-        textBox.addKeyDownHandler(new KeyDownHandler() {
+        Window.enableScrolling(false);
+        focusPanel = new FocusPanel();
+        focusPanel.addKeyDownHandler(new KeyDownHandler() {
 
             public void onKeyDown(KeyDownEvent event) {
+                event.preventDefault();
+                event.stopPropagation();
                 if (KeyDownEvent.isArrow(event.getNativeKeyCode())) {
                     if (keyHack != null) {
                         keyHack.arrowKeyDown(event);
@@ -97,10 +102,9 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
             }
         });
 
-        textBox.addKeyUpHandler(new KeyUpHandler() {
+        focusPanel.addKeyUpHandler(new KeyUpHandler() {
 
             public void onKeyUp(KeyUpEvent event) {
-                textBox.setText("");
                 if (KeyUpEvent.isArrow(event.getNativeKeyCode())) {
                     if (keyHack != null) {
                         keyHack.arrowKeyUp(event);
@@ -110,7 +114,7 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
                 }
             }
         });
-        add(textBox);
+        add(focusPanel);
         startGame(player);
     }
 
@@ -133,7 +137,7 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
                     gameHandler.setKeyHackCallback(null);
                     keyHack = null;
                 }
-                textBox.setFocus(true);
+                focusPanel.setFocus(true);
             }
         });
         add(useKeyHack);
@@ -145,12 +149,13 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
         game.addGameListener(bombAmountPanel);
         add(bombAmountPanel);
         gameHandler.start();
-        add(gamePanel);
+        //add(gamePanel);
+        focusPanel.add(gamePanel);
         killCheck();
         DeferredCommand.addCommand(new Command() {
 
             public void execute() {
-                textBox.setFocus(true);
+                focusPanel.setFocus(true);
             }
         });
     }
@@ -167,7 +172,7 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
             player.setWay(Way.DOWN);
         }
 
-        gameService.startWalking(player.getWay(), new AsyncCallback() {
+        gameService.startWalking(player.getWay(), player.getX(), player.getY(), new AsyncCallback() {
 
             public void onFailure(Throwable caught) {
             }
@@ -235,7 +240,7 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
                             game.playerLive(player);
                             dialogBox.setVisible(false);
                             dialogBox.hide();
-                            textBox.setFocus(true);
+                            focusPanel.setFocus(true);
                         }
                     });
                     v.add(resurectButton);

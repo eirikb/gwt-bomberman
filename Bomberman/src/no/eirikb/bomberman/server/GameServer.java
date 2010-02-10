@@ -39,7 +39,7 @@ public class GameServer extends RemoteEventServiceServlet implements GameService
     }
 
     public Game getGame(String name) {
-        Player player = gameHandler.getPlayer((String) getThreadLocalRequest().getSession().getAttribute("nick"));
+        Player player = gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
         Game game = gameHandler.getGame(name);
         gameHandler.linkPlayerToGame(player, game);
         if (player != null && game != null) {
@@ -52,14 +52,18 @@ public class GameServer extends RemoteEventServiceServlet implements GameService
         return null;
     }
 
-    public void startWalking(Way way) {
+    public void startWalking(Way way, double x, double y) {
         Player player = gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
+        player.setX(x);
+        player.setY(y);
         Game game = gameHandler.getGameByPlayer(player);
         addEvent(GAME_DOMAIN, new PlayerStartWalkingEvent(game.getGameInfo().getName(), player.getNick(), way));
     }
 
     public void stopWalking(double x, double y) {
         Player player = gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
+        player.setX(x);
+        player.setY(y);
         Game game = gameHandler.getGameByPlayer(player);
         addEvent(GAME_DOMAIN, new PlayerStopWalkingEvent(game.getGameInfo().getName(), player.getNick(), x, y));
     }
@@ -73,18 +77,21 @@ public class GameServer extends RemoteEventServiceServlet implements GameService
     public void died() {
         Player player = gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
         Game game = gameHandler.getGameByPlayer(player);
+        game.playerDie(player);
         addEvent(GAME_DOMAIN, new PlayerDieEvent(game.getGameInfo().getName(), player.getNick()));
     }
 
     public void gotPowerup(Powerup powerup) {
         Player player = gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
         Game game = gameHandler.getGameByPlayer(player);
+        powerup.powerUp(player);
         addEvent(GAME_DOMAIN, new PlayerGotPowerupEvent(game.getGameInfo().getName(), player.getNick(), powerup));
     }
 
     public void resurect() {
         Player player = gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
         Game game = gameHandler.getGameByPlayer(player);
+        game.playerLive(player);
         addEvent(GAME_DOMAIN, new PlayerResurectEvent(game.getGameInfo().getName(), player.getNick()));
     }
 }

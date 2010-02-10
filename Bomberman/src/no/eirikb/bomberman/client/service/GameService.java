@@ -30,7 +30,7 @@ public interface GameService extends RemoteService {
 
     Game getGame(String name);
 
-    void startWalking(Way way);
+    void startWalking(Way way, double x, double y);
 
     void stopWalking(double x, double y);
 

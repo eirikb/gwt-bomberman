@@ -15,7 +15,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Widget;
-import java.util.Collections;
 import java.util.Date;
 import no.eirikb.bomberman.client.game.GameInfo;
 import no.eirikb.bomberman.client.game.Player;
@@ -37,8 +36,6 @@ public class LobbyPanel extends Composite {
     GameListPanel gameListPanel;
     @UiField
     GameCreatePanel gameCreatePanel;
-    @UiField
-    GameWaitPanel gameWaitPanel;
 
     public LobbyPanel(GameJoinListener gameJoinListener) {
         initWidget(uiBinder.createAndBindUi(this));
@@ -63,18 +60,9 @@ public class LobbyPanel extends Composite {
     public void playerJoinGame(GameInfo game, Player player) {
         infoLabel.setText("Player " + player.getNick() + " join game: " + game.getName() + " (" + new Date() + ')');
         gameListPanel.playerJoinGame(game, player);
-        if (gameWaitPanel.isVisible()) {
-            gameWaitPanel.playerJoinGame(game, player);
-        }
     }
 
     public void setInfoText(String text) {
         infoLabel.setText(text);
-    }
-
-    public void onJoin(GameInfo game) {
-        infoLabel.setText("Joined " + game.getName() + ". Waiting for players...");
-        tabPanel.setVisible(false);
-        gameWaitPanel.setVisible(true);
     }
 }

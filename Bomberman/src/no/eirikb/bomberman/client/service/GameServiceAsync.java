@@ -28,7 +28,7 @@ public interface GameServiceAsync {
 
     public void getGame(String name, AsyncCallback<Game> callback);
 
-    public void startWalking(Way way, AsyncCallback callback);
+    public void startWalking(Way way, double x, double y, AsyncCallback callback);
 
     public void stopWalking(double x, double y, AsyncCallback callback);
 

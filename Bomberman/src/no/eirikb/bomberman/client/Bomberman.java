@@ -18,6 +18,8 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import de.novanic.eventservice.client.event.RemoteEventService;
 import de.novanic.eventservice.client.event.RemoteEventServiceFactory;
@@ -61,8 +63,10 @@ public class Bomberman implements EntryPoint {
     private RemoteEventService remoteEventService;
     private static final Domain GAME_DOMAIN = DomainFactory.getDomain(GameEvent.GAME_DOMAIN);
     private static final Domain LOBBY_DOMAIN = DomainFactory.getDomain(LobbyEvent.LOBBY_DOMAIN);
+    private final String VERSION = "0.3";
 
     public void onModuleLoad() {
+        RootPanel.get("version").getElement().setInnerHTML(VERSION);
         showLoginPanel();
         //hack();
     }
@@ -160,10 +164,7 @@ public class Bomberman implements EntryPoint {
 
             public void onJoin(GameInfo game2) {
                 gameInfo = game2;
-                lobbyPanel.onJoin(game2);
-                if (gameInfo.getPlayerSize() == gameInfo.getMaxPlayers()) {
-                    startGame();
-                }
+                startGame();
             }
         }));
         lobbyPanel.setInfoText("Welcome " + player.getNick());

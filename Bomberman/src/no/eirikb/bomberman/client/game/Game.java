@@ -10,7 +10,6 @@ package no.eirikb.bomberman.client.game;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +31,7 @@ public class Game implements Serializable {
     private List<Powerup> powerups;
     private List<GameListener> gameListeners;
     private Settings settings;
+    private boolean closed;
 
     public Game() {
     }
@@ -215,5 +215,13 @@ public class Game implements Serializable {
     public void removePlayer(Player player) {
         alivePlayers.remove(player.getNick());
         deadPlayers.remove(player.getNick());
+    }
+
+    public boolean isClosed() {
+        return closed;
+    }
+
+    public void setClosed(boolean closed) {
+        this.closed = closed;
     }
 }
