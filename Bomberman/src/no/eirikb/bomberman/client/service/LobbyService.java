@@ -34,4 +34,6 @@ public interface LobbyService extends RemoteService {
     GameInfo joinGame(String gameName);
 
     Map<String, GameInfo> getGames();
+
+    void quitGame();
 }

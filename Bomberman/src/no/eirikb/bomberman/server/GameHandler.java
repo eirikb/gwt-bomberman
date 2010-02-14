@@ -73,12 +73,34 @@ public class GameHandler {
         return playerSession.get(sessionId);
     }
 
-    void removePlayer(Player player) {
+    public void removePlayer(Player player) {
         players.remove(player.getNick());
         playerSession.remove(player.getNick());
         Game game = playerGames.get(player);
-        if (game != null)  {
+        if (game != null) {
             game.removePlayer(player);
         }
+    }
+
+    public Game removePlayerFromGame(Player player) {
+        System.out.println("nehe");
+        System.out.println("Removing player! " + player.getNick());
+        Game game = playerGames.remove(player);
+        if (game != null) {
+            game.removePlayer(player);
+        }
+        gameInfos.put(game.getGameInfo().getName(), game.getGameInfo());
+        return game;
+    }
+
+    public void removeGame(Game game) {
+        gameInfos.remove(game.getGameInfo().getName());
+        for (Player player : game.getAlivePlayers()) {
+            playerGames.remove(player);
+        }
+        for (Player player : game.getDeadPlayers()) {
+            playerGames.remove(player);
+        }
+        games.remove(game.getGameInfo().getName());
     }
 }

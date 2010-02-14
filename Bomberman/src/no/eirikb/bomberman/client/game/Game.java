@@ -32,6 +32,8 @@ public class Game implements Serializable {
     private List<GameListener> gameListeners;
     private Settings settings;
     private boolean closed;
+    private Player me;
+    private Player owner;
 
     public Game() {
     }
@@ -57,6 +59,22 @@ public class Game implements Serializable {
         for (int i = 0; i < gameListeners.size(); i++) {
             gameListeners.remove(0);
         }
+    }
+
+    public Player getMe() {
+        return me;
+    }
+
+    public void setMe(Player me) {
+        this.me = me;
+    }
+
+    public Player getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Player owner) {
+        this.owner = owner;
     }
 
     private void addSpriteInvisible(Sprite sprite) {
@@ -144,6 +162,10 @@ public class Game implements Serializable {
         return alivePlayers.values();
     }
 
+    public Iterable<Player> getDeadPlayers() {
+        return deadPlayers.values();
+    }
+
     public List<Bomb> getBombs() {
         return bombs;
     }
@@ -215,6 +237,7 @@ public class Game implements Serializable {
     public void removePlayer(Player player) {
         alivePlayers.remove(player.getNick());
         deadPlayers.remove(player.getNick());
+        gameInfo.setPlayerSize(getPlayerSize());
     }
 
     public boolean isClosed() {
@@ -223,5 +246,9 @@ public class Game implements Serializable {
 
     public void setClosed(boolean closed) {
         this.closed = closed;
+    }
+
+    public int getPlayerSize() {
+        return alivePlayers.size() + deadPlayers.size();
     }
 }

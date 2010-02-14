@@ -8,7 +8,11 @@
  */
 package no.eirikb.bomberman.client.event.game;
 
+import com.google.gwt.core.client.GWT;
 import de.novanic.eventservice.client.event.Event;
+import no.eirikb.bomberman.client.event.shared.PlayerJoinGameEvent;
+import no.eirikb.bomberman.client.event.shared.PlayerQuitGameEvent;
+import no.eirikb.bomberman.client.event.shared.SharedEvent;
 
 /**
  *
@@ -16,23 +20,29 @@ import de.novanic.eventservice.client.event.Event;
  */
 public class GameListenerAdapter implements GameListener {
 
-    public void apply(Event anEvent) {
-        if (anEvent instanceof GameEvent) {
-            if (anEvent instanceof PlayerStartWalkingEvent) {
-                playerStartWalkingEvent((PlayerStartWalkingEvent) anEvent);
-            } else if (anEvent instanceof PlayerStopWalkingEvent) {
-                playerStopWalkingEvent((PlayerStopWalkingEvent) anEvent);
-            } else if (anEvent instanceof PlayerPlaceBombEvent) {
-                playerPlaceBombEvent((PlayerPlaceBombEvent) anEvent);
-            } else if (anEvent instanceof PlayerDieEvent) {
-                playerDieEvent((PlayerDieEvent) anEvent);
-            } else if (anEvent instanceof PlayerResurectEvent) {
-                playerResurectEvent((PlayerResurectEvent) anEvent);
-            } else if (anEvent instanceof PlayerGotPowerupEvent) {
-                playerGotPowerupEvent((PlayerGotPowerupEvent) anEvent);
-            } else if (anEvent instanceof PlayerQuitGameEvent) {
-                playerQuitGameEvent((PlayerQuitGameEvent) anEvent);
+    public void apply(Event event) {
+        GWT.log("GameEvent: " + event, null);
+        if (event instanceof GameEvent) {
+            if (event instanceof PlayerStartWalkingEvent) {
+                playerStartWalkingEvent((PlayerStartWalkingEvent) event);
+            } else if (event instanceof PlayerStopWalkingEvent) {
+                playerStopWalkingEvent((PlayerStopWalkingEvent) event);
+            } else if (event instanceof PlayerPlaceBombEvent) {
+                playerPlaceBombEvent((PlayerPlaceBombEvent) event);
+            } else if (event instanceof PlayerDieEvent) {
+                playerDieEvent((PlayerDieEvent) event);
+            } else if (event instanceof PlayerResurectEvent) {
+                playerResurectEvent((PlayerResurectEvent) event);
+            } else if (event instanceof PlayerGotPowerupEvent) {
+                playerGotPowerupEvent((PlayerGotPowerupEvent) event);
             }
+        } else if (event instanceof SharedEvent) {
+            if (event instanceof PlayerJoinGameEvent) {
+                playerJoinGameEvent((PlayerJoinGameEvent) event);
+            } else if (event instanceof PlayerQuitGameEvent) {
+                playerQuitGameEvent((PlayerQuitGameEvent) event);
+            }
+
         }
     }
 
@@ -52,6 +62,9 @@ public class GameListenerAdapter implements GameListener {
     }
 
     public void playerGotPowerupEvent(PlayerGotPowerupEvent event) {
+    }
+
+    public void playerJoinGameEvent(PlayerJoinGameEvent playerJoinEvent) {
     }
 
     public void playerQuitGameEvent(PlayerQuitGameEvent event) {

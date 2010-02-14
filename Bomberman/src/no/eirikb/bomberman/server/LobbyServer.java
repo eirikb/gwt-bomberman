@@ -21,11 +21,12 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
-import no.eirikb.bomberman.client.event.game.PlayerQuitGameEvent;
+import no.eirikb.bomberman.client.event.game.GameEvent;
 import no.eirikb.bomberman.client.event.lobby.GameCreateEvent;
-import no.eirikb.bomberman.client.event.lobby.PlayerJoinGameEvent;
+import no.eirikb.bomberman.client.event.shared.PlayerJoinGameEvent;
 import no.eirikb.bomberman.client.event.lobby.LobbyEvent;
 import no.eirikb.bomberman.client.event.lobby.PlayerQuitEvent;
+import no.eirikb.bomberman.client.event.shared.PlayerQuitGameEvent;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.GameInfo;
 import no.eirikb.bomberman.client.game.Player;
@@ -40,6 +41,7 @@ import no.eirikb.bomberman.client.service.LobbyService;
 public class LobbyServer extends RemoteEventServiceServlet implements LobbyService {
 
     private static final Domain LOBBY_DOMAIN = DomainFactory.getDomain(LobbyEvent.LOBBY_DOMAIN);
+    private static final Domain GAME_EVENT = DomainFactory.getDomain(GameEvent.GAME_DOMAIN); // Shared
     private GameHandler gameHandler;
 
     public LobbyServer() {
@@ -125,5 +127,15 @@ public class LobbyServer extends RemoteEventServiceServlet implements LobbyServi
             return imageDir.list();
         }
         return null;
+    }
+
+    public void quitGame() {
+        Player player = gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
+        Game game = gameHandler.removePlayerFromGame(player);
+        if (game.getPlayerSize() == 0) {
+            gameHandler.removeGame(game);
+        }
+        addEvent(LOBBY_DOMAIN, new PlayerQuitGameEvent(game.getGameInfo().getName(), player.getNick()));
+        addEvent(GAME_EVENT, new PlayerQuitGameEvent(game.getGameInfo().getName(), player.getNick()));
     }
 }

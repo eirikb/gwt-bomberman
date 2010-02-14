@@ -6,17 +6,20 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client.ui.game;
+package no.eirikb.bomberman.client.event.shared;
+
+import no.eirikb.bomberman.client.event.game.GameEvent;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public interface KeyHackCallback {
+public class PlayerQuitGameEvent extends GameEvent {
 
-    public void callback();
+    public PlayerQuitGameEvent() {
+    }
 
-    public void arrowKeyDown(char keyCode);
-
-    public void arrowKeyUp();
+    public PlayerQuitGameEvent(String gameName, String playerNick) {
+        super(gameName, playerNick);
+    }
 }

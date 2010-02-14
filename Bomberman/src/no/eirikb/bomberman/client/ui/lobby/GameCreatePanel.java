@@ -78,9 +78,11 @@ public class GameCreatePanel extends Composite {
 
                 public void onFailure(Throwable caught) {
                     infoLabel.setText("Error: " + caught);
+                    createGameButton.setEnabled(true);
                 }
 
                 public void onSuccess(GameInfo result) {
+                    createGameButton.setEnabled(true);
                     if (result != null) {
                         setInfoTextBackground("Game created! Joining...");
                         bombermanService.joinGame(result.getName(), new AsyncCallback<GameInfo>() {

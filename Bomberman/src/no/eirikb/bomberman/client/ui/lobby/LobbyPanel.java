@@ -15,7 +15,15 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Widget;
+import de.novanic.eventservice.client.event.RemoteEventService;
+import de.novanic.eventservice.client.event.domain.Domain;
+import de.novanic.eventservice.client.event.domain.DomainFactory;
 import java.util.Date;
+import no.eirikb.bomberman.client.event.lobby.GameCreateEvent;
+import no.eirikb.bomberman.client.event.lobby.LobbyEvent;
+import no.eirikb.bomberman.client.event.lobby.LobbyListenerAdapter;
+import no.eirikb.bomberman.client.event.lobby.PlayerJoinEvent;
+import no.eirikb.bomberman.client.event.lobby.PlayerQuitEvent;
 import no.eirikb.bomberman.client.game.GameInfo;
 import no.eirikb.bomberman.client.game.Player;
 
@@ -28,6 +36,7 @@ public class LobbyPanel extends Composite {
     interface MyUiBinder extends UiBinder<Widget, LobbyPanel> {
     }
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
+    private static final Domain LOBBY_DOMAIN = DomainFactory.getDomain(LobbyEvent.LOBBY_DOMAIN);
     @UiField
     Label infoLabel;
     @UiField
@@ -37,32 +46,37 @@ public class LobbyPanel extends Composite {
     @UiField
     GameCreatePanel gameCreatePanel;
 
-    public LobbyPanel(GameJoinListener gameJoinListener) {
+    public LobbyPanel(RemoteEventService remoteEventService, GameJoinListener gameJoinListener) {
         initWidget(uiBinder.createAndBindUi(this));
         gameListPanel.setGameJoinListener(gameJoinListener);
         gameCreatePanel.setGameJoinListener(gameJoinListener);
         tabPanel.selectTab(0);
-    }
-
-    public void playerJoin(Player player) {
-        infoLabel.setText("Player join: " + player.getNick() + " (" + new Date() + ')');
-    }
-
-    public void playerQuit(Player player) {
-        infoLabel.setText("Player quit: " + player.getNick() + " (" + new Date() + ')');
-    }
-
-    public void addGame(GameInfo game) {
-        infoLabel.setText("Game created: " + game.getName() + " (" + new Date() + ')');
-        gameListPanel.addGame(game);
-    }
-
-    public void playerJoinGame(GameInfo game, Player player) {
-        infoLabel.setText("Player " + player.getNick() + " join game: " + game.getName() + " (" + new Date() + ')');
-        gameListPanel.playerJoinGame(game, player);
+        remoteEventService.addListener(LOBBY_DOMAIN, new DefaultLobbyListener());
     }
 
     public void setInfoText(String text) {
         infoLabel.setText(text);
+    }
+
+    private class DefaultLobbyListener extends LobbyListenerAdapter {
+
+        @Override
+        public void createGame(GameCreateEvent gameCreateEvent) {
+            GameInfo game = gameCreateEvent.getGame();
+            infoLabel.setText("Game created: " + game.getName() + " (" + new Date() + ')');
+            gameListPanel.addGame(game);
+
+        }
+
+        @Override
+        public void playerJoin(PlayerJoinEvent playerJoinEvent) {
+            infoLabel.setText("Player join: " + playerJoinEvent.getPlayer().getNick());
+        }
+
+        @Override
+        public void playerQuitEvent(PlayerQuitEvent playerQuitEvent) {
+            Player player = playerQuitEvent.getPlayer();
+            infoLabel.setText("Player quit: " + player.getNick() + " (" + new Date() + ')');
+        }
     }
 }

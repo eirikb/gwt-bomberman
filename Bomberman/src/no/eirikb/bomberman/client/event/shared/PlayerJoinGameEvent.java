@@ -6,28 +6,28 @@
  * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
  * ----------------------------------------------------------------------------
  */
-package no.eirikb.bomberman.client.event.lobby;
+package no.eirikb.bomberman.client.event.shared;
 
-import no.eirikb.bomberman.client.game.Game;
+import no.eirikb.bomberman.client.game.GameInfo;
 import no.eirikb.bomberman.client.game.Player;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public class GameJoinEvent extends LobbyEvent {
+public class PlayerJoinGameEvent extends SharedEvent {
 
-    private Game game;
+    private GameInfo game;
 
-    public GameJoinEvent() {
+    public PlayerJoinGameEvent() {
     }
 
-    public GameJoinEvent(Player player, Game game) {
+    public PlayerJoinGameEvent(Player player, GameInfo game) {
         super(player);
         this.game = game;
     }
 
-    public Game getGame() {
+    public GameInfo getGame() {
         return game;
     }
 }

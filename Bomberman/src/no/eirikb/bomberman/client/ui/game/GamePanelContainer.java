@@ -16,26 +16,27 @@ import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.Event.NativePreviewEvent;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import de.novanic.eventservice.client.event.RemoteEventService;
+import de.novanic.eventservice.client.event.domain.Domain;
+import de.novanic.eventservice.client.event.domain.DomainFactory;
+import no.eirikb.bomberman.client.event.filter.GameEventFilter;
+import no.eirikb.bomberman.client.event.game.GameEvent;
+import no.eirikb.bomberman.client.event.game.GameListenerAdapter;
 import no.eirikb.bomberman.client.event.game.PlayerDieEvent;
 import no.eirikb.bomberman.client.event.game.PlayerGotPowerupEvent;
 import no.eirikb.bomberman.client.event.game.PlayerPlaceBombEvent;
-import no.eirikb.bomberman.client.event.game.PlayerQuitGameEvent;
 import no.eirikb.bomberman.client.event.game.PlayerResurectEvent;
 import no.eirikb.bomberman.client.event.game.PlayerStartWalkingEvent;
 import no.eirikb.bomberman.client.event.game.PlayerStopWalkingEvent;
+import no.eirikb.bomberman.client.event.shared.PlayerQuitGameEvent;
 import no.eirikb.bomberman.client.game.Bomb;
 import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.GameListener;
@@ -55,21 +56,31 @@ import no.eirikb.bomberman.client.service.GameServiceAsync;
  */
 public class GamePanelContainer extends VerticalPanel implements KeyHackCallback {
 
+    public interface QuitListener {
+
+        void onQuit();
+    }
+    private static final Domain GAME_DOMAIN = DomainFactory.getDomain(GameEvent.GAME_DOMAIN);
     private FocusPanel focusPanel;
     private KeyHack keyHack;
     private Game game;
     private GamePanel gamePanel;
     private GameHandler gameHandler;
-    private CheckBox useKeyHack;
     private GameServiceAsync gameService;
 
-    public GamePanelContainer(Game game) {
+    public GamePanelContainer(RemoteEventService remoteEventService, Game game, final QuitListener quitListener) {
         this.game = game;
         gameService = GWT.create(GameService.class);
+        add(new Button("Quit current game", new ClickHandler() {
+
+            public void onClick(ClickEvent event) {
+                quitListener.onQuit();
+            }
+        }));
+        remoteEventService.addListener(GAME_DOMAIN, new DefaultGameListener(), new GameEventFilter(game.getGameInfo().getName(), game.getMe().getNick()));
     }
 
-    public void start(final Player player) {
-        Window.enableScrolling(false);
+    public void start() {
         focusPanel = new FocusPanel();
         focusPanel.addKeyDownHandler(new KeyDownHandler() {
 
@@ -83,7 +94,7 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
                         arrowKeyDown(event);
                     }
                 } else if (event.getNativeKeyCode() == 32) {
-                    Bomb bomb = BombBuilder.createBomb(game.getSprites(), player);
+                    Bomb bomb = BombBuilder.createBomb(game.getSprites(), game.getMe());
                     if (bomb != null) {
                         game.addBomb(bomb);
                         gameService.addBomb(bomb, new AsyncCallback() {
@@ -114,42 +125,24 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
                 }
             }
         });
-        add(focusPanel);
-        startGame(player);
+        startGame();
     }
 
-    private void startGame(Player player) {
+    private void startGame() {
         Settings.inject(game.getSettings());
         Settings settings = Settings.getInstance();
-        gamePanel = new GamePanel(player, game.getImgSize(), settings.getMapWidth(), settings.getMapHeight());
+        gamePanel = new GamePanel(game.getMe(), game.getImgSize(), settings.getMapWidth(), settings.getMapHeight());
         gamePanel.getElement().getStyle().setBackgroundColor("#abcdef");
         gameHandler = new GameHandler(game, gamePanel);
         final GamePanelContainer gamePanelContainer = this;
-        useKeyHack = new CheckBox("Use KeyHack");
-        useKeyHack.setValue(true);
-        useKeyHack.addClickHandler(new ClickHandler() {
+        keyHack = new KeyHack(this);
+        gameHandler.setKeyHackCallback(keyHack);
 
-            public void onClick(ClickEvent event) {
-                if (useKeyHack.getValue()) {
-                    keyHack = new KeyHack(gamePanelContainer);
-                    gameHandler.setKeyHackCallback(keyHack);
-                } else {
-                    gameHandler.setKeyHackCallback(null);
-                    keyHack = null;
-                }
-                focusPanel.setFocus(true);
-            }
-        });
-        add(useKeyHack);
-        if (useKeyHack.getValue()) {
-            keyHack = new KeyHack(this);
-            gameHandler.setKeyHackCallback(keyHack);
-        }
         BombAmountPanel bombAmountPanel = new BombAmountPanel(gamePanel.getPlayer());
         game.addGameListener(bombAmountPanel);
         add(bombAmountPanel);
         gameHandler.start();
-        //add(gamePanel);
+        add(focusPanel);
         focusPanel.add(gamePanel);
         killCheck();
         DeferredCommand.addCommand(new Command() {
@@ -196,7 +189,6 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
     }
 
     private void killCheck() {
-        final Player player = gamePanel.getPlayer();
         game.addGameListener(new GameListener() {
 
             public void addSprite(Sprite sprite) {
@@ -264,58 +256,68 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void playerStartWalkingEvent(PlayerStartWalkingEvent event) {
-        Player player = game.getAlivePlayer(event.getPlayerNick());
-        if (player != null && player != gamePanel.getPlayer()) {
-            player.setWay(event.getWay());
-        }
-    }
+    private class DefaultGameListener extends GameListenerAdapter {
 
-    public void playerStopWalkingEvent(PlayerStopWalkingEvent event) {
-        Player player = game.getAlivePlayer(event.getPlayerNick());
-        if (player != null && player != gamePanel.getPlayer()) {
-            player.setWay(Way.NONE);
-            player.setX(event.getX());
-            player.setY(event.getY());
+        @Override
+        public void playerStartWalkingEvent(PlayerStartWalkingEvent event) {
+            Player player = game.getAlivePlayer(event.getPlayerNick());
+            if (player != null && player != gamePanel.getPlayer()) {
+                player.setWay(event.getWay());
+            }
         }
-    }
 
-    public void playerPlaceBombEvent(PlayerPlaceBombEvent event) {
-        Bomb b = event.getBomb();
-        Player player = game.getAlivePlayer(event.getPlayerNick());
-        if (player != null && player != gamePanel.getPlayer()) {
-            game.addBomb(new Bomb(b.getSpriteX(), b.getSpriteY(), player, Settings.getInstance().getBombTimer(), b.getPower()));
+        @Override
+        public void playerStopWalkingEvent(PlayerStopWalkingEvent event) {
+            Player player = game.getAlivePlayer(event.getPlayerNick());
+            if (player != null && player != gamePanel.getPlayer()) {
+                player.setWay(Way.NONE);
+                player.setX(event.getX());
+                player.setY(event.getY());
+            }
         }
-    }
 
-    public void playerDieEvent(PlayerDieEvent event) {
-        Player player = game.getAlivePlayer(event.getPlayerNick());
-        if (player != null && player != gamePanel.getPlayer()) {
-            game.playerDie(player);
+        @Override
+        public void playerPlaceBombEvent(PlayerPlaceBombEvent event) {
+            Bomb b = event.getBomb();
+            Player player = game.getAlivePlayer(event.getPlayerNick());
+            if (player != null && player != gamePanel.getPlayer()) {
+                game.addBomb(new Bomb(b.getSpriteX(), b.getSpriteY(), player, Settings.getInstance().getBombTimer(), b.getPower()));
+            }
         }
-    }
 
-    public void playerResurectEvent(PlayerResurectEvent event) {
-        Player player = game.getDeadPlayer(event.getPlayerNick());
-        if (player != null && player != gamePanel.getPlayer()) {
-            player.setX(player.getStartX());
-            player.setY(player.getStartY());
-            game.playerLive(player);
+        @Override
+        public void playerDieEvent(PlayerDieEvent event) {
+            Player player = game.getAlivePlayer(event.getPlayerNick());
+            if (player != null && player != gamePanel.getPlayer()) {
+                game.playerDie(player);
+            }
         }
-    }
 
-    public void playerGotPowerupEvent(PlayerGotPowerupEvent event) {
-        Player player = game.getAlivePlayer(event.getPlayerNick());
-        if (player != null && player != gamePanel.getPlayer()) {
-            Powerup powerup = event.getPowerup();
-            event.getPowerup().powerUp(player);
-            game.removePowerup(powerup);
+        @Override
+        public void playerResurectEvent(PlayerResurectEvent event) {
+            Player player = game.getDeadPlayer(event.getPlayerNick());
+            if (player != null && player != gamePanel.getPlayer()) {
+                player.setX(player.getStartX());
+                player.setY(player.getStartY());
+                game.playerLive(player);
+            }
         }
-    }
 
-    public void playerQuitGameEvent(PlayerQuitGameEvent event) {
-        Player player = game.getAlivePlayer(event.getPlayerNick());
-        player = player == null ? game.getDeadPlayer(event.getPlayerNick()) : player;
-        GWT.log("A player quit inside my game! :O   (" + player + ')', null);
+        @Override
+        public void playerGotPowerupEvent(PlayerGotPowerupEvent event) {
+            Player player = game.getAlivePlayer(event.getPlayerNick());
+            if (player != null && player != gamePanel.getPlayer()) {
+                Powerup powerup = event.getPowerup();
+                event.getPowerup().powerUp(player);
+                game.removePowerup(powerup);
+            }
+        }
+
+        @Override
+        public void playerQuitGameEvent(PlayerQuitGameEvent event) {
+            Player player = game.getAlivePlayer(event.getPlayerNick());
+            player = player == null ? game.getDeadPlayer(event.getPlayerNick()) : player;
+            GWT.log("A player quit inside my game! :O   (" + player + ')', null);
+        }
     }
 }

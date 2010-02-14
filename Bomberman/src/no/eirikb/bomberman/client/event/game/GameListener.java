@@ -9,6 +9,8 @@
 package no.eirikb.bomberman.client.event.game;
 
 import de.novanic.eventservice.client.event.listener.RemoteEventListener;
+import no.eirikb.bomberman.client.event.shared.PlayerJoinGameEvent;
+import no.eirikb.bomberman.client.event.shared.PlayerQuitGameEvent;
 
 /**
  *
@@ -28,5 +30,7 @@ public interface GameListener extends RemoteEventListener {
 
     void playerGotPowerupEvent(PlayerGotPowerupEvent event);
 
-    void playerQuitGameEvent(PlayerQuitGameEvent event);
+    void playerJoinGameEvent(PlayerJoinGameEvent playerJoinEvent);
+
+    void playerQuitGameEvent(PlayerQuitGameEvent playerQuitGameEvent);
 }

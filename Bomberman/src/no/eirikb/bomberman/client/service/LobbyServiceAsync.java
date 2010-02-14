@@ -32,4 +32,6 @@ public interface LobbyServiceAsync {
     void joinGame(String gameName, AsyncCallback<GameInfo> callback);
 
     void getGames(AsyncCallback<Map<String, GameInfo>> callback);
+
+    void quitGame(AsyncCallback asyncCallback);
 }
