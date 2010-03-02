@@ -24,6 +24,8 @@ import no.eirikb.bomberman.client.event.lobby.LobbyEvent;
 import no.eirikb.bomberman.client.event.lobby.LobbyListenerAdapter;
 import no.eirikb.bomberman.client.event.lobby.PlayerJoinEvent;
 import no.eirikb.bomberman.client.event.lobby.PlayerQuitEvent;
+import no.eirikb.bomberman.client.event.shared.PlayerJoinGameEvent;
+import no.eirikb.bomberman.client.event.shared.PlayerQuitGameEvent;
 import no.eirikb.bomberman.client.game.GameInfo;
 import no.eirikb.bomberman.client.game.Player;
 
@@ -50,6 +52,11 @@ public class LobbyPanel extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
         gameListPanel.setGameJoinListener(gameJoinListener);
         gameCreatePanel.setGameJoinListener(gameJoinListener);
+        onShow(remoteEventService);
+    }
+
+    public void onShow(RemoteEventService remoteEventService) {
+        gameListPanel.onShow();
         tabPanel.selectTab(0);
         remoteEventService.addListener(LOBBY_DOMAIN, new DefaultLobbyListener());
     }
@@ -77,6 +84,20 @@ public class LobbyPanel extends Composite {
         public void playerQuitEvent(PlayerQuitEvent playerQuitEvent) {
             Player player = playerQuitEvent.getPlayer();
             infoLabel.setText("Player quit: " + player.getNick() + " (" + new Date() + ')');
+        }
+
+        @Override
+        public void playerJoinGameEvent(PlayerJoinGameEvent playerJoinGameEvent) {
+            gameListPanel.playerJoinGame(playerJoinGameEvent.getGame(), playerJoinGameEvent.getPlayer());
+            infoLabel.setText("Player " + playerJoinGameEvent.getPlayer().getNick()
+                    + " joined " + playerJoinGameEvent.getGame().getName() + " (" + new Date() + ')');
+        }
+
+        @Override
+        public void playerQuitGameEvent(PlayerQuitGameEvent playerQuitGameEvent) {
+            gameListPanel.playerQuitGame(playerQuitGameEvent.getPlayer(), playerQuitGameEvent.getGameInfo());
+            infoLabel.setText("Player " + playerQuitGameEvent.getPlayer().getNick()
+                    + " joined " + playerQuitGameEvent.getGameInfo().getName() + " (" + new Date() + ')');
         }
     }
 }

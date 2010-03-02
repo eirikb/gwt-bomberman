@@ -4,13 +4,13 @@
              xmlns:lobby="urn:import:no.eirikb.bomberman.client.ui.lobby">
     <g:HTMLPanel>
         Info: <g:Label ui:field="infoLabel" />
-        <g:TabPanel ui:field="tabPanel" animationEnabled="true">
+        <g:DecoratedTabPanel ui:field="tabPanel" animationEnabled="true">
             <g:Tab text="Games">
                 <lobby:GameListPanel ui:field="gameListPanel" />
             </g:Tab>
             <g:Tab text="Create game">
                 <lobby:GameCreatePanel ui:field="gameCreatePanel" />
             </g:Tab>
-        </g:TabPanel>
+        </g:DecoratedTabPanel>
     </g:HTMLPanel>
 </ui:UiBinder>

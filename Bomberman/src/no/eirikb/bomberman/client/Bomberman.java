@@ -50,7 +50,7 @@ public class Bomberman implements EntryPoint {
             public void onLogin(Player player2) {
                 player = player2;
                 if (loginPanel != null) {
-                    RootPanel.get().remove(loginPanel);
+                    RootPanel.get("bombermanContent").remove(loginPanel);
                 }
                 startEventServiceListener();
                 showLobbyPanel();
@@ -67,7 +67,7 @@ public class Bomberman implements EntryPoint {
                 if (result != null) {
                     loginPanelListener.onLogin(result);
                 } else {
-                    RootPanel.get().add(loginPanel = new LoginPanel(loginPanelListener));
+                    RootPanel.get("bombermanContent").add(loginPanel = new LoginPanel(loginPanelListener));
                     loginPanel.setFocus();
                 }
             }
@@ -75,7 +75,7 @@ public class Bomberman implements EntryPoint {
     }
 
     private void showLobbyPanel() {
-        RootPanel.get().add(lobbyPanel = new LobbyPanel(remoteEventService, new GameJoinListener() {
+        RootPanel.get("bombermanContent").add(lobbyPanel = new LobbyPanel(remoteEventService, new GameJoinListener() {
 
             public void onJoin(GameInfo game2) {
                 gameInfo = game2;
@@ -95,7 +95,7 @@ public class Bomberman implements EntryPoint {
         gameInfo = null;
         remoteEventService.removeListeners();
         if (lobbyPanel != null) {
-            RootPanel.get().remove(lobbyPanel);
+            RootPanel.get("bombermanContent").remove(lobbyPanel);
         }
         GameServiceAsync gameService = GWT.create(GameService.class);
         gameService.getGame(gameName, new AsyncCallback<Game>() {
@@ -129,19 +129,21 @@ public class Bomberman implements EntryPoint {
                                             }
 
                                             public void onSuccess(Object result) {
+                                                remoteEventService.removeListeners();
+                                                RootPanel.get("bombermanContent").remove(gamePanel);
+                                                RootPanel.get("bombermanContent").add(lobbyPanel);
+                                                lobbyPanel.onShow(remoteEventService);
                                             }
                                         });
-                                        RootPanel.get().remove(gamePanel);
-                                        RootPanel.get().add(lobbyPanel);
                                     }
                                 });
                                 gamePanel.start();
-                                RootPanel.get().remove(loadingPanel);
-                                RootPanel.get().add(gamePanel);
+                                RootPanel.get("bombermanContent").remove(loadingPanel);
+                                RootPanel.get("bombermanContent").add(gamePanel);
                             }
                         });
                     }
-                    RootPanel.get().add(loadingPanel);
+                    RootPanel.get("bombermanContent").add(loadingPanel);
                     DeferredCommand.addCommand(new Command() {
 
                         public void execute() {
