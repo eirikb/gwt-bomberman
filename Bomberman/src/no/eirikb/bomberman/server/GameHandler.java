@@ -83,8 +83,6 @@ public class GameHandler {
     }
 
     public Game removePlayerFromGame(Player player) {
-        System.out.println("nehe");
-        System.out.println("Removing player! " + player.getNick());
         Game game = playerGames.remove(player);
         if (game != null) {
             game.removePlayer(player);

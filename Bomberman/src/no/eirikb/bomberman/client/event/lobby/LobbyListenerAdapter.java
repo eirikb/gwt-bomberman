@@ -48,7 +48,7 @@ public class LobbyListenerAdapter implements LobbyListener {
     public void playerQuitEvent(PlayerQuitEvent playerQuitEvent) {
     }
 
-    public void playerJoinGameEvent(PlayerJoinGameEvent playerJoinEvent) {
+    public void playerJoinGameEvent(PlayerJoinGameEvent playerJoinGameEvent) {
     }
 
     public void playerQuitGameEvent(PlayerQuitGameEvent playerQuitGameEvent) {

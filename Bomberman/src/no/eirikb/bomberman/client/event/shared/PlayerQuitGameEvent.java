@@ -8,18 +8,26 @@
  */
 package no.eirikb.bomberman.client.event.shared;
 
-import no.eirikb.bomberman.client.event.game.GameEvent;
+import no.eirikb.bomberman.client.game.GameInfo;
+import no.eirikb.bomberman.client.game.Player;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public class PlayerQuitGameEvent extends GameEvent {
+public class PlayerQuitGameEvent extends SharedEvent {
+
+    private GameInfo gameInfo;
 
     public PlayerQuitGameEvent() {
     }
 
-    public PlayerQuitGameEvent(String gameName, String playerNick) {
-        super(gameName, playerNick);
+    public PlayerQuitGameEvent(Player player, GameInfo gameInfo) {
+        super(player);
+        this.gameInfo = gameInfo;
+    }
+
+    public GameInfo getGameInfo() {
+        return gameInfo;
     }
 }

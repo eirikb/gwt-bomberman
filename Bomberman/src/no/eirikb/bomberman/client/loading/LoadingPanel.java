@@ -44,7 +44,7 @@ public class LoadingPanel extends VerticalPanel {
             "boomsidevertical4", "ml2", "md1", "boomendleft1", "boomcore3", "mu2",
             "boomsidevertical2", "boomsidehorizontal1", "boomenddown1", "boomsidehorizontal3",
             "boomcore2", "mu1", "boombrick2", "boomsidehorizontal2", "bomb3", "boombrick1",
-            "md2", "bg", "boomendleft3", "boomendleft4", "mr2", "boomendright4", "boomendup2",
+            "md2", "boomendleft3", "boomendleft4", "mr2", "boomendright4", "boomendup2",
             "boomenddown2", "bomb1", "boomendup3", "boomendleft2", "boomenddown4", "ml3",
             "boomendright1", "boomendup4", "boomcore1", "box", "boomsidevertical3", "mr1",
             "boomsidevertical1", "boomendright2", "boomsidehorizontal4", "ml1", "bomb2",

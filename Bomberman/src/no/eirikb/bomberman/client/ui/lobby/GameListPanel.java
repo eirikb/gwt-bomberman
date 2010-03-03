@@ -50,6 +50,9 @@ public class GameListPanel extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
         games = new HashMap<String, GameInfo>();
         bombermanService = GWT.create(LobbyService.class);
+    }
+
+    public void onShow() {
         infoLabel.setText("Loading games...");
 
         bombermanService.getGames(new AsyncCallback<Map<String, GameInfo>>() {
@@ -59,6 +62,7 @@ public class GameListPanel extends Composite {
             }
 
             public void onSuccess(Map<String, GameInfo> games) {
+                gameList.clear();
                 infoLabel.setText(games.size() == 0 ? "No games on server" : "");
                 for (GameInfo game : games.values()) {
                     addGame(game);
@@ -119,5 +123,18 @@ public class GameListPanel extends Composite {
             gameName = gameName.substring(0, space);
         }
         return games.get(gameName);
+    }
+
+    public void playerQuitGame(Player player, GameInfo game) {
+        for (int i = 0; i < gameList.getItemCount(); i++) {
+            GameInfo g = getGame(i);
+            if (g != null && g.getName().equals(game.getName())) {
+                gameList.removeItem(i);
+                if (game.getPlayerSize() > 0) {
+                    addGame(game);
+                }
+                break;
+            }
+        }
     }
 }

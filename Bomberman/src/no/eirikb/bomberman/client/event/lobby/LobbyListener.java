@@ -24,7 +24,7 @@ public interface LobbyListener extends RemoteEventListener {
 
     void playerQuitEvent(PlayerQuitEvent playerQuitEvent);
 
-    void playerJoinGameEvent(PlayerJoinGameEvent playerJoinEvent);
+    void playerJoinGameEvent(PlayerJoinGameEvent playerJoinGameEvent);
 
     void playerQuitGameEvent(PlayerQuitGameEvent playerQuitGameEvent);
 }

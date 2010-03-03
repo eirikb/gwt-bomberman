@@ -35,7 +35,7 @@ public class Bomberman implements EntryPoint {
     private GamePanelContainer gamePanel;
     private LoadingPanel loadingPanel;
     private RemoteEventService remoteEventService;
-    private final String VERSION = "0.14";
+    private final String VERSION = "0.15";
 
     public void onModuleLoad() {
         RootPanel.get("version").getElement().setInnerHTML(VERSION);

@@ -55,7 +55,7 @@ public class LobbyServer extends RemoteEventServiceServlet implements LobbyServi
                 addEvent(LOBBY_DOMAIN, new PlayerQuitEvent(gameHandler.getPlayerBySessionId(ui.getUserId())));
                 Game game = gameHandler.getGameByPlayer(player);
                 if (game != null) {
-                    addEvent(GameServer.GAME_DOMAIN, new PlayerQuitGameEvent(game.getGameInfo().getName(), player.getNick()));
+                    addEvent(GameServer.GAME_DOMAIN, new PlayerQuitGameEvent(player, game.getGameInfo()));
                 }
                 System.out.println("TIMEOUT! " + new Date() + " - " + player.getNick() + " (" + game + ')');
                 gameHandler.removePlayer(player);
@@ -112,13 +112,16 @@ public class LobbyServer extends RemoteEventServiceServlet implements LobbyServi
     }
 
     public Player checkSession() {
-        HttpSession session = getThreadLocalRequest().getSession();
-        System.out.println("Session: " + session);
-        Enumeration attributes = session.getAttributeNames();
-        while (attributes.hasMoreElements()) {
-            System.out.println("Attribute: " + attributes.nextElement());
+        Player player = gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
+        if (gameHandler.getGameByPlayer(player) != null) {
+            Game game = gameHandler.removePlayerFromGame(player);
+            if (game.getPlayerSize() == 0) {
+                gameHandler.removeGame(game);
+            }
+            addEvent(LOBBY_DOMAIN, new PlayerQuitGameEvent(player, game.getGameInfo()));
+            addEvent(GAME_EVENT, new PlayerQuitGameEvent(player, game.getGameInfo()));
         }
-        return gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
+        return player;
     }
 
     public String[] getImages() {
@@ -135,7 +138,7 @@ public class LobbyServer extends RemoteEventServiceServlet implements LobbyServi
         if (game.getPlayerSize() == 0) {
             gameHandler.removeGame(game);
         }
-        addEvent(LOBBY_DOMAIN, new PlayerQuitGameEvent(game.getGameInfo().getName(), player.getNick()));
-        addEvent(GAME_EVENT, new PlayerQuitGameEvent(game.getGameInfo().getName(), player.getNick()));
+        addEvent(LOBBY_DOMAIN, new PlayerQuitGameEvent(player, game.getGameInfo()));
+        addEvent(GAME_EVENT, new PlayerQuitGameEvent(player, game.getGameInfo()));
     }
 }

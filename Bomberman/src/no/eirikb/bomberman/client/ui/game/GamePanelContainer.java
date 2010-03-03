@@ -315,8 +315,8 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
 
         @Override
         public void playerQuitGameEvent(PlayerQuitGameEvent event) {
-            Player player = game.getAlivePlayer(event.getPlayerNick());
-            player = player == null ? game.getDeadPlayer(event.getPlayerNick()) : player;
+            Player player = game.getAlivePlayer(event.getPlayer().getNick());
+            player = player == null ? game.getDeadPlayer(event.getPlayer().getNick()) : player;
             GWT.log("A player quit inside my game! :O   (" + player + ')', null);
         }
     }

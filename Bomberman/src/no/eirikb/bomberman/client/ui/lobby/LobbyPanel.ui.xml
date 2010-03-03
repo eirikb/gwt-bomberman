@@ -2,9 +2,9 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:lobby="urn:import:no.eirikb.bomberman.client.ui.lobby">
-    <g:HTMLPanel>
+    <g:HTMLPanel width="640px">
         Info: <g:Label ui:field="infoLabel" />
-        <g:DecoratedTabPanel ui:field="tabPanel" animationEnabled="true">
+        <g:DecoratedTabPanel width="640px" ui:field="tabPanel" animationEnabled="true">
             <g:Tab text="Games">
                 <lobby:GameListPanel ui:field="gameListPanel" />
             </g:Tab>
