@@ -19,7 +19,4 @@ public interface Resources extends ClientBundle {
 
     @Source("infoicon.png")
     ImageResource infoIcon();
-
-    @Source("bg.png")
-    ImageResource backgroundImage();
 }

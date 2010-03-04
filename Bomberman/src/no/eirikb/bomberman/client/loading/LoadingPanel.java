@@ -13,7 +13,9 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.widgetideas.graphics.client.ImageLoader;
+import com.reveregroup.gwt.imagepreloader.ImageLoadEvent;
+import com.reveregroup.gwt.imagepreloader.ImageLoadHandler;
+import com.reveregroup.gwt.imagepreloader.ImagePreloader;
 import no.eirikb.bomberman.client.ui.ProgressBar;
 
 /**
@@ -54,26 +56,38 @@ public class LoadingPanel extends VerticalPanel {
             lastLength = imageUrls.length;
             for (int i = 0; i < imageUrls.length; i++) {
                 imageUrls[i] = "../img/" + imageUrls[i] + ".png";
-            }
+                final int j = i;
+                ImagePreloader.load(imageUrls[i], new ImageLoadHandler() {
 
-            ImageLoader.loadImages(imageUrls, new ImageLoader.CallBack() {
-
-                private int pos = 0;
-                private int percentage = 0;
-
-                public void onImagesLoaded(ImageElement[] imageElements) {
-                    pos += imageElements.length;
-                    int percentage2 = (int) (((double) pos / imageUrls.length) * 100);
-                    if (percentage != percentage2) {
-                        percentage = percentage2;
-                        updateTotalLoading(percentage);
-                        if (pos == imageUrls.length) {
-                            done = true;
+                    public void imageLoaded(ImageLoadEvent event) {
+                        if (j == imageUrls.length - 1) {
                             loadListener.complete();
                         }
                     }
-                }
-            });
+                });
+
+            }
+
+
+
+//            ImageLoader.loadImages(imageUrls, new ImageLoader.CallBack() {
+//
+//                private int pos = 0;
+//                private int percentage = 0;
+//
+//                public void onImagesLoaded(ImageElement[] imageElements) {
+//                    pos += imageElements.length;
+//                    int percentage2 = (int) (((double) pos / imageUrls.length) * 100);
+//                    if (percentage != percentage2) {
+//                        percentage = percentage2;
+//                        updateTotalLoading(percentage);
+//                        if (pos == imageUrls.length) {
+//                            done = true;
+//                            loadListener.complete();
+//                        }
+//                    }
+//                }
+//            });
         } else if (imageUrls.length == lastLength) {
             loadListener.complete();
         } else {
