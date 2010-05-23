@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project name="Bomberman" default="build" basedir=".">
-    <import file="nbproject/build-impl.xml" />
     <!-- Configure path to GWT SDK -->
-    <property name="gwt.sdk" location="/home/eirikb/gwt-2.0.0" />
+    <property name="gwt.sdk" location="/home/eirikb/gwt-2.0.3" />
 
     <path id="project.class.path">
         <pathelement location="war/WEB-INF/classes"/>
@@ -52,7 +51,7 @@
             </classpath>
             <jvmarg value="-Xmx256M"/>
             <arg value="-startupUrl"/>
-            <arg value="Bomberman.html"/>
+            <arg value="index.html"/>
             <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
             <arg value="no.eirikb.bomberman.Bomberman"/>
         </java>
@@ -139,7 +138,7 @@ Test targets suppressed because -junit argument was not specified when running w
         </exec>
 
         <exec executable="rsync">
-            <arg line="-uar --progress war/Bomberman.html redmine@eirikb.no:~/drop/bomberman/index.html" />
+            <arg line="-uar --progress war/index.html redmine@eirikb.no:~/drop/bomberman/index.html" />
         </exec>
         <exec executable="rsync">
             <arg line="-uar --progress war/bomberman redmine@eirikb.no:~/drop/bomberman/" />
