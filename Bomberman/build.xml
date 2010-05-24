@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project name="Bomberman" default="build" basedir=".">
-    <!-- Configure path to GWT SDK -->
-    <property name="gwt.sdk" location="/home/eirikb/gwt-2.0.3" />
+    <property file="build.properties" />
 
     <path id="project.class.path">
         <pathelement location="war/WEB-INF/classes"/>
