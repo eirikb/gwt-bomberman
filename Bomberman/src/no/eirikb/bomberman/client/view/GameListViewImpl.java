@@ -1,0 +1,86 @@
+/*
+ * -----------------------------------------------------------------------------
+ * "THE BEER-WARE LICENSE" (Revision 42):
+ * <eirikdb@gmail.com> wrote this file. As long as you retain this notice you
+ * can do whatever you want with this stuff. If we meet some day, and you think
+ * this stuff is worth it, you can buy me a beer in return Eirik Brandtzæg
+ * -----------------------------------------------------------------------------
+ */
+package no.eirikb.bomberman.client.view;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.TableCellElement;
+import com.google.gwt.dom.client.TableElement;
+import com.google.gwt.dom.client.TableRowElement;
+import com.google.gwt.dom.client.TableSectionElement;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiTemplate;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
+import java.util.List;
+import no.eirikb.bomberman.client.common.ColumnDefinition;
+import no.eirikb.bomberman.client.view.GameListView.Presenter;
+
+/**
+ *
+ * @author Eirik Brandtzæg <eirikdb@gmail.com>
+ */
+public class GameListViewImpl<T> extends Composite implements GameListView<T> {
+
+    @UiTemplate("GameListView.ui.xml")
+    interface GameListViewUiBinder extends UiBinder<Widget, GameListViewImpl> {
+    }
+    private static GameListViewUiBinder uiBinder = GWT.create(GameListViewUiBinder.class);
+    @UiField
+    Label infoLabel;
+    @UiField
+    FlexTable gameListTable;
+    private Presenter<T> presenter;
+    private List<ColumnDefinition<T>> columnDefinitions;
+    private List<T> rowData;
+
+    public GameListViewImpl() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
+
+    @Override
+    public void setPresenter(Presenter<T> presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void setColumnDefinitions(List<ColumnDefinition<T>> columnDefinitions) {
+        this.columnDefinitions = columnDefinitions;
+    }
+
+    @Override
+    public void setInfo(String text) {
+        infoLabel.setText(text);
+    }
+
+    @Override
+    public void setRowData(List<T> rowData) {
+        gameListTable.removeAllRows();
+        this.rowData = rowData;
+
+        for (int i = 0; i < rowData.size(); ++i) {
+            T t = rowData.get(i);
+            for (int j = 0; j < columnDefinitions.size(); ++j) {
+                ColumnDefinition<T> columnDefinition = columnDefinitions.get(j);
+                gameListTable.setWidget(i, j, columnDefinition.render(t));
+            }
+        }
+    }
+
+    @Override
+    public Widget asWidget() {
+        return this;
+    }
+}

@@ -47,8 +47,8 @@ import no.eirikb.bomberman.client.game.Way;
 import no.eirikb.bomberman.client.game.builder.BombBuilder;
 import no.eirikb.bomberman.client.game.handler.GameHandler;
 import no.eirikb.bomberman.client.game.powerup.Powerup;
-import no.eirikb.bomberman.client.service.GameService;
-import no.eirikb.bomberman.client.service.GameServiceAsync;
+import no.eirikb.bomberman.client.GameService;
+import no.eirikb.bomberman.client.GameServiceAsync;
 
 /**
  *

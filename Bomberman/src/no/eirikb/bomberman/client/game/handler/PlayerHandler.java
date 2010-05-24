@@ -18,8 +18,8 @@ import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.game.Sprite;
 import no.eirikb.bomberman.client.game.Way;
 import no.eirikb.bomberman.client.game.handler.helper.WalkHandler;
-import no.eirikb.bomberman.client.service.GameService;
-import no.eirikb.bomberman.client.service.GameServiceAsync;
+import no.eirikb.bomberman.client.GameService;
+import no.eirikb.bomberman.client.GameServiceAsync;
 
 /**
  *

@@ -28,8 +28,8 @@ import no.eirikb.bomberman.client.game.builder.BoxBuilder;
 import no.eirikb.bomberman.client.game.builder.BrickBuilder;
 import no.eirikb.bomberman.client.game.builder.PowerupBuilder;
 import no.eirikb.bomberman.client.game.builder.SpriteArrayBuilder;
-import no.eirikb.bomberman.client.service.LobbyService;
-import no.eirikb.bomberman.client.service.LobbyServiceAsync;
+import no.eirikb.bomberman.client.LobbyService;
+import no.eirikb.bomberman.client.LobbyServiceAsync;
 
 /**
  *

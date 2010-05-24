@@ -24,8 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 import no.eirikb.bomberman.client.game.GameInfo;
 import no.eirikb.bomberman.client.game.Player;
-import no.eirikb.bomberman.client.service.LobbyService;
-import no.eirikb.bomberman.client.service.LobbyServiceAsync;
+import no.eirikb.bomberman.client.LobbyService;
+import no.eirikb.bomberman.client.LobbyServiceAsync;
 
 /**
  *

@@ -16,8 +16,8 @@ import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.GameListener;
 import no.eirikb.bomberman.client.game.Sprite;
 import no.eirikb.bomberman.client.game.powerup.Powerup;
-import no.eirikb.bomberman.client.service.GameService;
-import no.eirikb.bomberman.client.service.GameServiceAsync;
+import no.eirikb.bomberman.client.GameService;
+import no.eirikb.bomberman.client.GameServiceAsync;
 
 /**
  *

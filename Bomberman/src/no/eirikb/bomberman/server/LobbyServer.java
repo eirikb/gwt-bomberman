@@ -32,7 +32,7 @@ import no.eirikb.bomberman.client.game.GameInfo;
 import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.game.Settings;
 import no.eirikb.bomberman.client.game.Sprite;
-import no.eirikb.bomberman.client.service.LobbyService;
+import no.eirikb.bomberman.client.LobbyService;
 
 /**
  *
@@ -63,7 +63,7 @@ public class LobbyServer extends RemoteEventServiceServlet implements LobbyServi
         });
     }
 
-    public Player join(String nick) {
+    public Player login(String nick) {
         if (gameHandler.getPlayer(nick) == null) {
             Player player = new Player(nick);
             gameHandler.addPlayer(getThreadLocalRequest().getSession().getId(), player);

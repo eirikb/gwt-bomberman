@@ -23,7 +23,7 @@ import no.eirikb.bomberman.client.game.Game;
 import no.eirikb.bomberman.client.game.Player;
 import no.eirikb.bomberman.client.game.Way;
 import no.eirikb.bomberman.client.game.powerup.Powerup;
-import no.eirikb.bomberman.client.service.GameService;
+import no.eirikb.bomberman.client.GameService;
 
 /**
  *

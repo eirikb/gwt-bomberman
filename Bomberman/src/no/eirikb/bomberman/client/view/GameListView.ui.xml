@@ -1,0 +1,12 @@
+<!--
+Uncomment this for XHTML entities
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+-->
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <g:HTMLPanel>
+        Info:
+        <g:Label ui:field="infoLabel" />
+        <g:FlexTable ui:field="gameListTable" />
+    </g:HTMLPanel>
+</ui:UiBinder>
