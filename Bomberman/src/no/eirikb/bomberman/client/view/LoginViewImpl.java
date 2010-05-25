@@ -10,6 +10,7 @@ package no.eirikb.bomberman.client.view;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -61,6 +62,13 @@ public class LoginViewImpl extends Composite implements LoginView {
     void onAddButtonClicked(ClickEvent event) {
         if (presenter != null) {
             presenter.onLoginButtonClicked();
+        }
+    }
+
+    @UiHandler("nickBox")
+    void onKeyPressed(KeyPressEvent event) {
+        if (event.getCharCode() == 13) {
+            onAddButtonClicked(null);
         }
     }
 

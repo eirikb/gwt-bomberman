@@ -21,17 +21,17 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
-import no.eirikb.bomberman.client.event.game.GameEvent;
-import no.eirikb.bomberman.client.event.lobby.GameCreateEvent;
-import no.eirikb.bomberman.client.event.shared.PlayerJoinGameEvent;
-import no.eirikb.bomberman.client.event.lobby.LobbyEvent;
-import no.eirikb.bomberman.client.event.lobby.PlayerQuitEvent;
-import no.eirikb.bomberman.client.event.shared.PlayerQuitGameEvent;
-import no.eirikb.bomberman.client.game.Game;
-import no.eirikb.bomberman.client.game.GameInfo;
-import no.eirikb.bomberman.client.game.Player;
-import no.eirikb.bomberman.client.game.Settings;
-import no.eirikb.bomberman.client.game.Sprite;
+import no.eirikb.bomberman.shared.event.game.GameEvent;
+import no.eirikb.bomberman.shared.event.lobby.GameCreateEvent;
+import no.eirikb.bomberman.shared.event.shared.PlayerJoinGameEvent;
+import no.eirikb.bomberman.shared.event.lobby.LobbyEvent;
+import no.eirikb.bomberman.shared.event.lobby.PlayerQuitEvent;
+import no.eirikb.bomberman.shared.event.shared.PlayerQuitGameEvent;
+import no.eirikb.bomberman.game.Game;
+import no.eirikb.bomberman.game.GameInfo;
+import no.eirikb.bomberman.game.Player;
+import no.eirikb.bomberman.game.Settings;
+import no.eirikb.bomberman.game.Sprite;
 import no.eirikb.bomberman.client.LobbyService;
 
 /**

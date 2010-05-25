@@ -5,7 +5,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.ArrayList;
 import java.util.List;
-import no.eirikb.bomberman.client.game.GameInfo;
+import no.eirikb.bomberman.game.GameInfo;
 
 public class GameListColumnDefinitions {
 

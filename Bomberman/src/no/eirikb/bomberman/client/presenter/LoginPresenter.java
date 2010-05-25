@@ -13,7 +13,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import no.eirikb.bomberman.client.LobbyServiceAsync;
 import no.eirikb.bomberman.client.event.LoginEvent;
-import no.eirikb.bomberman.client.game.Player;
+import no.eirikb.bomberman.game.Player;
 import no.eirikb.bomberman.client.view.LoginView;
 
 /**

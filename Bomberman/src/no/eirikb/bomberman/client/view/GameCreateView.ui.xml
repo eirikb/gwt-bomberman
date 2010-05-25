@@ -3,18 +3,18 @@ Uncomment this for XHTML entities
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 -->
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+        xmlns:b="urn:import:no.eirikb.bomberman.client.ui">
     <ui:style>
 
     </ui:style>
     <g:HTMLPanel>
-        <h3>Create game</h3>
         <g:Label ui:field="infoLabel" />
         Game name:
-        <g:TextBox ui:field="gameNameBox" />
+        <g:TextBox ui:field="gameName" />
         <g:DisclosurePanel animationEnabled="true">
             <g:header>Show/Hide settings</g:header>
-            <lobby:SettingsPanel ui:field="settingsPanel" />
+            <b:SettingsPanel ui:field="settingsPanel" />
         </g:DisclosurePanel>
         <g:Button ui:field="createGameButton">Create game</g:Button>
     </g:HTMLPanel>

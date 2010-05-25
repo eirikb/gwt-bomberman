@@ -10,9 +10,9 @@ package no.eirikb.bomberman.server;
 
 import java.util.HashMap;
 import java.util.Map;
-import no.eirikb.bomberman.client.game.Game;
-import no.eirikb.bomberman.client.game.GameInfo;
-import no.eirikb.bomberman.client.game.Player;
+import no.eirikb.bomberman.game.Game;
+import no.eirikb.bomberman.game.GameInfo;
+import no.eirikb.bomberman.game.Player;
 
 /**
  *

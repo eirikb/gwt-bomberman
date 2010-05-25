@@ -10,8 +10,8 @@ package no.eirikb.bomberman.client.ui.game;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import no.eirikb.bomberman.client.game.Player;
-import no.eirikb.bomberman.client.game.Sprite;
+import no.eirikb.bomberman.game.Player;
+import no.eirikb.bomberman.game.Sprite;
 
 /**
  *

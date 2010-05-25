@@ -9,7 +9,7 @@
 package no.eirikb.bomberman.client.event;
 
 import com.google.gwt.event.shared.GwtEvent;
-import no.eirikb.bomberman.client.game.Player;
+import no.eirikb.bomberman.game.Player;
 
 /**
  *

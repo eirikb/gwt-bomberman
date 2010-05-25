@@ -13,7 +13,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.TabLayoutPanel;
+import com.google.gwt.user.client.ui.DecoratedTabPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -27,7 +27,7 @@ public class LobbyViewImpl extends Composite implements LobbyView {
     }
     private static LobbyViewUiBinder uiBinder = GWT.create(LobbyViewUiBinder.class);
     @UiField
-    TabLayoutPanel tabPanel;
+    DecoratedTabPanel tabPanel;
     private Presenter presenter;
 
     public LobbyViewImpl() {
@@ -42,6 +42,9 @@ public class LobbyViewImpl extends Composite implements LobbyView {
     @Override
     public void addTab(Widget tab, String tabText) {
         tabPanel.add(tab, tabText);
+        if (tabPanel.getTabBar().getTabCount() == 1) {
+            tabPanel.selectTab(0);
+        }
     }
 
     @Override

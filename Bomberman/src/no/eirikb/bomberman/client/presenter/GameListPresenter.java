@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import no.eirikb.bomberman.client.LobbyServiceAsync;
 import no.eirikb.bomberman.client.common.ColumnDefinition;
-import no.eirikb.bomberman.client.game.GameInfo;
+import no.eirikb.bomberman.game.GameInfo;
 import no.eirikb.bomberman.client.view.GameListView;
 
 /**

@@ -9,10 +9,10 @@
 package no.eirikb.bomberman.client;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import no.eirikb.bomberman.client.game.Bomb;
-import no.eirikb.bomberman.client.game.Game;
-import no.eirikb.bomberman.client.game.Way;
-import no.eirikb.bomberman.client.game.powerup.Powerup;
+import no.eirikb.bomberman.game.Bomb;
+import no.eirikb.bomberman.game.Game;
+import no.eirikb.bomberman.game.Way;
+import no.eirikb.bomberman.game.powerup.Powerup;
 
 /**
  *

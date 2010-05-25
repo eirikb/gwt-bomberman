@@ -16,15 +16,23 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Widget;
+import java.util.HashMap;
+import java.util.Map;
 import no.eirikb.bomberman.client.common.GameListColumnDefinitions;
+import no.eirikb.bomberman.client.event.JoinGameEvent;
+import no.eirikb.bomberman.client.event.JoinGameEventHandler;
 import no.eirikb.bomberman.client.event.LoginEvent;
 import no.eirikb.bomberman.client.event.LoginEventHandler;
-import no.eirikb.bomberman.client.game.GameInfo;
-import no.eirikb.bomberman.client.game.Player;
+import no.eirikb.bomberman.client.presenter.GameCreatePresenter;
+import no.eirikb.bomberman.game.GameInfo;
+import no.eirikb.bomberman.game.Player;
 import no.eirikb.bomberman.client.presenter.GameListPresenter;
 import no.eirikb.bomberman.client.presenter.LobbyPresenter;
 import no.eirikb.bomberman.client.presenter.LoginPresenter;
 import no.eirikb.bomberman.client.presenter.Presenter;
+import no.eirikb.bomberman.client.view.GameCreateView;
+import no.eirikb.bomberman.client.view.GameCreateViewImpl;
 import no.eirikb.bomberman.client.view.GameListViewImpl;
 import no.eirikb.bomberman.client.view.LobbyViewImpl;
 import no.eirikb.bomberman.client.view.LoginViewImpl;
@@ -41,6 +49,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
     private LoginViewImpl loginView = null;
     private LobbyViewImpl lobbyView = null;
     private GameListViewImpl<GameInfo> gameListView = null;
+    private GameCreateView gameCreateView = null;
 
     public AppController(LobbyServiceAsync lobbyService, HandlerManager eventBus) {
         this.eventBus = eventBus;
@@ -57,6 +66,14 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                 doLogin(event.getPlayer());
             }
         });
+
+        eventBus.addHandler(JoinGameEvent.TYPE, new JoinGameEventHandler() {
+
+            @Override
+            public void onJoinGame(JoinGameEvent event) {
+                doJoinGame(event.getGameInfo());
+            }
+        });
     }
 
     private void doLogin(Player player) {
@@ -67,8 +84,19 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
         if (gameListView == null) {
             gameListView = new GameListViewImpl<GameInfo>();
         }
+        if (gameCreateView == null) {
+            gameCreateView = new GameCreateViewImpl();
+        }
         new GameListPresenter(lobbyService, eventBus, gameListView, new GameListColumnDefinitions().getColumnDefnitions()).go(container);
-        new LobbyPresenter(lobbyService, eventBus, lobbyView, gameListView).go(container);
+        new GameCreatePresenter(lobbyService, eventBus, gameCreateView).go(container);
+        Map<String, Widget> tabs = new HashMap<String, Widget>();
+        tabs.put("Gamelist", gameListView.asWidget());
+        tabs.put("Create game", gameCreateView.asWidget());
+        new LobbyPresenter(lobbyService, eventBus, lobbyView, tabs).go(container);
+    }
+
+    private void doJoinGame(GameInfo gameInfo) {
+        GWT.log("JOIN GAME: " + gameInfo.getName());
     }
 
     @Override

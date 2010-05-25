@@ -6,9 +6,6 @@ Uncomment this for XHTML entities
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
     <g:HTMLPanel width="640px">
-        Info:
-        <g:Label ui:field="infoLabel" />
-        <g:TabLayoutPanel barHeight="40" ui:field="tabPanel">
-        </g:TabLayoutPanel>
+        <g:DecoratedTabPanel width="640px" ui:field="tabPanel" animationEnabled="true"/>
     </g:HTMLPanel>
 </ui:UiBinder>

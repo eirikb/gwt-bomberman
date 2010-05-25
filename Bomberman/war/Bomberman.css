@@ -12,36 +12,6 @@
     font-size:11px;
 }
 
-
-.progressbar-remaining {
-    font-size: 12px;
-    font-style: italic;
-}
-
-.progressbar-outer {
-    border: 1px solid black;
-}
-
-.progressbar-inner {
-    border: 1px solid black;
-    margin: 1px;
-}
-
-.progressbar-bar {
-    width: 5px;
-    height: 15px;
-    margin: 1px;
-}
-
-.progressbar-fullbar {
-    background: blue;
-}
-
-.progressbar-blankbar {
-    background: #eee;
-}
-
-
 /* *** TAB PANEL *** */
 
 .gwt-DecoratedTabBar {

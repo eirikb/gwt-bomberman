@@ -8,23 +8,24 @@
  */
 package no.eirikb.bomberman.client.view;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public class GameCreateView extends Composite {
+public interface GameCreateView {
 
-    private static GameCreateViewUiBinder uiBinder = GWT.create(GameCreateViewUiBinder.class);
+    public interface Presenter {
 
-    interface GameCreateViewUiBinder extends UiBinder<Widget, GameCreateView> {
+        void onCreateButtonClicked();
     }
 
-    public GameCreateView() {
-        initWidget(uiBinder.createAndBindUi(this));
-    }
+    void setPresenter(Presenter presenter);
+
+    void setInfo(String text);
+
+    String getGameName();
+
+    Widget asWidget();
 }

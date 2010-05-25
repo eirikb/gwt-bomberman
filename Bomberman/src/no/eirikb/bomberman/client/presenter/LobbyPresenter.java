@@ -10,8 +10,9 @@ package no.eirikb.bomberman.client.presenter;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Widget;
+import java.util.Map;
 import no.eirikb.bomberman.client.LobbyServiceAsync;
-import no.eirikb.bomberman.client.view.GameListView;
 import no.eirikb.bomberman.client.view.LobbyView;
 
 /**
@@ -24,12 +25,15 @@ public class LobbyPresenter implements Presenter, LobbyView.Presenter {
     private HandlerManager eventBus;
     private LobbyView view;
 
-    public LobbyPresenter(LobbyServiceAsync lobbyService, HandlerManager eventBus, LobbyView view, GameListView gameListView) {
+    public LobbyPresenter(LobbyServiceAsync lobbyService, HandlerManager eventBus, LobbyView view,
+            Map<String, Widget> widgets) {
         this.lobbyService = lobbyService;
         this.eventBus = eventBus;
         this.view = view;
         view.setPresenter(this);
-        view.addTab(gameListView.asWidget(), "Gamelist");
+        for (Map.Entry<String, Widget> e : widgets.entrySet()) {
+            view.addTab(e.getValue(), e.getKey());
+        }
     }
 
     @Override

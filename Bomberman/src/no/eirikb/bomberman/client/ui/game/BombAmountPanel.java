@@ -12,12 +12,12 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import no.eirikb.bomberman.client.game.Bomb;
-import no.eirikb.bomberman.client.game.GameListener;
-import no.eirikb.bomberman.client.game.Player;
-import no.eirikb.bomberman.client.game.Sprite;
-import no.eirikb.bomberman.client.game.powerup.BombAmountPowerup;
-import no.eirikb.bomberman.client.game.powerup.Powerup;
+import no.eirikb.bomberman.game.Bomb;
+import no.eirikb.bomberman.game.GameListener;
+import no.eirikb.bomberman.game.Player;
+import no.eirikb.bomberman.game.Sprite;
+import no.eirikb.bomberman.game.powerup.BombAmountPowerup;
+import no.eirikb.bomberman.game.powerup.Powerup;
 
 /**
  *
