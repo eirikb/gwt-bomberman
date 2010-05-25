@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
-             xmlns:lobby="urn:import:no.eirikb.bomberman.client.ui.lobby">
+             xmlns:lobby="urn:import:no.eirikb.bomberman.client.ui">
 
     <g:HTMLPanel>
         <g:HorizontalPanel>
