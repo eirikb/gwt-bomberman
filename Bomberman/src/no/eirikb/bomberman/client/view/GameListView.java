@@ -20,7 +20,7 @@ public interface GameListView<T> {
 
     public interface Presenter<T> {
 
-        void onItemSelected(T selectedItem);
+        void onItemClicked(T selectedItem);
     }
 
     void setPresenter(Presenter<T> presenter);

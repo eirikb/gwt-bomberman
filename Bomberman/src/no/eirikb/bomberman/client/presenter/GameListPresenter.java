@@ -84,7 +84,23 @@ public class GameListPresenter implements Presenter, GameListView.Presenter<Game
     }
 
     @Override
-    public void onItemSelected(GameInfo selectedItem) {
+    public void onItemClicked(GameInfo selectedItem) {
+        lobbyService.joinGame(selectedItem.getName(), new AsyncCallback<GameInfo>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                view.setInfo("ERROR: " + caught);
+            }
+
+            @Override
+            public void onSuccess(GameInfo result) {
+                if (result != null) {
+                    eventBus.fireEvent(new JoinGameEvent(result));
+                } else {
+                    view.setInfo("Unkown ERROR! :O");
+                }
+            }
+        });
     }
 
     private void startRemoveService() {

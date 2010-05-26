@@ -9,19 +9,18 @@
 package no.eirikb.bomberman.client.view;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.EventTarget;
+import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.TableCellElement;
-import com.google.gwt.dom.client.TableElement;
 import com.google.gwt.dom.client.TableRowElement;
-import com.google.gwt.dom.client.TableSectionElement;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.List;
@@ -95,6 +94,59 @@ public class GameListViewImpl<T> extends Composite implements GameListView<T> {
             rowData.remove(data);
             gameListTable.removeRow(index);
         }
+    }
+
+    @UiHandler("gameListTable")
+    void onTableClicked(ClickEvent event) {
+        if (presenter != null) {
+            EventTarget target = event.getNativeEvent().getEventTarget();
+            Node node = Node.as(target);
+            TableCellElement cell = findNearestParentCell(node);
+            if (cell == null) {
+                return;
+            }
+
+            TableRowElement tr = TableRowElement.as(cell.getParentElement());
+            int row = tr.getSectionRowIndex();
+
+            if (cell != null) {
+                if (shouldFireClickEvent(cell)) {
+                    if (row < rowData.size()) {
+                        presenter.onItemClicked(rowData.get(row));
+                    }
+                }
+            }
+        }
+    }
+
+    private TableCellElement findNearestParentCell(Node node) {
+        while ((node != null)) {
+            if (Element.is(node)) {
+                Element elem = Element.as(node);
+
+                String tagName = elem.getTagName();
+                if ("td".equalsIgnoreCase(tagName) || "th".equalsIgnoreCase(tagName)) {
+                    return elem.cast();
+                }
+            }
+            node = node.getParentNode();
+        }
+        return null;
+    }
+
+    private boolean shouldFireClickEvent(TableCellElement cell) {
+        boolean shouldFireClickEvent = false;
+
+        if (cell != null) {
+            ColumnDefinition<T> columnDefinition =
+                    columnDefinitions.get(cell.getCellIndex());
+
+            if (columnDefinition != null) {
+                shouldFireClickEvent = columnDefinition.isClickable();
+            }
+        }
+
+        return shouldFireClickEvent;
     }
 
     @Override

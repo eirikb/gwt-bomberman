@@ -17,19 +17,6 @@ public class GameListColumnDefinitions {
 
             @Override
             public Widget render(GameInfo gameInfo) {
-                return new CheckBox();
-            }
-
-            @Override
-            public boolean isSelectable() {
-                return true;
-            }
-        });
-
-        columnDefinitions.add(new ColumnDefinition<GameInfo>() {
-
-            @Override
-            public Widget render(GameInfo gameInfo) {
                 return new HTML(gameInfo.getName());
             }
 
