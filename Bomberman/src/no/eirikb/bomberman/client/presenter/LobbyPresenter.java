@@ -42,23 +42,6 @@ public class LobbyPresenter implements Presenter, LobbyView.Presenter {
         for (Map.Entry<String, Widget> e : widgets.entrySet()) {
             view.addTab(e.getValue(), e.getKey());
         }
-        final RemoteEventService remoteEventService = RemoteEventServiceFactory.getInstance().getRemoteEventService();
-        remoteEventService.addListener(LobbyEvent.LOBBY_DOMAIN, new RemoteEventListener() {
-
-            @Override
-            public void apply(Event anEvent) {
-                GWT.log("GOT THIS SHIT " + anEvent);
-            }
-        });
-
-        eventBus.addHandler(JoinGameEvent.TYPE, new JoinGameEventHandler() {
-
-            @Override
-            public void onJoinGame(JoinGameEvent event) {
-                remoteEventService.removeListeners();
-            }
-        });
-
     }
 
     @Override

@@ -31,5 +31,9 @@ public interface GameListView<T> {
 
     void setRowData(List<T> rowData);
 
+    void addData(T data);
+
+    void removeData(T data);
+
     Widget asWidget();
 }

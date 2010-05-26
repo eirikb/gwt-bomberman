@@ -30,6 +30,7 @@ import no.eirikb.bomberman.game.Player;
 import no.eirikb.bomberman.game.Settings;
 import no.eirikb.bomberman.game.Sprite;
 import no.eirikb.bomberman.client.LobbyService;
+import no.eirikb.bomberman.shared.event.lobby.GameRemoveEvent;
 
 /**
  *
@@ -38,7 +39,7 @@ import no.eirikb.bomberman.client.LobbyService;
 public class LobbyServer extends RemoteEventServiceServlet implements LobbyService {
 
     private static final Domain LOBBY_DOMAIN = LobbyEvent.LOBBY_DOMAIN;
-    private static final Domain GAME_EVENT = GameEvent.GAME_DOMAIN; // Shared
+    private static final Domain GAME_DOMAIN = GameEvent.GAME_DOMAIN; // Shared
     private GameHandler gameHandler;
 
     public LobbyServer() {
@@ -59,6 +60,7 @@ public class LobbyServer extends RemoteEventServiceServlet implements LobbyServi
                 gameHandler.removePlayer(player);
                 if (game.getPlayerSize() == 0) {
                     gameHandler.removeGame(game);
+                    addEvent(LOBBY_DOMAIN, new GameRemoveEvent(game.getGameInfo()));
                 }
             }
         });
@@ -156,8 +158,9 @@ public class LobbyServer extends RemoteEventServiceServlet implements LobbyServi
         Game game = gameHandler.removePlayerFromGame(player);
         if (game.getPlayerSize() == 0) {
             gameHandler.removeGame(game);
+            addEvent(LOBBY_DOMAIN, new GameRemoveEvent(game.getGameInfo()));
         }
         addEvent(LOBBY_DOMAIN, new PlayerQuitGameEvent(player, game.getGameInfo()));
-        addEvent(GAME_EVENT, new PlayerQuitGameEvent(player, game.getGameInfo()));
+        addEvent(GAME_DOMAIN, new PlayerQuitGameEvent(player, game.getGameInfo()));
     }
 }

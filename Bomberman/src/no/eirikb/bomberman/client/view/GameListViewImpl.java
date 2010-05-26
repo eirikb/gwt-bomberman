@@ -80,6 +80,24 @@ public class GameListViewImpl<T> extends Composite implements GameListView<T> {
     }
 
     @Override
+    public void addData(T data) {
+        rowData.add(data);
+        for (int i = 0; i < columnDefinitions.size(); ++i) {
+            ColumnDefinition<T> columnDefinition = columnDefinitions.get(i);
+            gameListTable.setWidget(rowData.size() - 1, i, columnDefinition.render(data));
+        }
+    }
+
+    @Override
+    public void removeData(T data) {
+        int index = rowData.indexOf(data);
+        if (index >= 0) {
+            rowData.remove(data);
+            gameListTable.removeRow(index);
+        }
+    }
+
+    @Override
     public Widget asWidget() {
         return this;
     }

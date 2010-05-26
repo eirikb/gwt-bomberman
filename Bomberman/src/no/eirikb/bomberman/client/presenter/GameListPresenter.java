@@ -8,16 +8,26 @@
  */
 package no.eirikb.bomberman.client.presenter;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
+import de.novanic.eventservice.client.event.Event;
+import de.novanic.eventservice.client.event.RemoteEventService;
+import de.novanic.eventservice.client.event.RemoteEventServiceFactory;
+import de.novanic.eventservice.client.event.listener.RemoteEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import no.eirikb.bomberman.client.LobbyServiceAsync;
 import no.eirikb.bomberman.client.common.ColumnDefinition;
+import no.eirikb.bomberman.client.event.JoinGameEvent;
+import no.eirikb.bomberman.client.event.JoinGameEventHandler;
 import no.eirikb.bomberman.game.GameInfo;
 import no.eirikb.bomberman.client.view.GameListView;
+import no.eirikb.bomberman.shared.event.lobby.GameCreateEvent;
+import no.eirikb.bomberman.shared.event.lobby.GameRemoveEvent;
+import no.eirikb.bomberman.shared.event.lobby.LobbyEvent;
 
 /**
  *
@@ -30,12 +40,14 @@ public class GameListPresenter implements Presenter, GameListView.Presenter<Game
     private GameListView<GameInfo> view;
     private List<GameInfo> games;
 
-    public GameListPresenter(LobbyServiceAsync lobbyService, HandlerManager eventBus, GameListView<GameInfo> view, List<ColumnDefinition<GameInfo>> columnDefinitions) {
+    public GameListPresenter(LobbyServiceAsync lobbyService, HandlerManager eventBus, GameListView<GameInfo> view,
+            List<ColumnDefinition<GameInfo>> columnDefinitions) {
         this.lobbyService = lobbyService;
         this.eventBus = eventBus;
         this.view = view;
         view.setPresenter(this);
         view.setColumnDefinitions(columnDefinitions);
+        startRemoveService();
     }
 
     @Override
@@ -73,5 +85,38 @@ public class GameListPresenter implements Presenter, GameListView.Presenter<Game
 
     @Override
     public void onItemSelected(GameInfo selectedItem) {
+    }
+
+    private void startRemoveService() {
+        final RemoteEventService remoteEventService = RemoteEventServiceFactory.getInstance().getRemoteEventService();
+        remoteEventService.addListener(LobbyEvent.LOBBY_DOMAIN, new RemoteEventListener() {
+
+            @Override
+            public void apply(Event anEvent) {
+                if (anEvent instanceof GameCreateEvent) {
+                    GameCreateEvent event = (GameCreateEvent) anEvent;
+                    view.addData(event.getGame());
+                    games.add(event.getGame());
+                } else if (anEvent instanceof GameRemoveEvent) {
+                    GameRemoveEvent event = (GameRemoveEvent) anEvent;
+                    GameInfo game = null;
+                    for (GameInfo g : games) {
+                        if (g.getName().equals(event.getGame().getName())) {
+                            game = g;
+                            break;
+                        }
+                    }
+                    view.removeData(game);
+                }
+            }
+        });
+
+        this.eventBus.addHandler(JoinGameEvent.TYPE, new JoinGameEventHandler() {
+
+            @Override
+            public void onJoinGame(JoinGameEvent event) {
+                remoteEventService.removeListeners();
+            }
+        });
     }
 }
