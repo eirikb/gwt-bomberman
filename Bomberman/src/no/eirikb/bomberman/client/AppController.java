@@ -10,10 +10,7 @@ package no.eirikb.bomberman.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
@@ -41,7 +38,7 @@ import no.eirikb.bomberman.client.view.LoginViewImpl;
  *
  * @author Eirik Brandtzæg <eirikdb@gmail.com>
  */
-public class AppController implements Presenter, ValueChangeHandler<String> {
+public class AppController implements Presenter {
 
     private final HandlerManager eventBus;
     private final LobbyServiceAsync lobbyService;
@@ -58,7 +55,6 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
     }
 
     private void bind() {
-        History.addValueChangeHandler(this);
         eventBus.addHandler(LoginEvent.TYPE, new LoginEventHandler() {
 
             @Override
@@ -77,7 +73,6 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
     }
 
     private void doLogin(Player player) {
-        History.newItem("login");
         if (lobbyView == null) {
             lobbyView = new LobbyViewImpl();
         }
@@ -102,48 +97,33 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
     @Override
     public void go(final HasWidgets container) {
         this.container = container;
+        GWT.runAsync(new RunAsyncCallback() {
 
-        if ("".equals(History.getToken())) {
-            History.newItem("login");
-        } else {
-            History.fireCurrentHistoryState();
-        }
-    }
+            @Override
+            public void onFailure(Throwable caught) {
+            }
 
-    @Override
-    public void onValueChange(ValueChangeEvent<String> event) {
-        String token = event.getValue();
-        if (token != null) {
-            if (token.equals("login")) {
-                GWT.runAsync(new RunAsyncCallback() {
+            @Override
+            public void onSuccess() {
+                lobbyService.checkSession(new AsyncCallback<Player>() {
 
                     @Override
                     public void onFailure(Throwable caught) {
                     }
 
                     @Override
-                    public void onSuccess() {
-                        lobbyService.checkSession(new AsyncCallback<Player>() {
-
-                            @Override
-                            public void onFailure(Throwable caught) {
+                    public void onSuccess(Player result) {
+                        if (result != null) {
+                            doLogin(result);
+                        } else {
+                            if (loginView == null) {
+                                loginView = new LoginViewImpl();
                             }
-
-                            @Override
-                            public void onSuccess(Player result) {
-                                if (result != null) {
-                                    doLogin(result);
-                                } else {
-                                    if (loginView == null) {
-                                        loginView = new LoginViewImpl();
-                                    }
-                                    new LoginPresenter(lobbyService, eventBus, loginView).go(container);
-                                }
-                            }
-                        });
+                            new LoginPresenter(lobbyService, eventBus, loginView).go(container);
+                        }
                     }
                 });
             }
-        }
+        });
     }
 }
