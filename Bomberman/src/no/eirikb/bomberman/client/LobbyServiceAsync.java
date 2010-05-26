@@ -25,6 +25,8 @@ public interface LobbyServiceAsync {
 
     void checkSession(AsyncCallback<Player> callback);
 
+    void checkGame(AsyncCallback<GameInfo> asyncCallback);
+
     void login(String nick, AsyncCallback<Player> callback);
 
     void createGame(String name, Sprite[][] sprites, Settings settings, AsyncCallback<GameInfo> callback);

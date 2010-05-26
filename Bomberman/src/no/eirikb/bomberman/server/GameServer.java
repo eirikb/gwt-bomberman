@@ -38,6 +38,7 @@ public class GameServer extends RemoteEventServiceServlet implements GameService
         gameHandler = GameHandler.getInstance();
     }
 
+    @Override
     public Game getGame(String name) {
         Player player = gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
         Game game = gameHandler.getGame(name);
@@ -52,6 +53,7 @@ public class GameServer extends RemoteEventServiceServlet implements GameService
         return null;
     }
 
+    @Override
     public void startWalking(Way way, double x, double y) {
         Player player = gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
         player.setX(x);
@@ -60,6 +62,7 @@ public class GameServer extends RemoteEventServiceServlet implements GameService
         addEvent(GAME_DOMAIN, new PlayerStartWalkingEvent(game.getGameInfo().getName(), player.getNick(), way));
     }
 
+    @Override
     public void stopWalking(double x, double y) {
         Player player = gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
         player.setX(x);
@@ -68,12 +71,14 @@ public class GameServer extends RemoteEventServiceServlet implements GameService
         addEvent(GAME_DOMAIN, new PlayerStopWalkingEvent(game.getGameInfo().getName(), player.getNick(), x, y));
     }
 
+    @Override
     public void addBomb(Bomb bomb) {
         Player player = gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
         Game game = gameHandler.getGameByPlayer(player);
         addEvent(GAME_DOMAIN, new PlayerPlaceBombEvent(game.getGameInfo().getName(), player.getNick(), bomb));
     }
 
+    @Override
     public void died() {
         Player player = gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
         Game game = gameHandler.getGameByPlayer(player);
@@ -81,6 +86,7 @@ public class GameServer extends RemoteEventServiceServlet implements GameService
         addEvent(GAME_DOMAIN, new PlayerDieEvent(game.getGameInfo().getName(), player.getNick()));
     }
 
+    @Override
     public void gotPowerup(Powerup powerup) {
         Player player = gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
         Game game = gameHandler.getGameByPlayer(player);
@@ -88,6 +94,7 @@ public class GameServer extends RemoteEventServiceServlet implements GameService
         addEvent(GAME_DOMAIN, new PlayerGotPowerupEvent(game.getGameInfo().getName(), player.getNick(), powerup));
     }
 
+    @Override
     public void resurect() {
         Player player = gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
         Game game = gameHandler.getGameByPlayer(player);

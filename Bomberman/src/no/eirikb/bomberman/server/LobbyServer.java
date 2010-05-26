@@ -50,6 +50,7 @@ public class LobbyServer extends RemoteEventServiceServlet implements LobbyServi
         UserActivityScheduler userActivityScheduler = userManager.getUserActivityScheduler();
         userActivityScheduler.addTimeoutListener(new UserTimeoutListener() {
 
+            @Override
             public void onTimeout(UserInfo ui) {
                 Player player = gameHandler.getPlayerBySessionId(ui.getUserId());
                 addEvent(LOBBY_DOMAIN, new PlayerQuitEvent(gameHandler.getPlayerBySessionId(ui.getUserId())));
@@ -63,6 +64,7 @@ public class LobbyServer extends RemoteEventServiceServlet implements LobbyServi
         });
     }
 
+    @Override
     public Player login(String nick) {
         if (gameHandler.getPlayer(nick) == null) {
             Player player = new Player(nick);
@@ -72,6 +74,7 @@ public class LobbyServer extends RemoteEventServiceServlet implements LobbyServi
         return null;
     }
 
+    @Override
     public GameInfo createGame(String name, Sprite[][] sprites, Settings settings) {
         Player player = gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
         if (gameHandler.getGame(name) == null) {
@@ -84,10 +87,12 @@ public class LobbyServer extends RemoteEventServiceServlet implements LobbyServi
         }
     }
 
+    @Override
     public Map<String, GameInfo> getGames() {
         return gameHandler.getGameInfos();
     }
 
+    @Override
     public GameInfo joinGame(String gameName) {
         Game game = gameHandler.getGame(gameName);
         Player player = gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
@@ -106,24 +111,37 @@ public class LobbyServer extends RemoteEventServiceServlet implements LobbyServi
                     break;
             }
             addEvent(LOBBY_DOMAIN, new PlayerJoinGameEvent(player, game.getGameInfo()));
+            gameHandler.linkPlayerToGame(player, game);
             return game.getGameInfo();
         }
         return null;
     }
 
+    @Override
     public Player checkSession() {
         Player player = gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
-        if (gameHandler.getGameByPlayer(player) != null) {
-            Game game = gameHandler.removePlayerFromGame(player);
-            if (game.getPlayerSize() == 0) {
-                gameHandler.removeGame(game);
-            }
-            addEvent(LOBBY_DOMAIN, new PlayerQuitGameEvent(player, game.getGameInfo()));
-            addEvent(GAME_EVENT, new PlayerQuitGameEvent(player, game.getGameInfo()));
-        }
+//        if (gameHandler.getGameByPlayer(player) != null) {
+//            Game game = gameHandler.removePlayerFromGame(player);
+//            if (game.getPlayerSize() == 0) {
+//                gameHandler.removeGame(game);
+//            }
+//            addEvent(LOBBY_DOMAIN, new PlayerQuitGameEvent(player, game.getGameInfo()));
+//            addEvent(GAME_EVENT, new PlayerQuitGameEvent(player, game.getGameInfo()));
+//        }
         return player;
     }
 
+    @Override
+    public GameInfo checkGame() {
+        Player player = gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
+        Game game = gameHandler.getGameByPlayer(player);
+        if (game != null) {
+            return game.getGameInfo();
+        }
+        return null;
+    }
+
+    @Override
     public String[] getImages() {
         File imageDir = new File("war/img/");
         if (imageDir != null && imageDir.isDirectory()) {
@@ -132,6 +150,7 @@ public class LobbyServer extends RemoteEventServiceServlet implements LobbyServi
         return null;
     }
 
+    @Override
     public void quitGame() {
         Player player = gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
         Game game = gameHandler.removePlayerFromGame(player);

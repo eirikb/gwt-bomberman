@@ -27,6 +27,8 @@ public interface LobbyService extends RemoteService {
 
     Player checkSession();
 
+    GameInfo checkGame();
+
     Player login(String nick);
 
     GameInfo createGame(String name, Sprite[][] sprites, Settings settings);
