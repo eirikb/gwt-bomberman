@@ -26,7 +26,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import de.novanic.eventservice.client.event.RemoteEventService;
 import de.novanic.eventservice.client.event.domain.Domain;
-import de.novanic.eventservice.client.event.domain.DomainFactory;
 import no.eirikb.bomberman.shared.event.filter.GameEventFilter;
 import no.eirikb.bomberman.shared.event.game.GameEvent;
 import no.eirikb.bomberman.shared.event.game.GameListenerAdapter;
@@ -60,7 +59,7 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
 
         void onQuit();
     }
-    private static final Domain GAME_DOMAIN = DomainFactory.getDomain(GameEvent.GAME_DOMAIN);
+    private static final Domain GAME_DOMAIN = GameEvent.GAME_DOMAIN;
     private FocusPanel focusPanel;
     private KeyHack keyHack;
     private Game game;
@@ -68,15 +67,9 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
     private GameHandler gameHandler;
     private GameServiceAsync gameService;
 
-    public GamePanelContainer(RemoteEventService remoteEventService, Game game, final QuitListener quitListener) {
+    public GamePanelContainer(RemoteEventService remoteEventService, Game game) {
         this.game = game;
         gameService = GWT.create(GameService.class);
-        add(new Button("Quit current game", new ClickHandler() {
-
-            public void onClick(ClickEvent event) {
-                quitListener.onQuit();
-            }
-        }));
         remoteEventService.addListener(GAME_DOMAIN, new DefaultGameListener(), new GameEventFilter(game.getGameInfo().getName(), game.getMe().getNick()));
     }
 
@@ -84,6 +77,7 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
         focusPanel = new FocusPanel();
         focusPanel.addKeyDownHandler(new KeyDownHandler() {
 
+            @Override
             public void onKeyDown(KeyDownEvent event) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -147,12 +141,14 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
         killCheck();
         DeferredCommand.addCommand(new Command() {
 
+            @Override
             public void execute() {
                 focusPanel.setFocus(true);
             }
         });
     }
 
+    @Override
     public void arrowKeyDown(KeyDownEvent event) {
         Player player = gamePanel.getPlayer();
         if (event.isLeftArrow()) {
@@ -167,22 +163,27 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
 
         gameService.startWalking(player.getWay(), player.getX(), player.getY(), new AsyncCallback() {
 
+            @Override
             public void onFailure(Throwable caught) {
             }
 
+            @Override
             public void onSuccess(Object result) {
             }
         });
     }
 
+    @Override
     public void arrowKeyUp() {
         Player player = gamePanel.getPlayer();
         player.setWay(Way.NONE);
         gameService.stopWalking(player.getX(), player.getY(), new AsyncCallback() {
 
+            @Override
             public void onFailure(Throwable caught) {
             }
 
+            @Override
             public void onSuccess(Object result) {
             }
         });
@@ -191,22 +192,28 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
     private void killCheck() {
         game.addGameListener(new GameListener() {
 
+            @Override
             public void addSprite(Sprite sprite) {
             }
 
+            @Override
             public void removeSprite(Sprite sprite) {
             }
 
+            @Override
             public void bump(Player player, Sprite sprite) {
             }
 
+            @Override
             public void playerDie(final Player player) {
                 if (player == gamePanel.getPlayer()) {
                     gameService.died(new AsyncCallback() {
 
+                        @Override
                         public void onFailure(Throwable caught) {
                         }
 
+                        @Override
                         public void onSuccess(Object result) {
                         }
                     });
@@ -218,12 +225,15 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
                     v.add(new Label("Congratulations! You just died"));
                     Button resurectButton = new Button("Resurect!", new ClickHandler() {
 
+                        @Override
                         public void onClick(ClickEvent event) {
                             gameService.resurect(new AsyncCallback() {
 
+                                @Override
                                 public void onFailure(Throwable caught) {
                                 }
 
+                                @Override
                                 public void onSuccess(Object result) {
                                 }
                             });
@@ -246,12 +256,14 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
                 }
             }
 
+            @Override
             public void playerLive(Player player) {
             }
         });
 
     }
 
+    @Override
     public void callback() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

@@ -9,7 +9,6 @@
 package no.eirikb.bomberman.server;
 
 import de.novanic.eventservice.client.event.domain.Domain;
-import de.novanic.eventservice.client.event.domain.DomainFactory;
 import de.novanic.eventservice.service.RemoteEventServiceServlet;
 import no.eirikb.bomberman.shared.event.game.GameEvent;
 import no.eirikb.bomberman.shared.event.game.PlayerDieEvent;
@@ -31,7 +30,7 @@ import no.eirikb.bomberman.client.GameService;
  */
 public class GameServer extends RemoteEventServiceServlet implements GameService {
 
-    public static final Domain GAME_DOMAIN = DomainFactory.getDomain(GameEvent.GAME_DOMAIN);
+    public static final Domain GAME_DOMAIN = GameEvent.GAME_DOMAIN;
     private GameHandler gameHandler;
 
     public GameServer() {

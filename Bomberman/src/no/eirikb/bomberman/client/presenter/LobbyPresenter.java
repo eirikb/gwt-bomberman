@@ -8,12 +8,20 @@
  */
 package no.eirikb.bomberman.client.presenter;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
+import de.novanic.eventservice.client.event.Event;
+import de.novanic.eventservice.client.event.RemoteEventService;
+import de.novanic.eventservice.client.event.RemoteEventServiceFactory;
+import de.novanic.eventservice.client.event.listener.RemoteEventListener;
 import java.util.Map;
 import no.eirikb.bomberman.client.LobbyServiceAsync;
+import no.eirikb.bomberman.client.event.JoinGameEvent;
+import no.eirikb.bomberman.client.event.JoinGameEventHandler;
 import no.eirikb.bomberman.client.view.LobbyView;
+import no.eirikb.bomberman.shared.event.lobby.LobbyEvent;
 
 /**
  *
@@ -34,6 +42,23 @@ public class LobbyPresenter implements Presenter, LobbyView.Presenter {
         for (Map.Entry<String, Widget> e : widgets.entrySet()) {
             view.addTab(e.getValue(), e.getKey());
         }
+        final RemoteEventService remoteEventService = RemoteEventServiceFactory.getInstance().getRemoteEventService();
+        remoteEventService.addListener(LobbyEvent.LOBBY_DOMAIN, new RemoteEventListener() {
+
+            @Override
+            public void apply(Event anEvent) {
+                GWT.log("GOT THIS SHIT " + anEvent);
+            }
+        });
+
+        eventBus.addHandler(JoinGameEvent.TYPE, new JoinGameEventHandler() {
+
+            @Override
+            public void onJoinGame(JoinGameEvent event) {
+                remoteEventService.removeListeners();
+            }
+        });
+
     }
 
     @Override

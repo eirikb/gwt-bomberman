@@ -9,6 +9,8 @@
 package no.eirikb.bomberman.shared.event.game;
 
 import de.novanic.eventservice.client.event.Event;
+import de.novanic.eventservice.client.event.domain.Domain;
+import de.novanic.eventservice.client.event.domain.DomainFactory;
 
 /**
  *
@@ -16,7 +18,7 @@ import de.novanic.eventservice.client.event.Event;
  */
 public class GameEvent implements Event {
 
-    public static final String GAME_DOMAIN = "domain_game";
+    public static final Domain GAME_DOMAIN = DomainFactory.getDomain("domain_game");
     private String gameName;
     private String playerNick;
 

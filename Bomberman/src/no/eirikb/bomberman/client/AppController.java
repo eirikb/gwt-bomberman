@@ -8,7 +8,6 @@
  */
 package no.eirikb.bomberman.client;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -134,7 +133,7 @@ public class AppController implements Presenter {
                         @Override
                         public void onSuccess(GameInfo game) {
                             if (game != null) {
-                                doJoinGame(player, game);
+                                eventBus.fireEvent(new JoinGameEvent(game));
                             } else {
                                 doLogin(player);
                             }

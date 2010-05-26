@@ -9,7 +9,6 @@
 package no.eirikb.bomberman.server;
 
 import de.novanic.eventservice.client.event.domain.Domain;
-import de.novanic.eventservice.client.event.domain.DomainFactory;
 import de.novanic.eventservice.service.RemoteEventServiceServlet;
 import de.novanic.eventservice.service.UserTimeoutListener;
 import de.novanic.eventservice.service.registry.user.UserActivityScheduler;
@@ -18,9 +17,7 @@ import de.novanic.eventservice.service.registry.user.UserManager;
 import de.novanic.eventservice.service.registry.user.UserManagerFactory;
 import java.io.File;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.Map;
-import javax.servlet.http.HttpSession;
 import no.eirikb.bomberman.shared.event.game.GameEvent;
 import no.eirikb.bomberman.shared.event.lobby.GameCreateEvent;
 import no.eirikb.bomberman.shared.event.shared.PlayerJoinGameEvent;
@@ -40,8 +37,8 @@ import no.eirikb.bomberman.client.LobbyService;
  */
 public class LobbyServer extends RemoteEventServiceServlet implements LobbyService {
 
-    private static final Domain LOBBY_DOMAIN = DomainFactory.getDomain(LobbyEvent.LOBBY_DOMAIN);
-    private static final Domain GAME_EVENT = DomainFactory.getDomain(GameEvent.GAME_DOMAIN); // Shared
+    private static final Domain LOBBY_DOMAIN = LobbyEvent.LOBBY_DOMAIN;
+    private static final Domain GAME_EVENT = GameEvent.GAME_DOMAIN; // Shared
     private GameHandler gameHandler;
 
     public LobbyServer() {
@@ -60,6 +57,9 @@ public class LobbyServer extends RemoteEventServiceServlet implements LobbyServi
                 }
                 System.out.println("TIMEOUT! " + new Date() + " - " + player.getNick() + " (" + game + ')');
                 gameHandler.removePlayer(player);
+                if (game.getPlayerSize() == 0) {
+                    gameHandler.removeGame(game);
+                }
             }
         });
     }

@@ -9,6 +9,8 @@
 package no.eirikb.bomberman.shared.event.lobby;
 
 import de.novanic.eventservice.client.event.Event;
+import de.novanic.eventservice.client.event.domain.Domain;
+import de.novanic.eventservice.client.event.domain.DomainFactory;
 import no.eirikb.bomberman.game.Player;
 
 /**
@@ -17,7 +19,7 @@ import no.eirikb.bomberman.game.Player;
  */
 public class LobbyEvent implements Event {
 
-    public static final String LOBBY_DOMAIN = "domain_lobby";
+    public static final Domain LOBBY_DOMAIN = DomainFactory.getDomain("domain_lobby");
     private Player player;
 
     public LobbyEvent() {
