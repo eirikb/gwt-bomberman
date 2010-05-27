@@ -45,6 +45,7 @@ public class AppController implements Presenter {
 
     private final HandlerManager eventBus;
     private final LobbyServiceAsync lobbyService;
+    private final GameServiceAsync gameService;
     private HasWidgets container;
     private LoginViewImpl loginView = null;
     private LobbyViewImpl lobbyView = null;
@@ -53,9 +54,11 @@ public class AppController implements Presenter {
     private GamePanelView gamePanelView = null;
     private Player player = null;
 
-    public AppController(LobbyServiceAsync lobbyService, HandlerManager eventBus) {
+    public AppController(LobbyServiceAsync lobbyService, GameServiceAsync gameService,
+            HandlerManager eventBus) {
         this.eventBus = eventBus;
         this.lobbyService = lobbyService;
+        this.gameService = gameService;
         bind();
     }
 
@@ -108,7 +111,7 @@ public class AppController implements Presenter {
         if (gamePanelView == null) {
             gamePanelView = new GamePanelViewImpl();
         }
-        new GamePanelPresenter(lobbyService, eventBus, gamePanelView).go(container);
+        new GamePanelPresenter(lobbyService, gameService, eventBus, gamePanelView, gameInfo, player).go(container);
     }
 
     @Override
@@ -122,8 +125,9 @@ public class AppController implements Presenter {
             }
 
             @Override
-            public void onSuccess(final Player player) {
-                if (player != null) {
+            public void onSuccess(Player result) {
+                if (result != null) {
+                    player = result;
                     lobbyService.checkGame(new AsyncCallback<GameInfo>() {
 
                         @Override

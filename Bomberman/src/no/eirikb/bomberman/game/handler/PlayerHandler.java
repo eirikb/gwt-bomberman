@@ -44,6 +44,7 @@ public class PlayerHandler extends Handler {
         gamePanel.add(player.getImage(), (int) (player.getX() + XDIFF), (int) (player.getY() + YDIFF));
     }
 
+    @Override
     public void handle() {
         for (Player player : game.getAlivePlayers()) {
             if (player.getWay() != Way.NONE) {

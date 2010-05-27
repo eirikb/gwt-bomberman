@@ -8,8 +8,9 @@ Uncomment this for XHTML entities
 
     </ui:style>
     <g:HTMLPanel>
+        <g:Label ui:field="infoLabel" />
         <g:Button ui:field="quitButton">Quit game</g:Button>
-        <g:HTMLPanel ui:field="htmlPanel">
-        </g:HTMLPanel>
+        <g:SimplePanel ui:field="containerPanel">
+        </g:SimplePanel>
     </g:HTMLPanel>
 </ui:UiBinder>

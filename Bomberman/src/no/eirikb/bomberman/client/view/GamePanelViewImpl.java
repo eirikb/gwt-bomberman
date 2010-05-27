@@ -17,6 +17,9 @@ import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -30,9 +33,11 @@ public class GamePanelViewImpl extends Composite implements GamePanelView {
     }
     private static GamePanelViewUiBinder uiBinder = GWT.create(GamePanelViewUiBinder.class);
     @UiField
+    Label infoLabel;
+    @UiField
     Button quitButton;
     @UiField
-    HTMLPanel htmlPanel;
+    SimplePanel containerPanel;
     private Presenter presenter;
 
     public GamePanelViewImpl() {
@@ -46,7 +51,12 @@ public class GamePanelViewImpl extends Composite implements GamePanelView {
 
     @Override
     public void addWidget(Widget widget) {
-        htmlPanel.add(widget);
+        containerPanel.add(widget);
+    }
+
+    @Override
+    public void setInfo(String info) {
+        infoLabel.setText(info);
     }
 
     @UiHandler("quitButton")

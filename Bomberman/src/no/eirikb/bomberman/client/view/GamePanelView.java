@@ -25,5 +25,7 @@ public interface GamePanelView {
 
     void addWidget(Widget widget);
 
+    void setInfo(String info);
+
     Widget asWidget();
 }

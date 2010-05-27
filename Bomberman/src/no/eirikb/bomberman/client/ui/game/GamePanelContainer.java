@@ -128,7 +128,6 @@ public class GamePanelContainer extends VerticalPanel implements KeyHackCallback
         gamePanel = new GamePanel(game.getMe(), game.getImgSize(), settings.getMapWidth(), settings.getMapHeight());
         gamePanel.getElement().getStyle().setBackgroundColor("#abcdef");
         gameHandler = new GameHandler(game, gamePanel);
-        final GamePanelContainer gamePanelContainer = this;
         keyHack = new KeyHack(this);
         gameHandler.setKeyHackCallback(keyHack);
 

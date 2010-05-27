@@ -21,7 +21,7 @@ public class Settings implements Serializable {
     }
     private int mapWidth = 656;
     private int mapHeight = 496;
-    private double playerSpeed = 3;
+    private double playerSpeed = 3.0;
     private int playerBombStartAmount = 1;
     private int bombTimer = 50;
     private int bombPower = 1;

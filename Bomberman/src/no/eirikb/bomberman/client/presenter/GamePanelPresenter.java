@@ -8,13 +8,20 @@
  */
 package no.eirikb.bomberman.client.presenter;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
+import de.novanic.eventservice.client.event.RemoteEventService;
+import de.novanic.eventservice.client.event.RemoteEventServiceFactory;
+import no.eirikb.bomberman.client.GameServiceAsync;
 import no.eirikb.bomberman.client.LobbyServiceAsync;
 import no.eirikb.bomberman.client.event.QuitGameEvent;
 import no.eirikb.bomberman.client.ui.game.GamePanelContainer;
 import no.eirikb.bomberman.client.view.GamePanelView;
+import no.eirikb.bomberman.game.Game;
+import no.eirikb.bomberman.game.GameInfo;
+import no.eirikb.bomberman.game.Player;
 
 /**
  *
@@ -23,15 +30,52 @@ import no.eirikb.bomberman.client.view.GamePanelView;
 public class GamePanelPresenter implements Presenter, GamePanelView.Presenter {
 
     private LobbyServiceAsync lobbyService;
+    private GameServiceAsync gameService;
     private HandlerManager eventBus;
     private GamePanelView view;
+    private Game game;
+    private Player player;
+    private GamePanelContainer gamePanelContainer;
 
-    public GamePanelPresenter(LobbyServiceAsync lobbyService, HandlerManager eventBus, GamePanelView view) {
+    public GamePanelPresenter(LobbyServiceAsync lobbyService, GameServiceAsync gameService,
+            HandlerManager eventBus, GamePanelView view, GameInfo gameInfo, Player player) {
         this.lobbyService = lobbyService;
+        this.gameService = gameService;
         this.eventBus = eventBus;
         this.view = view;
+        this.player = player;
         view.setPresenter(this);
-        //view.addWidget(new GamePanelContainer(null, null, null));
+        createGameContainer(gameInfo);
+    }
+
+    private void createGameContainer(GameInfo gameInfo) {
+        gameService.getGame(gameInfo.getName(), new AsyncCallback<Game>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                view.setInfo("ERROR: " + caught);
+            }
+
+            @Override
+            public void onSuccess(Game result) {
+                if (result != null) {
+                    game = result;
+                    for (Player p : game.getAlivePlayers()) {
+                        if (p.getNick().equals(player.getNick())) {
+                            player = p;
+                            break;
+                        }
+                    }
+                    game.setMe(player);
+                    RemoteEventService remoteEventService = RemoteEventServiceFactory.getInstance().getRemoteEventService();
+                    gamePanelContainer = new GamePanelContainer(remoteEventService, game);
+                    view.addWidget(gamePanelContainer);
+                    gamePanelContainer.start();
+                } else {
+                    view.setInfo("Game was not found! oO");
+                }
+            }
+        });
     }
 
     @Override

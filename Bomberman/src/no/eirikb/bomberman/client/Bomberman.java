@@ -30,8 +30,9 @@ public class Bomberman implements EntryPoint {
         }
 
         LobbyServiceAsync lobbyService = GWT.create(LobbyService.class);
+        GameServiceAsync gameService = GWT.create(GameService.class);
         HandlerManager eventBus = new HandlerManager(null);
-        AppController appViewer = new AppController(lobbyService, eventBus);
+        AppController appViewer = new AppController(lobbyService, gameService, eventBus);
         appViewer.go(RootPanel.get("bombermanContent"));
     }
 }

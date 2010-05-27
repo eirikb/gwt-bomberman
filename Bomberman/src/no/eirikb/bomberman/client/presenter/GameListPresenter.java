@@ -47,7 +47,7 @@ public class GameListPresenter implements Presenter, GameListView.Presenter<Game
         this.view = view;
         view.setPresenter(this);
         view.setColumnDefinitions(columnDefinitions);
-        startRemoveService();
+        startRemoteService();
     }
 
     @Override
@@ -103,7 +103,7 @@ public class GameListPresenter implements Presenter, GameListView.Presenter<Game
         });
     }
 
-    private void startRemoveService() {
+    private void startRemoteService() {
         final RemoteEventService remoteEventService = RemoteEventServiceFactory.getInstance().getRemoteEventService();
         remoteEventService.addListener(LobbyEvent.LOBBY_DOMAIN, new RemoteEventListener() {
 

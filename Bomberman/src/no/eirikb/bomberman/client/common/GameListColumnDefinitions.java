@@ -1,6 +1,5 @@
 package no.eirikb.bomberman.client.common;
 
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.ArrayList;

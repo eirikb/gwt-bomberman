@@ -99,6 +99,9 @@ public class LobbyServer extends RemoteEventServiceServlet implements LobbyServi
         Game game = gameHandler.getGame(gameName);
         Player player = gameHandler.getPlayerBySessionId(getThreadLocalRequest().getSession().getId());
         if (game != null && player != null && game.getAlivePlayersSize() < game.getSettings().getMaxPlayers()) {
+            player.setSpeed(game.getSettings().getPlayerSpeed());
+            player.setBombAbount(game.getSettings().getPlayerBombStartAmount());
+            player.setBombPower(game.getSettings().getBombPower());
             game.addPlayer(player);
             switch (game.getAlivePlayersSize()) {
                 case 2:
