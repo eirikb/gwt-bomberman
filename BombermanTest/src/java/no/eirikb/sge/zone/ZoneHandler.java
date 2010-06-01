@@ -132,7 +132,7 @@ public class ZoneHandler {
             item.setY(y);
             CollisionDetection cd = new CollisionDetection();
             for (Item i : getItems(item)) {
-                List<Collision> cols = cd.collisiondetecion(item, i, collisionListeners);
+                List<Collision> cols = cd.collisiondetection(item, i, collisionListeners);
                 if (cols != null && cols.size() > 0) {
                     collisions.addAll(cols);
                 }

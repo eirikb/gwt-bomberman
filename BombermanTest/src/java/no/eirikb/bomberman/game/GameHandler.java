@@ -12,7 +12,6 @@ import com.google.gwt.core.client.GWT;
 import java.util.ArrayList;
 import java.util.List;
 import no.eirikb.bomberman.client.game.ui.KeyHack;
-import no.eirikb.bomberman.client.game.ui.KeyHackCallback;
 import no.eirikb.sge.item.Item;
 import no.eirikb.sge.zone.ZoneHandler;
 

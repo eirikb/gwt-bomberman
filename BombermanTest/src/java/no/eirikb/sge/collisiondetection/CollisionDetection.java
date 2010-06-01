@@ -8,6 +8,7 @@
  */
 package no.eirikb.sge.collisiondetection;
 
+import com.google.gwt.core.client.GWT;
 import no.eirikb.sge.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +20,45 @@ import no.eirikb.sge.item.Item;
  */
 public class CollisionDetection {
 
-    public List<Collision> collisiondetecion(Item item1, Item item2, List<CollisionListener> collisionListeners) {
+    public List<Collision> collisiondetection(Item item1, Item item2, List<CollisionListener> collisionListeners) {
         if (item1.getX() <= item2.getX() + item2.getWidth()
                 && item1.getX() + item1.getWidth() >= item2.getX()
                 && item1.getY() <= item2.getY() + item2.getHeight()
                 && item1.getY() + item1.getHeight() >= item2.getY()) {
-            if (item1.getPoints() != null && item2.getPoints() != null) {
+            if (item1.getLines() != null && item2.getLines() != null) {
                 return intersectLines(item1, item2, collisionListeners);
+            } else if (item1.getLines() == null && item2.getLines() == null) {
+                List<Collision> collisions = new ArrayList<Collision>();
+                int x1 = (int) item1.getX();
+                int y1 = (int) item1.getY();
+                int x1w = (int) (item1.getX() + item1.getWidth());
+                int y1h = (int) (item1.getY() + item1.getHeight());
+                int x2 = (int) item2.getX();
+                int y2 = (int) item2.getY();
+                int x2w = (int) (item2.getX() + item2.getWidth());
+                int y2h = (int) (item2.getY() + item2.getHeight());
+                if (x1w == x2) {
+                    collisions.add(new Collision(item1, item2, new Point(x1w, y1), new Point(x1w, y1h),
+                            new Point(x2, y2), new Point(x2, y2h), x1w, x2));
+                }
+                if (y1h == y2) {
+                    collisions.add(new Collision(item1, item2, new Point(x1, y1h), new Point(x1w, y1h),
+                            new Point(x2, y2), new Point(x2w, y2), y1h, y2));
+                }
+                if (y1 == y2h) {
+                    collisions.add(new Collision(item1, item2, new Point(x1, y1), new Point(x1w, y1),
+                            new Point(x2, y2h), new Point(x2w, y2h), y1, y2h));
+                }
+                if (x1 == x2w) {
+                    collisions.add(new Collision(item1, item2, new Point(x1, y1), new Point(x1, y1h),
+                            new Point(x2w, y2), new Point(x2w, y2h), x1, x2w));
+                }
+                for (CollisionListener collisionListener : collisionListeners) {
+                    for (Collision collision : collisions) {
+                        collisionListener.onCollision(collision);
+                    }
+                }
+                return collisions;
             }
         }
         return null;
@@ -33,8 +66,8 @@ public class CollisionDetection {
 
     public List<Collision> intersectLines(Item item1, Item item2, List<CollisionListener> collisionListeners) {
         List<Collision> collisions = new ArrayList<Collision>();
-        Point[] poly1 = item1.getPoints();
-        Point[] poly2 = item2.getPoints();
+        Point[] poly1 = item1.getLines();
+        Point[] poly2 = item2.getLines();
         for (int i = 0; i < poly1.length; i++) {
             for (int j = 0; j < poly2.length; j++) {
                 int nextPoly1 = i + 1;

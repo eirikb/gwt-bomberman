@@ -74,7 +74,7 @@ public class Item {
         this.y = y;
     }
 
-    public Point[] getPoints() {
+    public Point[] getLines() {
         return lines;
     }
 
