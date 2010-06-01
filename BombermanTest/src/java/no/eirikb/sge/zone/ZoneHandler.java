@@ -8,6 +8,7 @@
  */
 package no.eirikb.sge.zone;
 
+import com.google.gwt.core.client.GWT;
 import java.util.ArrayList;
 import java.util.List;
 import no.eirikb.sge.collisiondetection.Collision;
@@ -134,6 +135,9 @@ public class ZoneHandler {
             for (Item i : getItems(item)) {
                 List<Collision> cols = cd.collisiondetection(item, i, collisionListeners);
                 if (cols != null && cols.size() > 0) {
+                    x = origX;
+                    y = origY;
+                    GWT.log("OMG - LOL");
                     collisions.addAll(cols);
                 }
             }

@@ -21,6 +21,7 @@ public class Item {
 
     private double x;
     private double y;
+    private double z;
     private int width;
     private int height;
     private Point[] lines;

@@ -29,6 +29,7 @@ public class GameTimer {
         if (gameHandler.getGame().getTicktime() > 0) {
             ticktime = gameHandler.getGame().getTicktime();
         }
+
         new Timer() {
 
             @Override
