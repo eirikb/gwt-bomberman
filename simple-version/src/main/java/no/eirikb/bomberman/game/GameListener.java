@@ -12,7 +12,7 @@ import no.eirikb.sge.item.Item;
 
 /**
  *
- * @author Eirik Brandtzæg eirikdb@gmail.com
+ * @author Eirik Brandtzæg eirikb@eirikb.no
  */
 public interface GameListener {
 

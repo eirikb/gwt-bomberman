@@ -17,7 +17,7 @@ import no.eirikb.sge.zone.ZoneHandler;
 
 /**
  *
- * @author Eirik Brandtzæg eirikdb@gmail.com
+ * @author Eirik Brandtzæg eirikb@eirikb.no
  */
 public class GameHandler extends ZoneHandler {
 

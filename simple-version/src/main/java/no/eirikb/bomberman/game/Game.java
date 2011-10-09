@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author Eirik Brandtzæg eirikdb@gmail.com
+ * @author Eirik Brandtzæg eirikb@eirikb.no
  */
 public class Game implements Serializable {
 
