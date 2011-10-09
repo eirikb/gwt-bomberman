@@ -10,6 +10,4 @@ Run like this:
     mvn install gwt:run
 
 
-*install-file.sh* will install some dependencies in your maven repo, workaround until later.  
-
-simple-version is another version that is suppose to be client side only.
+*install-file.sh* will install some dependencies in your maven repo, workaround until later.
